@@ -45,6 +45,8 @@
                             <div class="col-md-6">
                                 <select name="role_id" id="role" class="form-control">
                                     <option value="1">Admin</option>
+                                    <option value="2">Petugas</option>
+                                    <option value="3">Pengunjung</option>
                                 </select>
                             </div>
                         </div>
