@@ -16,11 +16,11 @@ class RoleMiddleware
         }
 
         foreach ($roles as $role) {
-            if ($user->role->nama_role === $role) {
+            if ($user->role->name === $role) {
                 return $next($request);
             }
         }
 
-        return redirect('/');
+        abort(403, 'Unauthorized action.');
     }
 }

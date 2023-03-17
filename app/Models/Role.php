@@ -10,6 +10,11 @@ class Role extends Model
     use HasFactory;
 
     protected $fillable = [
-        'nama_role',
+        'name',
     ];
+
+    public function user()
+    {
+        return $this->hasOne(User::class);
+    }
 }
