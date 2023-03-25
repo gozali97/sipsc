@@ -25,7 +25,7 @@
                         <li><a href="/kategori">Data Kategori</a></li>
                     </ul>
                     <ul class="submenu">
-                        <li><a href="index.html">Data Pengarang</a></li>
+                        <li><a href="/pengarang">Data Pengarang</a></li>
                     </ul>
                     <ul class="submenu">
                         <li><a href="index.html">Data Penerbit</a></li>

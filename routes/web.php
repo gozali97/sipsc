@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\KategoriController;
+use App\Http\Controllers\PengarangController;
 use App\Http\Controllers\PetugasController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -40,6 +41,13 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
         Route::post('kategori/store', 'store')->name('kategori.store');
         Route::post('kategori/update/{id}', 'update')->name('kategori.update');
         Route::post('kategori/destroy/{id}', 'destroy')->name('kategori.destroy');
+    });
+
+    Route::controller(PengarangController::class)->group(function () {
+        Route::get('pengarang', 'index')->name('pengarang.index');
+        Route::post('pengarang/store', 'store')->name('pengarang.store');
+        Route::post('pengarang/update/{id}', 'update')->name('pengarang.update');
+        Route::post('pengarang/destroy/{id}', 'destroy')->name('pengarang.destroy');
     });
 
 });

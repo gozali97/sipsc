@@ -46,15 +46,15 @@ class KategoriController extends Controller
     }
 
     public function destroy($id)
-{
-    $category = Kategori::find($id);
+    {
+        $category = Kategori::find($id);
 
-    if (!$category) {
-        return redirect()->back()->with('error', 'Kategori tidak ditemukan.');
+        if (!$category) {
+            return redirect()->back()->with('error', 'Kategori tidak ditemukan.');
+        }
+
+        $category->delete();
+
+        return redirect()->route('kategori.index')->with('success', 'Kategori berhasil dihapus.');
     }
-
-    $category->delete();
-
-    return redirect()->route('kategori.index')->with('success', 'Kategori berhasil dihapus.');
-}
 }
