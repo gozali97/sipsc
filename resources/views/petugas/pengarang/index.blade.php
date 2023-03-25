@@ -130,7 +130,7 @@
                                 <span aria-hidden="true">&times;</span>
                             </button>
                             </div>
-                            <form id="deleteForm{{ $p->id_pengarang }}" method="POST" action="{{ route('kategori.destroy', $p->id_pengarang) }}">
+                            <form id="deleteForm{{ $p->id_pengarang }}" method="POST" action="{{ route('pengarang.destroy', $p->id_pengarang) }}">
                             @csrf
                             <div class="modal-body">
                                 <p>Anda yakin ingin menghapus pengarang <strong>{{ $p->nama_pengarang }}</strong>?</p>

@@ -12,7 +12,7 @@ class PengarangController extends Controller
 
         $pengarang = Pengarang::all();
 
-        return view('admin.pengarang.index', compact('pengarang'));
+        return view('admin.petugas.index', compact('pengarang'));
     }
 
     public function store(Request $request)

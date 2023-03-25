@@ -13,8 +13,19 @@
                 @auth
                 @if (Auth::user()->role->name === 'admin')
                 <li>
-                    <a href="#" class="dropdown-toggle no-arrow">
+                    <a href="/admin" class="dropdown-toggle no-arrow">
                         <span class="micon dw dw-house-1"></span><span class="mtext">Dashboard</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="dropdown-toggle no-arrow">
+                        <span class="micon dw dw-shopping-cart"></span><span class="mtext">Transaksi</span>
+                    </a>
+                </li>
+                @elseif (Auth::user()->role->name === 'petugas')
+                <li>
+                    <a href="/petugas" class="dropdown-toggle no-arrow">
+                        <span class="micon dw dw-house-1"></span></span><span class="mtext">Dashboard</span>
                     </a>
                 </li>
                 <li class="dropdown">
@@ -28,7 +39,7 @@
                         <li><a href="/pengarang">Data Pengarang</a></li>
                     </ul>
                     <ul class="submenu">
-                        <li><a href="index.html">Data Penerbit</a></li>
+                        <li><a href="/penerbit">Data Penerbit</a></li>
                     </ul>
                     <ul class="submenu">
                         <li><a href="index.html">Data Pustaka</a></li>
@@ -37,17 +48,6 @@
                 <li>
                     <a href="#" class="dropdown-toggle no-arrow">
                         <span class="micon dw dw-shopping-cart"></span><span class="mtext">Transaksi</span>
-                    </a>
-                </li>
-                @elseif (Auth::user()->role->name === 'petugas')
-                <li>
-                    <a href="#" class="dropdown-toggle no-arrow">
-                        <span class="micon dw dw-house-1"></span></span><span class="mtext">Dashboard</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#" class="dropdown-toggle no-arrow">
-                        <span class="micon dw dw-invoice"></span><span class="mtext">Data Buku</span>
                     </a>
                 </li>
                 @elseif (Auth::user()->role->name === 'anggota')

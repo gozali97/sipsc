@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\KategoriController;
+use App\Http\Controllers\PenerbitController;
 use App\Http\Controllers\PengarangController;
 use App\Http\Controllers\PetugasController;
 use Illuminate\Support\Facades\Auth;
@@ -35,6 +36,11 @@ Route::resource('roles', RoleController::class);
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin', [AdminController::class, 'index'])->name('admin');
 
+});
+
+
+Route::middleware(['auth', 'role:petugas'])->group(function () {
+    Route::get('/petugas', [PetugasController::class, 'index'])->name('petugas');
 
     Route::controller(KategoriController::class)->group(function () {
         Route::get('kategori', 'index')->name('kategori.index');
@@ -50,11 +56,12 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
         Route::post('pengarang/destroy/{id}', 'destroy')->name('pengarang.destroy');
     });
 
-});
-
-
-Route::middleware(['auth', 'role:petugas'])->group(function () {
-    Route::get('/petugas', [PetugasController::class, 'index'])->name('petugas');
+    Route::controller(PenerbitController::class)->group(function () {
+        Route::get('penerbit', 'index')->name('penerbit.index');
+        Route::post('penerbit/store', 'store')->name('penerbit.store');
+        Route::post('penerbit/update/{id}', 'update')->name('penerbit.update');
+        Route::post('penerbit/destroy/{id}', 'destroy')->name('penerbit.destroy');
+    });
 });
 
 
