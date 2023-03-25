@@ -1,6 +1,14 @@
+<style>
+    .logo{
+        width: 35px;
+        margin-right: 8px;
+    }
+</style>
+
 <div class="left-side-bar">
     <div class="brand-logo ml-4">
-        <a href="index.html">
+        <a href="#">
+            <img src="{{ url('assets/img/logosmk.png') }}" class="light-logo logo" alt="">
            <h3 class="text-white">SIPSC</h3>
         </a>
         <div class="close-sidebar" data-toggle="left-sidebar-close">
@@ -45,9 +53,21 @@
                         <li><a href="index.html">Data Pustaka</a></li>
                     </ul>
                 </li>
-                <li>
-                    <a href="#" class="dropdown-toggle no-arrow">
+                <li class="dropdown">
+                    <a href="javascript:;" class="dropdown-toggle">
                         <span class="micon dw dw-shopping-cart"></span><span class="mtext">Transaksi</span>
+                    </a>
+                    <ul class="submenu">
+                        <li><a href="/kategori">Peminjaman</a></li>
+                    </ul>
+                    <ul class="submenu">
+                        <li><a href="/pengarang">Pengembalian</a></li>
+                    </ul>
+
+                </li>
+                <li>
+                    <a href="/users" class="dropdown-toggle no-arrow">
+                        <span class="micon dw dw-user-2"></span><span class="mtext">Manajemen User</span>
                     </a>
                 </li>
                 @elseif (Auth::user()->role->name === 'anggota')
@@ -58,14 +78,22 @@
                 </li>
                 @endif
                 <li>
-                    <a href="{{ route('logout') }}" class="dropdown-toggle no-arrow" onclick="event.preventDefault();
-                    document.getElementById('logout-form').submit();">
-                        <span class="micon dw dw-logout1"></span><span class="mtext">Logout</span>
-                    </a>
+                    <a href="#" class="dropdown-toggle no-arrow" onclick="event.preventDefault(); Swal.fire({
+                        title: 'Apakah anda yakin?',
+                        text: 'Anda akan keluar dari aplikasi!',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Yes, logout!'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                document.getElementById('logout-form').submit();
+                            }
+                        });">
+                    <span class="micon dw dw-logout1"></span><span class="mtext">Logout</span>
+                </a>
 
-                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                        @csrf
-                    </form>
                 </li>
                 @else
                 <li><a href="{{ route('login') }}">Login</a></li>

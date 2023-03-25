@@ -39,12 +39,12 @@
             <div class="row">
                 <div class="col-md-6 col-sm-12">
                     <div class="title">
-                        <h4>Pengarang</h4>
+                        <h4>Anggota</h4>
                     </div>
                     <nav aria-label="breadcrumb" role="navigation">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="/petugas">Home</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Pengarang</li>
+                            <li class="breadcrumb-item active" aria-current="page">Anggota</li>
                         </ol>
                     </nav>
                 </div>
@@ -60,7 +60,10 @@
                         <thead>
                             <tr>
                                 <th>#</th>
-                                <th>Nama Kategori</th>
+                                <th>Nama Anggota</th>
+                                <th>Email</th>
+                                <th>No Handphone</th>
+                                <th>Gambar</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -68,16 +71,19 @@
                             @php
                             $no = 1;
                             @endphp
-                            @foreach ($pengarang as $p)
+                            @foreach ($anggota as $p)
                             <tr>
                                 <td class="table-plus">{{ $no++ }}</td>
-                                <td>{{ $p->nama_pengarang }}</td>
+                                <td>{{ $p->name }}</td>
+                                <td>{{ $p->email }}</td>
+                                <td>{{ $p->no_hp }}</td>
+                                <td>{{ $p->gambar }}</td>
                                 <td>
                                     <button class="btn btn-warning" data-toggle="modal"
-                                        data-target="#editModal{{ $p->id_pengarang }}"><i class="icon-copy fa fa-edit"
+                                        data-target="#editModal{{ $p->id }}"><i class="icon-copy fa fa-edit"
                                             aria-hidden="true" style="margin-right: 5px"></i>Ubah</button>
                                     <button class="btn btn-danger" data-toggle="modal"
-                                        data-target="#deleteModal{{ $p->id_pengarang }}">
+                                        data-target="#deleteModal{{ $p->id }}">
                                         <i class="icon-copy fa fa-trash" aria-hidden="true"
                                             style="margin-right: 5px"></i>Hapus
                                     </button>
@@ -85,24 +91,24 @@
                             </tr>
 
                             <!-- Modal Update -->
-                            <div class="modal fade" id="editModal{{ $p->id_pengarang }}" tabindex="-1" role="dialog"
-                                aria-labelledby="editModal{{ $p->id_pengarang }}Label" aria-hidden="true">
+                            <div class="modal fade" id="editModal{{ $p->id }}" tabindex="-1" role="dialog"
+                                aria-labelledby="editModal{{ $p->id }}Label" aria-hidden="true">
                                 <div class="modal-dialog" role="document">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="editModal{{ $p->id_pengarang }}Label">Ubah
+                                            <h5 class="modal-title" id="editModal{{ $p->id }}Label">Ubah
                                                 Pengarang</h5>
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
                                         </div>
-                                        <form id="editForm{{ $p->id_pengarang }}" method="POST"
-                                            action="{{ route('pengarang.update', $p->id_pengarang) }}">
+                                        <form id="editForm{{ $p->id }}" method="POST"
+                                            action="{{ route('users.update', $p->id) }}">
                                             @csrf
                                             <div class="modal-body">
                                                 <div class="input-group custom">
                                                     <input type="text" class="form-control form-control-lg"
-                                                        name="pengarang" value="{{ $p->nama_pengarang }}"
+                                                        name="pengarang" value="{{ $p->name }}"
                                                         placeholder="Nama Pengarang">
                                                     <div class="input-group-append custom">
                                                         <span class="input-group-text"><i
@@ -121,16 +127,16 @@
                             </div>
 
                             <!-- Modal Delete -->
-                    <div class="modal fade" id="deleteModal{{ $p->id_pengarang }}" tabindex="-1" role="dialog" aria-labelledby="deleteModal{{ $p->id_pengarang }}Label" aria-hidden="true">
+                    <div class="modal fade" id="deleteModal{{ $p->id }}" tabindex="-1" role="dialog" aria-labelledby="deleteModal{{ $p->id }}Label" aria-hidden="true">
                         <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                            <h5 class="modal-title" id="deleteModal{{ $p->id_pengarang }}Label">Hapus Pengarang</h5>
+                            <h5 class="modal-title" id="deleteModal{{ $p->id }}Label">Hapus Pengarang</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                             </div>
-                            <form id="deleteForm{{ $p->id_pengarang }}" method="POST" action="{{ route('pengarang.destroy', $p->id_pengarang) }}">
+                            <form id="deleteForm{{ $p->id }}" method="POST" action="{{ route('users.destroy', $p->id) }}">
                             @csrf
                             <div class="modal-body">
                                 <p>Anda yakin ingin menghapus pengarang <strong>{{ $p->nama_pengarang }}</strong>?</p>
@@ -168,7 +174,7 @@
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
             </div>
             <div class="modal-body">
-                <form method="POST" action="{{ route('pengarang.store') }}">
+                <form method="POST" action="{{ route('users.store') }}">
                     @csrf
                     <div class="input-group custom">
                         <input type="text" name="pengarang" class="form-control form-control-lg"

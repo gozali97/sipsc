@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\KategoriController;
+use App\Http\Controllers\ManageAnggotaController;
 use App\Http\Controllers\PenerbitController;
 use App\Http\Controllers\PengarangController;
 use App\Http\Controllers\PetugasController;
@@ -61,6 +62,13 @@ Route::middleware(['auth', 'role:petugas'])->group(function () {
         Route::post('penerbit/store', 'store')->name('penerbit.store');
         Route::post('penerbit/update/{id}', 'update')->name('penerbit.update');
         Route::post('penerbit/destroy/{id}', 'destroy')->name('penerbit.destroy');
+    });
+
+    Route::controller(ManageAnggotaController::class)->group(function () {
+        Route::get('users', 'index')->name('users.index');
+        Route::post('users/store', 'store')->name('users.store');
+        Route::post('users/update/{id}', 'update')->name('users.update');
+        Route::post('users/destroy/{id}', 'destroy')->name('users.destroy');
     });
 });
 

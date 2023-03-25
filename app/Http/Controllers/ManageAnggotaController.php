@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Pengarang;
+use App\Models\User;
 use Illuminate\Http\Request;
 
-class PengarangController extends Controller
+class ManageAnggotaController extends Controller
 {
     public function index()
     {
 
-        $pengarang = Pengarang::all();
+        $anggota = User::where('role_id', 3)->get();
 
-        return view('petugas.pengarang.index', compact('pengarang'));
+        return view('petugas.anggota.index', compact('anggota'));
     }
 
     public function store(Request $request)
@@ -23,7 +23,7 @@ class PengarangController extends Controller
                 'pengarang' => 'required|max:255',
             ]);
 
-            Pengarang::create([
+            User::create([
                 'nama_pengarang' => $request->pengarang,
             ]);
 
@@ -37,7 +37,7 @@ class PengarangController extends Controller
 
     public function update(Request $request, $id)
     {
-        $category = Pengarang::where('id_pengarang', $id)->first();
+        $category = User::where('id_pengarang', $id)->first();
         // dd($category);
         $category->nama_pengarang = $request->pengarang;
         $category->save();
@@ -47,7 +47,7 @@ class PengarangController extends Controller
 
     public function destroy($id)
     {
-        $category = Pengarang::find($id);
+        $category = User::find($id);
 
         if (!$category) {
             return redirect()->back()->with('error', 'Pengarang tidak ditemukan.');
