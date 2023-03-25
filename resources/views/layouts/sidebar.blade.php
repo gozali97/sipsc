@@ -12,17 +12,31 @@
             <ul id="accordion-menu">
                 @auth
                 @if (Auth::user()->role->name === 'admin')
+                <li>
+                    <a href="#" class="dropdown-toggle no-arrow">
+                        <span class="micon dw dw-house-1"></span><span class="mtext">Dashboard</span>
+                    </a>
+                </li>
                 <li class="dropdown">
                     <a href="javascript:;" class="dropdown-toggle">
-                        <span class="micon dw dw-house-1"></span><span class="mtext">Home</span>
+                        <span class="micon dw dw-package"></span><span class="mtext">Master</span>
                     </a>
                     <ul class="submenu">
-                        <li><a href="index.html">Data Petugas</a></li>
+                        <li><a href="/kategori">Data Kategori</a></li>
+                    </ul>
+                    <ul class="submenu">
+                        <li><a href="index.html">Data Pengarang</a></li>
+                    </ul>
+                    <ul class="submenu">
+                        <li><a href="index.html">Data Penerbit</a></li>
+                    </ul>
+                    <ul class="submenu">
+                        <li><a href="index.html">Data Pustaka</a></li>
                     </ul>
                 </li>
                 <li>
                     <a href="#" class="dropdown-toggle no-arrow">
-                        <span class="micon dw dw-invoice"></span><span class="mtext">Laporan</span>
+                        <span class="micon dw dw-shopping-cart"></span><span class="mtext">Transaksi</span>
                     </a>
                 </li>
                 @elseif (Auth::user()->role->name === 'petugas')
