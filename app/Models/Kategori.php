@@ -8,5 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Kategori extends Model
 {
     use HasFactory;
-    protected $guarded = [];
+    protected $table = 'kategoris';
+    protected $fillable = [
+        'kategori',
+    ];
+
+    protected $primaryKey = 'id_kategori';
 }

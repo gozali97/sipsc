@@ -48,7 +48,7 @@
 		<div class="container-fluid d-flex justify-content-between align-items-center">
 			<div class="brand-logo">
 				<a href="login.html">
-					<h5 class="text-secondary">Sistem Informasi Perpustakaan Berbasis Web</h5>
+					<h5 class="text-secondary">Sistem Informasi Perpustakaan SMK Negeri 1 Cangkringan</h5>
 				</a>
 			</div>
 			<div class="login-menu">

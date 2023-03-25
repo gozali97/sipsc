@@ -60,7 +60,7 @@
                 <li>
                     <a href="{{ route('logout') }}" class="dropdown-toggle no-arrow" onclick="event.preventDefault();
                     document.getElementById('logout-form').submit();">
-                        <span class="micon dw dw-invoice"></span><span class="mtext">Logout</span>
+                        <span class="micon dw dw-logout1"></span><span class="mtext">Logout</span>
                     </a>
 
                     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">

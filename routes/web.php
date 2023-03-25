@@ -35,7 +35,13 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin', [AdminController::class, 'index'])->name('admin');
 
 
-    Route::get('/kategori', [KategoriController::class, 'index'])->name('kategori.index');
+    Route::controller(KategoriController::class)->group(function () {
+        Route::get('kategori', 'index')->name('kategori.index');
+        Route::post('kategori/store', 'store')->name('kategori.store');
+        Route::post('kategori/update/{id}', 'update')->name('kategori.update');
+        Route::post('kategori/destroy/{id}', 'destroy')->name('kategori.destroy');
+    });
+
 });
 
 
