@@ -16,6 +16,7 @@ class AddPhoneToUsersTable extends Migration
         Schema::table('users', function (Blueprint $table) {
             $table->string('no_hp', 15)->nullable();
             $table->string('gambar')->nullable();
+            $table->string('alamat')->nullable();
         });
     }
 
@@ -29,6 +30,7 @@ class AddPhoneToUsersTable extends Migration
         Schema::table('users', function (Blueprint $table) {
             $table->dropColumn('no_hp');
             $table->dropColumn('gambar');
+            $table->dropColumn('alamat');
         });
     }
 }

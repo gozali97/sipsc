@@ -50,7 +50,7 @@
                         <li><a href="/penerbit">Data Penerbit</a></li>
                     </ul>
                     <ul class="submenu">
-                        <li><a href="index.html">Data Pustaka</a></li>
+                        <li><a href="/pustaka">Data Pustaka</a></li>
                     </ul>
                 </li>
                 <li class="dropdown">

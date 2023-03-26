@@ -69,6 +69,9 @@ Route::middleware(['auth', 'role:petugas'])->group(function () {
         Route::post('users/store', 'store')->name('users.store');
         Route::post('users/update/{id}', 'update')->name('users.update');
         Route::post('users/destroy/{id}', 'destroy')->name('users.destroy');
+        Route::post('/users/reset-password/{id}', 'resetPassword')->name('users.resetPassword');
+
+
     });
 });
 
