@@ -3,7 +3,7 @@
         <div class="menu-icon dw dw-menu"></div>
         <div class="search-toggle-icon dw dw-search2" data-toggle="header_search"></div>
         <div class="header-search">
-            <h4>Aplikasi Perpustakaan</h4>
+            <h5>Aplikasi Perpustakaan SMK Negeri 1 Cangkringan</h5>
         </div>
     </div>
     <div class="header-right">
@@ -13,7 +13,7 @@
                     <span class="user-icon">
                         <img src="{{ url('assets/img/'.Auth::user()->gambar) }}" alt="">
                     </span>
-                    <span class="user-name">{{ Auth::user()->name }}</span>
+                    <span class="user-name">{{ Auth::user()->nama }}</span>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
                     <a class="dropdown-item" href="profile.html"><i class="dw dw-user1"></i> Profile</a>

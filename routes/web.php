@@ -8,6 +8,7 @@ use App\Http\Controllers\ManageAnggotaController;
 use App\Http\Controllers\PenerbitController;
 use App\Http\Controllers\PengarangController;
 use App\Http\Controllers\PetugasController;
+use App\Http\Controllers\PustakaController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\RoleMiddleware;
@@ -70,8 +71,13 @@ Route::middleware(['auth', 'role:petugas'])->group(function () {
         Route::post('users/update/{id}', 'update')->name('users.update');
         Route::post('users/destroy/{id}', 'destroy')->name('users.destroy');
         Route::post('/users/reset-password/{id}', 'resetPassword')->name('users.resetPassword');
+    });
 
-
+    Route::controller(PustakaController::class)->group(function () {
+        Route::get('pustaka', 'index')->name('pustaka.index');
+        Route::post('pustaka/store', 'store')->name('pustaka.store');
+        Route::post('pustaka/update/{id}', 'update')->name('pustaka.update');
+        Route::post('pustaka/destroy/{id}', 'destroy')->name('pustaka.destroy');
     });
 });
 

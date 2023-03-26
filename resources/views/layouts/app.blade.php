@@ -21,6 +21,13 @@
 	<link rel="stylesheet" type="text/css" href="{{ url('assets/vendors/styles/icon-font.min.css') }}">
 	<link rel="stylesheet" type="text/css" href="{{ url('assets/src/plugins/datatables/css/dataTables.bootstrap4.min.css') }}">
 	<link rel="stylesheet" type="text/css" href="{{ url('assets/src/plugins/datatables/css/responsive.bootstrap4.min.css') }}">
+
+    	<!-- switchery css -->
+	<link rel="stylesheet" type="text/css" href="{{ url('assets/src/plugins/switchery/switchery.min.css') }}">
+	<!-- bootstrap-tagsinput css -->
+	<link rel="stylesheet" type="text/css" href="{{ url('assets/src/plugins/bootstrap-tagsinput/bootstrap-tagsinput.css') }}">
+	<!-- bootstrap-touchspin css -->
+	<link rel="stylesheet" type="text/css" href="{{ url('assets/src/plugins/bootstrap-touchspin/jquery.bootstrap-touchspin.css') }}">
 	<link rel="stylesheet" type="text/css" href="{{ url('assets/vendors/styles/style.css') }}">
 
      <!-- Tambahkan link jQuery CDN -->
@@ -70,21 +77,28 @@
 	<script src="{{ url('assets/vendors/scripts/script.min.js') }}"></script>
 	<script src="{{ url('assets/vendors/scripts/process.js') }}"></script>
 	<script src="{{ url('assets/vendors/scripts/layout-settings.js') }}"></script>
-	<script src="{{ url('assets/src/plugins/apexcharts/apexcharts.min.js') }}"></script>
+	{{-- <script src="{{ url('assets/src/plugins/apexcharts/apexcharts.min.js') }}"></script> --}}
 	<script src="{{ url('assets/src/plugins/datatables/js/jquery.dataTables.min.js') }}"></script>
 	<script src="{{ url('assets/src/plugins/datatables/js/dataTables.bootstrap4.min.js') }}"></script>
 	<script src="{{ url('assets/src/plugins/datatables/js/dataTables.responsive.min.js') }}"></script>
 	<script src="{{ url('assets/src/plugins/datatables/js/responsive.bootstrap4.min.js') }}"></script>
 	<script src="{{ url('assets/vendors/scripts/dashboard.js') }}"></script>
 
-    <script src="{{ url('assets/src/plugins/datatables/js/dataTables.buttons.min.js') }}"></script>
+    {{-- <script src="{{ url('assets/src/plugins/datatables/js/dataTables.buttons.min.js') }}"></script>
 	<script src="{{ url('assets/src/plugins/datatables/js/buttons.bootstrap4.min.js') }}"></script>
 	<script src="{{ url('assets/src/plugins/datatables/js/buttons.print.min.js') }}"></script>
 	<script src="{{ url('assets/src/plugins/datatables/js/buttons.html5.min.js') }}"></script>
 	<script src="{{ url('assets/src/plugins/datatables/js/buttons.flash.min.js') }}"></script>
 	<script src="{{ url('assets/src/plugins/datatables/js/pdfmake.min.js') }}"></script>
-	<script src="{{ url('assets/src/plugins/datatables/js/vfs_fonts.js') }}"></script>
+	<script src="{{ url('assets/src/plugins/datatables/js/vfs_fonts.js') }}"></script> --}}
 	<!-- Datatable Setting js -->
-	<script src="{{ url('vendors/scripts/datatable-setting.js') }}"></script></body>
+	<script src="{{ url('assets/vendors/scripts/datatable-setting.js') }}"></script></body>
+    <!-- switchery js -->
+	<script src="{{ url('assets/src/plugins/switchery/switchery.min.js') }}"></script>
+	<!-- bootstrap-tagsinput js -->
+	<script src="{{ url('assets/src/plugins/bootstrap-tagsinput/bootstrap-tagsinput.js') }}"></script>
+	<!-- bootstrap-touchspin js -->
+	<script src="{{ url('assets/src/plugins/bootstrap-touchspin/jquery.bootstrap-touchspin.js') }}"></script>
+	<script src="{{ url('assets/vendors/scripts/advanced-components.js') }}"></script>
 </body>
 </html>

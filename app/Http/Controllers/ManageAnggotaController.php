@@ -36,7 +36,6 @@ class ManageAnggotaController extends Controller
             $gambar  = time() . 'profil' . '.' . $request->gambar->extension();
             $path       = $request->file('gambar')->move('assets/img', $gambar);
 
-            $data = new User;
             User::create([
                 'nama' => $request->nama,
                 'email' => $request->email,
@@ -81,7 +80,7 @@ class ManageAnggotaController extends Controller
         if ($data->save()) {
             return redirect()->route('users.index')->with('success', 'Data Anggota berhasil diupdate.');
         } else {
-            return redirect()->back()->with('error', 'Terjadi kesalahan saat mengupdate pengarang: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat mengupdate anggota' );
         }
     }
 
