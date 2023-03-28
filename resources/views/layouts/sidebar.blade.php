@@ -67,7 +67,7 @@
                 </li>
                 <li>
                     <a href="/users" class="dropdown-toggle no-arrow">
-                        <span class="micon dw dw-user-2"></span><span class="mtext">Manajemen User</span>
+                        <span class="micon dw dw-user-2"></span><span class="mtext">Kelola Anggota</span>
                     </a>
                 </li>
                 @elseif (Auth::user()->role->name === 'anggota')
