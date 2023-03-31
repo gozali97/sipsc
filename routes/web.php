@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AnggotaBukuController;
+use App\Http\Controllers\AnggotaController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\KategoriController;
@@ -83,6 +85,17 @@ Route::middleware(['auth', 'role:petugas'])->group(function () {
 
 
 Route::middleware(['auth', 'role:anggota'])->group(function () {
-    Route::get('/anggota', [AdminController::class, 'index'])->name('anggota');
+    // Route::get('/anggota', [AdminController::class, 'index'])->name('anggota');
+    Route::controller(AnggotaController::class)->group(function () {
+        Route::get('/anggota', 'index')->name('anggota');
+        Route::get('/anggota/profil/{id}', 'profil')->name('anggota.profil');
+        Route::post('/anggota/update/{id}', 'update')->name('anggota.update');
+    });
+
+    Route::controller(AnggotaBukuController::class)->group(function () {
+        Route::get('/list', 'index')->name('list.index');
+        Route::get('/list/detail/{id}', 'detail')->name('detail.profil');
+        Route::post('/list/store/{id}', 'store')->name('store.update');
+    });
 });
 

@@ -72,8 +72,13 @@
                 </li>
                 @elseif (Auth::user()->role->name === 'anggota')
                 <li>
-                    <a href="#" class="dropdown-toggle no-arrow">
-                        <span class="micon dw dw-invoice"></span><span class="mtext">Daftar Buku</span>
+                    <a href="/anggota" class="dropdown-toggle no-arrow">
+                        <span class="micon dw dw-house-1"></span></span><span class="mtext">Dashboard</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/list" class="dropdown-toggle no-arrow">
+                        <span class="micon dw dw-book-1"></span><span class="mtext">List Pustaka</span>
                     </a>
                 </li>
                 @endif

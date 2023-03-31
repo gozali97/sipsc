@@ -20,6 +20,7 @@ class CreateUsersTable extends Migration
             $table->string('no_hp', 15)->nullable();
             $table->text('alamat')->nullable();
             $table->string('gambar')->nullable();
+            $table->integer('id_anggota')->nullable();
             $table->string('role_id');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
