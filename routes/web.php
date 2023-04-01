@@ -7,6 +7,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\ManageAnggotaController;
+use App\Http\Controllers\PeminjamanController;
 use App\Http\Controllers\PenerbitController;
 use App\Http\Controllers\PengarangController;
 use App\Http\Controllers\PetugasController;
@@ -81,6 +82,13 @@ Route::middleware(['auth', 'role:petugas'])->group(function () {
         Route::post('pustaka/update/{id}', 'update')->name('pustaka.update');
         Route::post('pustaka/destroy/{id}', 'destroy')->name('pustaka.destroy');
     });
+
+    Route::controller(PustakaController::class)->group(function () {
+        Route::get('listpinjam', 'index')->name('listpinjam.index');
+        Route::post('listpinjam/store', 'store')->name('listpinjam.store');
+        Route::post('listpinjam/update/{id}', 'update')->name('listpinjam.update');
+        Route::post('listpinjam/destroy/{id}', 'destroy')->name('pustlistpinjamaka.destroy');
+    });
 });
 
 
@@ -95,6 +103,12 @@ Route::middleware(['auth', 'role:anggota'])->group(function () {
     Route::controller(AnggotaBukuController::class)->group(function () {
         Route::get('/list', 'index')->name('list.index');
         Route::get('/list/detail/{id}', 'detail')->name('detail.profil');
+        Route::post('/list/store/{id}', 'store')->name('store.update');
+    });
+
+    Route::controller(PeminjamanController::class)->group(function () {
+        Route::post('/pinjam/store', 'store')->name('pinjam.store');
+        Route::get('/pinjam/list/', 'index')->name('pinjam.index');
         Route::post('/list/store/{id}', 'store')->name('store.update');
     });
 });

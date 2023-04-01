@@ -58,7 +58,7 @@
                         <span class="micon dw dw-shopping-cart"></span><span class="mtext">Transaksi</span>
                     </a>
                     <ul class="submenu">
-                        <li><a href="/kategori">Peminjaman</a></li>
+                        <li><a href="/listpinjam">Peminjaman</a></li>
                     </ul>
                     <ul class="submenu">
                         <li><a href="/pengarang">Pengembalian</a></li>
@@ -79,6 +79,11 @@
                 <li>
                     <a href="/list" class="dropdown-toggle no-arrow">
                         <span class="micon dw dw-book-1"></span><span class="mtext">List Pustaka</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/pinjam/list" class="dropdown-toggle no-arrow">
+                        <span class="micon dw dw-open-book-2"></span><span class="mtext">History Peminjaman</span>
                     </a>
                 </li>
                 @endif

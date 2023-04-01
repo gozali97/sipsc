@@ -1,6 +1,59 @@
 @extends('layouts.app')
 
 @section('content')
+
+@if(session('success'))
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+    {{ session('success') }}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<script>
+    $(document).ready(function(){
+            setTimeout(function(){
+                $(".alert").alert('close');
+            }, 5000);
+        });
+</script>
+@endif
+
+@if(session('error'))
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+    {{ session('error') }}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<script>
+    $(document).ready(function(){
+            setTimeout(function(){
+                $(".alert").alert('close');
+            }, 5000);
+        });
+</script>
+@endif
+
+@if ($errors->any())
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <ul>
+        @foreach ($errors->all() as $error)
+        <li>{{ $error }}</li>
+        @endforeach
+    </ul>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<script>
+    $(document).ready(function(){
+                setTimeout(function(){
+                    $(".alert").alert('close');
+                }, 5000);
+            });
+</script>
+@endif
+
 <div class="pd-ltr-20">
     <div class="min-height-200px">
         <div class="page-header">
@@ -47,10 +100,51 @@
                         <div class="product-box">
                             <div class="producct-img"><img src="{{ url('/assets/img/'.$p->gambar) }}" alt=""></div>
                             <div class="product-caption">
-                                <h5>{{ $p->Judul }}</h5>
-                                <p>{{ $p->tahun_terbit }}
-                                </p>
-                                <a href="/list/detail/$p->id_pustaka" class="btn btn-outline-primary">Detail Buku</a>
+                                <h5>{{ $p->judul }}</h5>
+                                <div class="row">
+                                    <div class="col-md-6"><p>{{ $p->tahun_terbit }}
+                                </p></div>
+                                    <div class="col-md-6 float-right"><p>Stock : {{ $p->jumlah }}
+                                </p></div>
+                                </div>
+
+							<button class="btn btn-outline-primary" data-toggle="modal" data-target="#bd-example-modal-lg{{ $p->id_pustaka }}" type="button">
+							Detail Pustaka</button>
+							<div class="modal fade bs-example-modal-lg" id="bd-example-modal-lg{{ $p->id_pustaka }}" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel{{ $p->id_pustaka }}" aria-hidden="true" style="display: none;">
+								<div class="modal-dialog modal-lg modal-dialog-centered">
+									<div class="modal-content">
+										<div class="modal-header">
+											<h4 class="modal-title" id="bd-example-modal-lg{{ $p->id_pustaka }}">Detail Pustaka</h4>
+											<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+										</div>
+                                        <form id="bd-example-modal-lg{{ $p->id_pustaka }}" action="{{ route('pinjam.store') }}" method="POST">
+                                            @csrf
+										<div class="modal-body">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <img src="{{ url('/assets/img/'.$p->gambar) }}" style="width: 362px;height: 400px;" alt="">
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <input type="hidden" name="pustaka" value="{{ $p->id_pustaka }}">
+                                                    <h5>{{ $p->judul }}</h5>
+                                                    <p>{{ $p->deskripsi }}</p>
+                                                    <p class="font-weight-bold">Tahun Terbit: </p>
+                                                    <p class="">{{ $p->tahun_terbit }}</p>
+                                                    <p class="font-weight-bold">ISBN</p>
+                                                    <p>{{ $p->isbn }}</p>
+                                                    <p class="font-weight-bold">Stock</p>
+                                                    <p>{{ $p->jumlah }}</p>
+                                                </div>
+                                            </div>
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+											<button type="submit" class="btn btn-primary">Tambah</button>
+										</div>
+                                    </form>
+									</div>
+								</div>
+							</div>
                             </div>
                         </div>
                     </li>
