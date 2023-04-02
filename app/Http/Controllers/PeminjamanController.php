@@ -51,6 +51,7 @@ class PeminjamanController extends Controller
                 $peminjaman = Peminjaman::create([
                     'id_user' => $user_id,
                     'id_pustaka' => $pustaka->id_pustaka,
+                    'tgl_pinjam' => date('Y-m-d H:i:s'),
                     'status' => 1,
                     'jumlah' => 1,
                 ]);
@@ -67,27 +68,27 @@ class PeminjamanController extends Controller
         }
     }
 
-    public function update(Request $request, $id)
-    {
-        $category = Peminjaman::where('id_penerbit', $id)->first();
-        // dd($category);
-        $category->nama_penerbit = $request->penerbit;
-        $category->alamat = $request->alamat;
-        $category->save();
+    // public function update(Request $request, $id)
+    // {
+    //     $category = Peminjaman::where('id_penerbit', $id)->first();
+    //     // dd($category);
+    //     $category->nama_penerbit = $request->penerbit;
+    //     $category->alamat = $request->alamat;
+    //     $category->save();
 
-        return redirect()->route('penerbit.index')->with('success', 'Penerbit berhasil diupdate.');
-    }
+    //     return redirect()->route('penerbit.index')->with('success', 'Penerbit berhasil diupdate.');
+    // }
 
-    public function destroy($id)
-    {
-        $category = Peminjaman::find($id);
+    // public function destroy($id)
+    // {
+    //     $category = Peminjaman::find($id);
 
-        if (!$category) {
-            return redirect()->back()->with('error', 'Penerbit tidak ditemukan.');
-        }
+    //     if (!$category) {
+    //         return redirect()->back()->with('error', 'Penerbit tidak ditemukan.');
+    //     }
 
-        $category->delete();
+    //     $category->delete();
 
-        return redirect()->route('penerbit.index')->with('success', 'Penerbit berhasil dihapus.');
-    }
+    //     return redirect()->route('penerbit.index')->with('success', 'Penerbit berhasil dihapus.');
+    // }
 }

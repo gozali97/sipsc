@@ -11,7 +11,10 @@
                 <h4 class="font-20 weight-500 mb-10 text-capitalize">
                     Welcome back <div class="weight-600 font-30 text-blue">{{ Auth::user()->name }}</div>
                 </h4>
-                <p class="font-18 max-width-600">SMK Negeri 1 Cangkringan merupakan salah satu sekolah negeri yang terletak di Sintokan, Wukirsari, Cangkringan, Sleman, Yogyakarta, dengan jumlah siswa 1.250 yang terbagi menjadi 4 kejuruan yaitu Agribisnis Ternak Ruminansia, Agribisnis Pengolahan Hasil Pertanian, Teknik Kendaraan Ringan (Otomotif), Analisis Pengujian Laboratorium.</p>
+                <p class="font-18 max-width-600">SMK Negeri 1 Cangkringan merupakan salah satu sekolah negeri yang
+                    terletak di Sintokan, Wukirsari, Cangkringan, Sleman, Yogyakarta, dengan jumlah siswa 1.250 yang
+                    terbagi menjadi 4 kejuruan yaitu Agribisnis Ternak Ruminansia, Agribisnis Pengolahan Hasil
+                    Pertanian, Teknik Kendaraan Ringan (Otomotif), Analisis Pengujian Laboratorium.</p>
             </div>
         </div>
     </div>
@@ -20,10 +23,13 @@
             <div class="card-box height-100-p widget-style1">
                 <div class="d-flex flex-wrap align-items-center">
                     <div class="progress-data">
-                        <div id="chart"></div>
+                        <img src="{{ url('/assets/img/buku.png') }}" alt="">
                     </div>
                     <div class="widget-data">
-                        <div class="h4 mb-0">2020</div>
+                        @php
+                        $bukuCount = \App\Models\Pustaka::count();
+                        @endphp
+                        <div class="h4 mb-0">{{ $bukuCount }}</div>
                         <div class="weight-600 font-14">Buku</div>
                     </div>
                 </div>
@@ -33,10 +39,13 @@
             <div class="card-box height-100-p widget-style1">
                 <div class="d-flex flex-wrap align-items-center">
                     <div class="progress-data">
-                        <div id="chart2"></div>
+                        <img src="{{ url('/assets/img/book-out.png') }}"  alt="">
                     </div>
                     <div class="widget-data">
-                        <div class="h4 mb-0">400</div>
+                        @php
+                        $pinjamCount = \App\Models\Peminjaman::count();
+                        @endphp
+                        <div class="h4 mb-0">{{ $pinjamCount }}</div>
                         <div class="weight-600 font-14">Pinjaman</div>
                     </div>
                 </div>
@@ -46,10 +55,13 @@
             <div class="card-box height-100-p widget-style1">
                 <div class="d-flex flex-wrap align-items-center">
                     <div class="progress-data">
-                        <div id="chart3"></div>
+                        <img src="{{ url('/assets/img/book-in.png') }}" alt="">
                     </div>
                     <div class="widget-data">
-                        <div class="h4 mb-0">350</div>
+                        @php
+                        $kembaliCount = \App\Models\Pengembalian::count();
+                        @endphp
+                        <div class="h4 mb-0">{{ $kembaliCount }}</div>
                         <div class="weight-600 font-14">Pengembalian</div>
                     </div>
                 </div>
@@ -59,11 +71,14 @@
             <div class="card-box height-100-p widget-style1">
                 <div class="d-flex flex-wrap align-items-center">
                     <div class="progress-data">
-                        <div id="chart4"></div>
+                        <img src="{{ url('/assets/img/user.png') }}" alt="">
                     </div>
                     <div class="widget-data">
-                        <div class="h4 mb-0">$6060</div>
-                        <div class="weight-600 font-14">User</div>
+                        @php
+                        $anggotaCount = \App\Models\User::where('role_id', 3)->count();
+                        @endphp
+                        <div class="h4 mb-0">{{ $anggotaCount }}</div>
+                        <div class="weight-600 font-14">Anggota</div>
                     </div>
                 </div>
             </div>

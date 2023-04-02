@@ -116,7 +116,7 @@
             <div class="col-xl-8 col-lg-8 col-md-8 col-sm-12 mb-30">
                 <div class="card-box height-100-p overflow-hidden">
                     <h4 class="ml-4 mt-4">Edit Profil</h4>
-                    <form method="POST" action="{{ route('anggota.update', $data->id) }}" enctype="multipart/form-data">
+                    <form method="POST" action="{{ route('profile.update', Auth::user()->id) }}" enctype="multipart/form-data">
                         @csrf
                         <div class="modal-body">
                             <div class="input-group custom">

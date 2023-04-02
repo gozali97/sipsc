@@ -30,6 +30,11 @@
                         <span class="micon dw dw-shopping-cart"></span><span class="mtext">Transaksi</span>
                     </a>
                 </li>
+                <li>
+                    <a href="/listpetugas" class="dropdown-toggle no-arrow">
+                        <span class="micon dw dw-user-2"></span><span class="mtext">Kelola Petugas</span>
+                    </a>
+                </li>
                 @elseif (Auth::user()->role->name === 'petugas')
                 <li>
                     <a href="/petugas" class="dropdown-toggle no-arrow">
@@ -61,7 +66,7 @@
                         <li><a href="/listpinjam">Peminjaman</a></li>
                     </ul>
                     <ul class="submenu">
-                        <li><a href="/pengarang">Pengembalian</a></li>
+                        <li><a href="/listkembali">Pengembalian</a></li>
                     </ul>
 
                 </li>
@@ -87,6 +92,11 @@
                     </a>
                 </li>
                 @endif
+                <li>
+                    <a href="/profil" class="dropdown-toggle no-arrow">
+                        <span class="micon dw dw-user-12"></span><span class="mtext">Profil</span>
+                    </a>
+                </li>
                 <li>
                     <a href="#" class="dropdown-toggle no-arrow" onclick="event.preventDefault(); Swal.fire({
                         title: 'Apakah anda yakin?',

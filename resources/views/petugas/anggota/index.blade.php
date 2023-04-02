@@ -100,19 +100,21 @@
                                 <td><img src="{{ url('assets/img/'.$p->gambar) }}"
                                         style="width:80px; height:80px;border-radius: 70%;" alt=""></td>
                                 <td>
+                                    <div class="btn-group mr-2" role="group" aria-label="First group">
                                     <button class="btn btn-warning" data-toggle="modal"
                                         data-target="#editModal{{ $p->id }}"><i class="icon-copy fa fa-edit"
-                                            aria-hidden="true" style="margin-right: 5px"></i>Ubah</button>
+                                            aria-hidden="true" style="margin-right: 5px"></i></button>
                                     <button class="btn btn-danger" data-toggle="modal"
                                         data-target="#deleteModal{{ $p->id }}">
                                         <i class="icon-copy fa fa-trash" aria-hidden="true"
-                                            style="margin-right: 5px"></i>Hapus
+                                            style="margin-right: 5px"></i>
                                     </button>
                                     <button class="btn btn-info" data-toggle="modal"
                                         data-target="#resetPasswordModal{{ $p->id }}">
                                         <i class="icon-copy fa fa-key" aria-hidden="true"
-                                            style="margin-right: 5px"></i>Reset
+                                            style="margin-right: 5px"></i>
                                     </button>
+                                    </div>
                                 </td>
                             </tr>
 

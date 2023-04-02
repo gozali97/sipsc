@@ -17,6 +17,7 @@ class CreatePeminjamanTable extends Migration
             $table->increments('no_pinjam');
             $table->integer('id_user');
             $table->integer('id_pustaka');
+            $table->dateTime('tgl_pinjam');
             $table->char('status',2);
             $table->integer('jumlah');
             $table->timestamps();

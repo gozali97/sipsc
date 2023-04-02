@@ -7,6 +7,7 @@ use App\Models\Kondisi;
 use App\Models\Peminjaman;
 use App\Models\Pengembalian;
 use App\Models\Pustaka;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -17,6 +18,8 @@ class ManagePinjamController extends Controller
     public function index()
     {
         $kondisi = Kondisi::all();
+        $anggota = User::where('role_id', 3)->get();
+        $pustaka = Pustaka::all();
 
         $data = Peminjaman::query()
         ->join('users', 'users.id', 'peminjaman.id_user')
@@ -25,7 +28,7 @@ class ManagePinjamController extends Controller
         ->where('peminjaman.status', 1)
         ->get();
 
-        return view('petugas.peminjaman.index', compact('data', 'kondisi'));
+        return view('petugas.peminjaman.index', compact('data', 'kondisi', 'anggota', 'pustaka'));
     }
 
     public function store(Request $request)
@@ -43,7 +46,7 @@ class ManagePinjamController extends Controller
             $date = \Carbon\Carbon::now();
 
             $peminjaman = Peminjaman::where('no_pinjam',$request->no_pinjam)->first();
-            $tgl_pinjam = $peminjaman->created_at->format('Y-m-d');
+            $tgl_pinjam = $peminjaman->tgl_pinjam;
 
             $datetime1 = new \DateTime($tgl_pinjam);
             $datetime2 = $date;
@@ -80,6 +83,52 @@ class ManagePinjamController extends Controller
         } catch (\Exception $e) {
             dd($e);
             return redirect()->back()->with('error', 'Terjadi kesalahan saat konfirmasi Pustaka.');
+        }
+    }
+
+    public function insert(Request $request)
+    {
+        // dd($request->all());
+        try {
+            $user_id = $request->id_user;
+            $existingPeminjamanCount = Peminjaman::where('id_user', $user_id)
+                ->where('status', 1)
+                ->count();
+
+            if ($existingPeminjamanCount >= 2) {
+                return redirect()->back()->with('error', 'Maaf, tidak diperbolehkan meminjam lebih dari 2 buku.');
+            }
+
+            $existingPeminjaman = Peminjaman::where('id_user', $user_id)
+                ->where('id_pustaka', $request->pustaka)
+                ->where('status', 1)
+                ->first();
+
+            if ($existingPeminjaman) {
+                return redirect()->back()->with('error', 'Maaf, hanya diperbolehkan meminjam 1 buku yang sama.');
+            }
+
+            $pustaka = Pustaka::find($request->pustaka);
+
+            if ($pustaka && $pustaka->jumlah > 0) {
+                $peminjaman = Peminjaman::create([
+                    'id_user' => $user_id,
+                    'id_pustaka' => $request->pustaka,
+                    'tgl_pinjam' => date('Y-m-d H:i:s'),
+                    'status' => 1,
+                    'jumlah' => 1,
+                ]);
+
+                $pustaka->jumlah -= 1;
+                $pustaka->save();
+
+                return redirect()->route('listpinjam.index')->with('success', 'Data peminjaman berhasil ditambahkan.');
+            } else {
+                return redirect()->back()->with('error', 'Maaf, pustaka yang anda pilih tidak tersedia.');
+            }
+        } catch (\Exception $e) {
+            dd($e);
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat menyimpan data pustaka.');
         }
     }
 

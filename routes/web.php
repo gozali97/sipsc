@@ -7,6 +7,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\ManageAnggotaController;
+use App\Http\Controllers\ManagePengembalianController;
 use App\Http\Controllers\ManagePinjamController;
 use App\Http\Controllers\PeminjamanController;
 use App\Http\Controllers\PenerbitController;
@@ -34,7 +35,8 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', [HomeController::class, 'index'])->name('home');
+Route::get('/profil', [HomeController::class, 'profile'])->name('home');
+Route::post('/profil/update/{id}', [HomeController::class, 'update'])->name('profile.update');
 Route::resource('roles', RoleController::class);
 
 // Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
@@ -87,8 +89,14 @@ Route::middleware(['auth', 'role:petugas'])->group(function () {
     Route::controller(ManagePinjamController::class)->group(function () {
         Route::get('listpinjam', 'index')->name('listpinjam.index');
         Route::post('listpinjam/store', 'store')->name('listpinjam.store');
+        Route::post('listpinjam/insert', 'insert')->name('listpinjam.insert');
         Route::post('listpinjam/update/{id}', 'update')->name('listpinjam.update');
         Route::post('listpinjam/destroy/{id}', 'destroy')->name('pustlistpinjamaka.destroy');
+    });
+
+    Route::controller(ManagePengembalianController::class)->group(function () {
+        Route::get('listkembali', 'index')->name('listkembali.index');
+        Route::post('listkembali/view/{id}', 'view')->name('listkembali.view');
     });
 });
 
@@ -97,7 +105,7 @@ Route::middleware(['auth', 'role:anggota'])->group(function () {
     // Route::get('/anggota', [AdminController::class, 'index'])->name('anggota');
     Route::controller(AnggotaController::class)->group(function () {
         Route::get('/anggota', 'index')->name('anggota');
-        Route::get('/anggota/profil/{id}', 'profil')->name('anggota.profil');
+        // Route::get('/anggota/profil/{id}', 'profil')->name('anggota.profil');
         Route::post('/anggota/update/{id}', 'update')->name('anggota.update');
     });
 

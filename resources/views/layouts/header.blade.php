@@ -16,7 +16,7 @@
                     <span class="user-name">{{ Auth::user()->nama }}</span>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
-                    <a class="dropdown-item" href="/anggota/profil/{{ Auth::user()->id }}"><i class="dw dw-user1"></i> Profile</a>
+                    <a class="dropdown-item" href="/profil"><i class="dw dw-user1"></i> Profile</a>
                     <a href="#" class="dropdown-item" onclick="event.preventDefault(); Swal.fire({
                         title: 'Apakah anda yakin?',
                         text: 'Anda akan keluar dari aplikasi!',

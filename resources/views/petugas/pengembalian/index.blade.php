@@ -59,12 +59,12 @@
             <div class="row">
                 <div class="col-md-6 col-sm-12">
                     <div class="title">
-                        <h4>Peminjaman</h4>
+                        <h4>Pengembalian</h4>
                     </div>
                     <nav aria-label="breadcrumb" role="navigation">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="/anggota">Home</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Peminjaman</li>
+                            <li class="breadcrumb-item active" aria-current="page">Pengembalian</li>
                         </ol>
                     </nav>
                 </div>
@@ -72,9 +72,9 @@
         </div>
         <div class="card-box mb-30">
             <div class="pd-20">
-                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#input-modal"><i
+                {{-- <a href="/list" type="button" class="btn btn-success"><i
                         class="icon-copy fa fa-plus" aria-hidden="true"
-                        style="margin-right: 5px"></i></i>Tambah</button>
+                        style="margin-right: 5px"></i></i>Tambah</a> --}}
                 <div class="p-4">
                     <table id="datatable" class="table table-striped table-bordered" width="100%">
                         <thead>
@@ -83,7 +83,8 @@
                                 <th>Nama</th>
                                 <th>Judul</th>
                                 <th>Tahun terbit</th>
-                                <th>Status</th>
+                                <th>Denda</th>
+                                <th>Kondisi</th>
                                 <th>Gambar</th>
                                 <th>Action</th>
                             </tr>
@@ -98,50 +99,37 @@
                                 <td>{{ $p->nama }}</td>
                                 <td>{{ $p->judul }}</td>
                                 <td>{{ $p->tahun_terbit }}</td>
-                                <td>@php
-                                    if($p->status == 1){
-                                    $status = "Dipinjam";
-                                    }else{
-                                    $status = "Dikembalikan";
-                                    }
-                                    @endphp
-                                    {{ $status }}
-                                </td>
-                                <td><img src="{{ url('assets/img/'.$p->gambar) }}" style="width:80px; height:80px;"
-                                        alt=""></td>
+                                <td>Rp. {{ number_format($p->nominal_denda, 0, ',', '.') }}</td>
+                                <td>{{ $p->jenis_kondisi }}</td>
+                                <td><img src="{{ url('assets/img/'.$p->gambar) }}"
+                                        style="width:80px; height:80px;" alt=""></td>
                                 <td>
                                     <div class="btn-group mr-2" role="group" aria-label="First group">
                                         <button class="btn btn-outline-info" data-toggle="modal"
-                                            data-target="#bd-example-modal-lg{{ $p->no_pinjam }}"><i
-                                                class="icon-copy fa fa-info-circle" aria-hidden="true"></i></button>
-                                        <button class="btn btn-outline-primary" data-toggle="modal"
+                                            data-target="#bd-example-modal-lg{{ $p->no_pinjam }}"><i class="icon-copy fa fa-info-circle"
+                                                aria-hidden="true"></i></button>
+                                        {{-- <button class="btn btn-outline-primary" data-toggle="modal"
                                             data-target="#confirmModal{{ $p->no_pinjam }}">
                                             <i class="icon-copy fa fa-edit" aria-hidden="true"
                                                 style="margin-right: 5px"></i>
-                                        </button>
+                                        </button> --}}
                                     </div>
                                 </td>
                             </tr>
                             <!-- Modal Info -->
-                            <div class="modal fade bs-example-modal-lg" id="bd-example-modal-lg{{ $p->no_pinjam }}"
-                                tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel{{ $p->no_pinjam }}"
-                                aria-hidden="true" style="display: none;">
-                                <div class="modal-dialog modal-lg modal-dialog-centered">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h4 class="modal-title" id="bd-example-modal-lg{{ $p->no_pinjam }}">Detail
-                                                Pustaka</h4>
-                                            <button type="button" class="close" data-dismiss="modal"
-                                                aria-hidden="true">×</button>
-                                        </div>
-                                        <form id="bd-example-modal-lg{{ $p->no_pinjam }}"
-                                            action="{{ route('pinjam.store') }}" method="POST">
-                                            @csrf
+                                <div class="modal fade bs-example-modal-lg" id="bd-example-modal-lg{{ $p->no_pinjam }}" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel{{ $p->no_pinjam }}" aria-hidden="true" style="display: none;">
+                                    <div class="modal-dialog modal-lg modal-dialog-centered">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h4 class="modal-title" id="bd-example-modal-lg{{ $p->no_pinjam }}">Detail Pustaka</h4>
+                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                            </div>
+                                            <form id="bd-example-modal-lg{{ $p->no_pinjam }}" action="{{ route('pinjam.store') }}" method="POST">
+                                                @csrf
                                             <div class="modal-body">
                                                 <div class="row">
                                                     <div class="col-md-6">
-                                                        <img src="{{ url('/assets/img/'.$p->gambar) }}"
-                                                            style="width: 362px;height: 400px;" alt="">
+                                                        <img src="{{ url('/assets/img/'.$p->gambar) }}" style="width: 362px;height: 550px;" alt="">
                                                     </div>
                                                     <div class="col-md-6">
                                                         <h5>{{ $p->judul }}</h5>
@@ -153,51 +141,50 @@
                                                         <p class="font-weight-bold">Status</p>
                                                         <p>@php
                                                             if($p->status == 1){
-                                                            $status = "Dipinjam";
+                                                                $status = "Dipinjam";
                                                             }else{
-                                                            $status = "Dikembalikan";
+                                                                $status = "Dikembalikan";
                                                             }
-                                                            @endphp
+                                                        @endphp
                                                             {{ $status }}</p>
+                                                        <p class="font-weight-bold">Tanggal Pinjam</p>
+                                                        <p>{{ \Carbon\Carbon::parse($p->tgl_pinjam)->format('d-m-Y') }} Jam : {{ \Carbon\Carbon::parse($p->tgl_pinjam)->format('H:i') }} WIB</p>
+                                                        <p class="font-weight-bold">Tanggal Dikembalikan</p>
+                                                        <p>{{ \Carbon\Carbon::parse($p->tgl_kembali)->format('d-m-Y') }} Jam : {{ \Carbon\Carbon::parse($p->tgl_kembali)->format('H:i') }} WIB</p>
+                                                        <p class="font-weight-bold">Jumlah Keterlambatan</p>
+                                                        <p>{{ $p->jml_terlambat }} Hari</p>
+                                                        <p class="font-weight-bold">Denda</p>
+                                                        <p>Rp. {{ number_format($p->nominal_denda, 0, ',', '.') }}</p>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary"
-                                                    data-dismiss="modal">Batal</button>
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
                                             </div>
                                         </form>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            <!-- Modal Konfirmasi -->
-                            <div class="modal fade bs-example-modal-lg" id="confirmModal{{ $p->no_pinjam }}"
-                                tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel{{ $p->no_pinjam }}"
-                                aria-hidden="true" style="display: none;">
-                                <div class="modal-dialog modal-lg modal-dialog-centered">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h4 class="modal-title" id="confirmModal{{ $p->no_pinjam }}">Konfirmasi
-                                                Pengembalian</h4>
-                                            <button type="button" class="close" data-dismiss="modal"
-                                                aria-hidden="true">×</button>
-                                        </div>
-                                        <form id="confirmModal{{ $p->no_pinjam }}"
-                                            action="{{ route('listpinjam.store') }}" method="POST">
-                                            @csrf
+                                <!-- Modal Konfirmasi -->
+                                {{-- <div class="modal fade bs-example-modal-lg" id="confirmModal{{ $p->no_pinjam }}" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel{{ $p->no_pinjam }}" aria-hidden="true" style="display: none;">
+                                    <div class="modal-dialog modal-lg modal-dialog-centered">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h4 class="modal-title" id="confirmModal{{ $p->no_pinjam }}">Konfirmasi Pengembalian</h4>
+                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                            </div>
+                                            <form id="confirmModal{{ $p->no_pinjam }}" action="{{ route('listpinjam.store') }}" method="POST">
+                                                @csrf
                                             <div class="modal-body">
                                                 <div class="row">
                                                     <div class="col-md-6">
-                                                        <img src="{{ url('/assets/img/'.$p->gambar) }}"
-                                                            style="width: 362px;height: 400px;" alt="">
+                                                        <img src="{{ url('/assets/img/'.$p->gambar) }}" style="width: 362px;height: 400px;" alt="">
                                                     </div>
                                                     <div class="col-md-6">
-                                                        <input type="hidden" name="no_pinjam"
-                                                            value="{{ $p->no_pinjam }}">
+                                                        <input type="hidden" name="no_pinjam" value="{{ $p->no_pinjam }}">
                                                         <input type="hidden" name="id_user" value="{{ $p->id_user }}">
-                                                        <input type="hidden" name="id_pustaka"
-                                                            value="{{ $p->id_pustaka }}">
+                                                        <input type="hidden" name="id_pustaka" value="{{ $p->id_pustaka }}">
                                                         <h5>{{ $p->judul }}</h5>
                                                         <p>{{ $p->deskripsi }}</p>
                                                         <p class="font-weight-bold">Tahun Terbit: </p>
@@ -219,14 +206,13 @@
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary"
-                                                    data-dismiss="modal">Batal</button>
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
                                                 <button type="submit" class="btn btn-primary">Konfirmasi</button>
                                             </div>
                                         </form>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
+                                </div> --}}
 
                             @endforeach
                         </tbody>
@@ -248,27 +234,41 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="myLargeModalLabel">Tambah Pinjaman</h4>
+                <h4 class="modal-title" id="myLargeModalLabel">Tambah Pengarang</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
             </div>
             <div class="modal-body">
-                <form method="POST" action="{{ route('listpinjam.insert') }}" enctype="multipart/form-data">
+                <form method="POST" action="{{ route('users.store') }}" enctype="multipart/form-data">
                     @csrf
                     <div class="input-group custom">
-                        <select name="id_user" class="form-control form-control-lg" placeholder="Nama Anggota">
-                            <option value="">-- Nama Anggota --</option>
-                            @foreach ($anggota as $a)
-                            <option value="{{ $a->id }}">{{ $a->nama }}</option>
-                            @endforeach
-                        </select>
+                        <input type="text" name="nama" class="form-control form-control-lg" placeholder="Nama Anggota">
+                        <div class="input-group-append custom">
+                            <span class="input-group-text"><i class="icon-copy dw dw-user-1"></i></span>
+                        </div>
                     </div>
                     <div class="input-group custom">
-                        <select name="pustaka" class="form-control form-control-lg" placeholder="Nama Pustaka">
-                            <option value="">-- Judul Pustaka --</option>
-                            @foreach ($pustaka as $buku)
-                            <option value="{{ $buku->id_pustaka }}">{{ $buku->judul }} - {{ $buku->jumlah }}</option>
-                            @endforeach
-                        </select>
+                        <input type="text" name="email" class="form-control form-control-lg" placeholder="Email">
+                        <div class="input-group-append custom">
+                            <span class="input-group-text"><i class="icon-copy dw dw-email"></i></span>
+                        </div>
+                    </div>
+                    <div class="input-group custom">
+                        <input type="text" name="no_hp" class="form-control form-control-lg" placeholder="No Handphone">
+                        <div class="input-group-append custom">
+                            <span class="input-group-text"><i class="icon-copy dw dw-smartphone-1"></i></span>
+                        </div>
+                    </div>
+                    <div class="input-group custom">
+                        <input type="text" name="alamat" class="form-control form-control-lg" placeholder="Alamat">
+                        <div class="input-group-append custom">
+                            <span class="input-group-text"><i class="icon-copy dw dw-building-1"></i></span>
+                        </div>
+                    </div>
+                    <div class="input-group custom">
+                        <input type="file" name="gambar" class="form-control-file form-control height-auto">
+                        <div class="input-group-append custom">
+                            <span class="input-group-text"><i class="icon-copy dw dw-image"></i></span>
+                        </div>
                     </div>
             </div>
             <div class="modal-footer">
@@ -283,15 +283,6 @@
 <script>
     $(document).ready(function() {
       $('#datatable').DataTable();
-    });
-
-    $('select[name="pustaka"]').change(function() {
-        var imgSrc = $('option:selected', this).data('img');
-            if (imgSrc) {
-                $('#buku-image').html('<img src="{{ url('/assets/img') }}/'+imgSrc+'" alt="gambar pustaka" width="200px">');
-            } else {
-                $('#buku-image').empty();
-            }
     });
 </script>
 @endsection
