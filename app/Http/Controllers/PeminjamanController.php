@@ -18,6 +18,7 @@ class PeminjamanController extends Controller
         ->join('pustakas', 'pustakas.id_pustaka', 'peminjaman.id_pustaka')
         ->select('peminjaman.no_pinjam', 'pustakas.judul','pustakas.deskripsi','pustakas.tahun_terbit', 'pustakas.gambar', 'pustakas.isbn', 'peminjaman.status')
         ->where('peminjaman.id_user', $id)
+        ->where('peminjaman.status', 1)
         ->get();
 
         return view('anggota.pinjam.index', compact('data'));
@@ -57,12 +58,12 @@ class PeminjamanController extends Controller
                 $pustaka->jumlah -= 1;
                 $pustaka->save();
 
-                return redirect()->route('list.index')->with('success', 'Data Penerbit berhasil ditambahkan.');
+                return redirect()->route('list.index')->with('success', 'Pustaka berhasil ditambahkan.');
             } else {
                 return redirect()->back()->with('error', 'Maaf, pustaka yang anda pilih tidak tersedia.');
             }
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan saat menyimpan data kategori.');
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat menyimpan data pustaka.');
         }
     }
 

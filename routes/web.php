@@ -7,6 +7,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\ManageAnggotaController;
+use App\Http\Controllers\ManagePinjamController;
 use App\Http\Controllers\PeminjamanController;
 use App\Http\Controllers\PenerbitController;
 use App\Http\Controllers\PengarangController;
@@ -83,7 +84,7 @@ Route::middleware(['auth', 'role:petugas'])->group(function () {
         Route::post('pustaka/destroy/{id}', 'destroy')->name('pustaka.destroy');
     });
 
-    Route::controller(PustakaController::class)->group(function () {
+    Route::controller(ManagePinjamController::class)->group(function () {
         Route::get('listpinjam', 'index')->name('listpinjam.index');
         Route::post('listpinjam/store', 'store')->name('listpinjam.store');
         Route::post('listpinjam/update/{id}', 'update')->name('listpinjam.update');

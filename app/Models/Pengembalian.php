@@ -5,11 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Peminjaman extends Model
+class Pengembalian extends Model
 {
     use HasFactory;
-    protected $table = 'peminjaman';
+    protected $table = 'pengembalians';
     protected $guarded = [];
 
-    protected $primaryKey = 'no_pinjam';
+    protected $primaryKey = 'no_kembali';
 }
