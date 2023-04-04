@@ -35,7 +35,8 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/profil', [HomeController::class, 'profile'])->name('home');
+Route::get('/home', [HomeController::class, 'index'])->name('home');
+Route::get('/profil', [HomeController::class, 'profile'])->name('profile');
 Route::post('/profil/update/{id}', [HomeController::class, 'update'])->name('profile.update');
 Route::resource('roles', RoleController::class);
 

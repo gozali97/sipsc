@@ -156,7 +156,7 @@
                                     <div class="image-upload-wrap">
                                         <input class="file-upload-input" type='file' name="gambar" onchange="readURL(this);" accept="image/*" />
                                         <div class="drag-text">
-                                            <h3>Gambar Anggota</h3>
+                                            <h3>Gambar</h3>
                                             <p>Pilih file untuk upload gambar baru</p>
                                         </div>
                                     </div>

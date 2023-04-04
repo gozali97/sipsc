@@ -24,7 +24,7 @@ class ManagePinjamController extends Controller
         $data = Peminjaman::query()
         ->join('users', 'users.id', 'peminjaman.id_user')
         ->join('pustakas', 'pustakas.id_pustaka', 'peminjaman.id_pustaka')
-        ->select('peminjaman.no_pinjam','peminjaman.id_user','users.nama', 'pustakas.id_pustaka', 'pustakas.judul','pustakas.deskripsi','pustakas.tahun_terbit', 'pustakas.gambar', 'pustakas.isbn', 'peminjaman.status')
+        ->select('peminjaman.no_pinjam','peminjaman.id_user','users.nama', 'pustakas.id_pustaka', 'pustakas.judul','pustakas.deskripsi','pustakas.tahun_terbit', 'pustakas.gambar', 'pustakas.isbn', 'peminjaman.tgl_pinjam', 'peminjaman.status')
         ->where('peminjaman.status', 1)
         ->get();
 
@@ -51,11 +51,11 @@ class ManagePinjamController extends Controller
             $datetime1 = new \DateTime($tgl_pinjam);
             $datetime2 = $date;
             $interval = $datetime1->diff($datetime2);
-            $jumlah_hari_terlambat = $interval->days - 2; // kurangi 2 hari grace period
+            $jumlah_hari_terlambat = $interval->days - 16; // kurangi 2 hari grace period
             if ($jumlah_hari_terlambat < 0) {
                 $jumlah_hari_terlambat = 0;
             }
-            $nominal_denda = $jumlah_hari_terlambat * 2000;
+            $nominal_denda = $jumlah_hari_terlambat * 500;
 
             $tgl_kembali = $date->format('Y-m-d H:i:s');
 

@@ -37,6 +37,7 @@ class PustakaController extends Controller
                 'judul' => 'required|max:255',
                 'jumlah' => 'required',
                 'terbit' => 'required',
+                'deskripsi' => 'required',
                 'isbn' => 'required',
                 'gambar' => 'required|image',
             ]);
@@ -58,6 +59,7 @@ class PustakaController extends Controller
                 'jumlah' => $request->jumlah,
                 'tahun_terbit' => $request->terbit,
                 'isbn' => $request->isbn,
+                'deskripsi' => $request->deskripsi,
                 'gambar' => $gambar,
                 'status' => 1,
             ]);
@@ -95,6 +97,7 @@ class PustakaController extends Controller
         $data->jumlah = $request->jumlah;
         $data->tahun_terbit = $request->terbit;
         $data->isbn = $request->isbn;
+        $data->deskripsi = $request->deskripsi;
         $data->status = $request->status;
         $data->save();
 

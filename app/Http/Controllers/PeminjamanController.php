@@ -16,7 +16,7 @@ class PeminjamanController extends Controller
         $data = Peminjaman::query()
         ->join('users', 'users.id', 'peminjaman.id_user')
         ->join('pustakas', 'pustakas.id_pustaka', 'peminjaman.id_pustaka')
-        ->select('peminjaman.no_pinjam', 'pustakas.judul','pustakas.deskripsi','pustakas.tahun_terbit', 'pustakas.gambar', 'pustakas.isbn', 'peminjaman.status')
+        ->select('peminjaman.no_pinjam', 'pustakas.judul','pustakas.deskripsi','pustakas.tahun_terbit', 'pustakas.gambar', 'pustakas.isbn', 'peminjaman.tgl_pinjam', 'peminjaman.status')
         ->where('peminjaman.id_user', $id)
         ->where('peminjaman.status', 1)
         ->get();

@@ -81,6 +81,7 @@
                             <tr>
                                 <th>#</th>
                                 <th>Nama</th>
+                                <th>Tgl Pinjam</th>
                                 <th>Judul</th>
                                 <th>Tahun terbit</th>
                                 <th>Status</th>
@@ -96,6 +97,7 @@
                             <tr>
                                 <td class="table-plus">{{ $no++ }}</td>
                                 <td>{{ $p->nama }}</td>
+                                <td>{{ $p->tgl_pinjam }}</td>
                                 <td>{{ $p->judul }}</td>
                                 <td>{{ $p->tahun_terbit }}</td>
                                 <td>@php
@@ -159,6 +161,9 @@
                                                             }
                                                             @endphp
                                                             {{ $status }}</p>
+                                                        <p class="font-weight-bold">Tanggal Pinjam</p>
+                                                        <p>{{ \Carbon\Carbon::parse($p->tgl_pinjam)->format('d-m-Y') }} Jam : {{ \Carbon\Carbon::parse($p->tgl_pinjam)->format('H:i') }} WIB</p>
+                                                        
                                                     </div>
                                                 </div>
                                             </div>
