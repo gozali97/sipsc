@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePeminjamanTable extends Migration
+class CreateDetailPeminjamanTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,13 @@ class CreatePeminjamanTable extends Migration
      */
     public function up()
     {
-        Schema::create('peminjaman', function (Blueprint $table) {
-            $table->string('no_pinjam', 8)->primary();
+        Schema::create('detail_peminjaman', function (Blueprint $table) {
+            $table->string('no_det_pinjaman', 8)->primary();
+            $table->string('no_pinjam', 8);
+            $table->integer('id_pustaka');
+            $table->dateTime('tgl_pinjam');
             $table->integer('id_user');
-            $table->char('status',2);
-            $table->integer('jumlah');
+            $table->integer('status');
             $table->timestamps();
         });
     }
@@ -29,6 +31,6 @@ class CreatePeminjamanTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('peminjaman');
+        Schema::dropIfExists('detail_peminjaman');
     }
 }

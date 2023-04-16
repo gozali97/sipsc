@@ -97,13 +97,13 @@
                                 <td>{{ $p->judul }}</td>
                                 <td>{{ $p->tahun_terbit }}</td>
                                 <td>@php
-                                    if($p->status == 1){
+                                    if($p->sts == 1){
                                         $status = "Dipinjam";
                                     }else{
                                         $status = "Dikembalikan";
                                     }
                                 @endphp
-                                    {{ $status }}
+                                    <span class="badge {{ $p->sts == 1 ? 'badge-success' : 'badge-danger' }}">{{ $status }}</span>
                                 </td>
                                 <td><img src="{{ url('assets/img/'.$p->gambar) }}"
                                         style="width:80px; height:80px;" alt=""></td>
@@ -136,7 +136,7 @@
                                                         <p>{{ $p->isbn }}</p>
                                                         <p class="font-weight-bold">Status</p>
                                                         <p>@php
-                                                            if($p->status == 1){
+                                                            if($p->sts == 1){
                                                                 $status = "Dipinjam";
                                                             }else{
                                                                 $status = "Dikembalikan";

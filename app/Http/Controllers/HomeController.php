@@ -49,6 +49,7 @@ class HomeController extends Controller
         }
 
         $data->nama = $request->nama;
+        $data->kelas = $request->kelas;
         $data->email = $request->email;
         $data->no_hp = $request->no_hp;
         $data->alamat = $request->alamat;

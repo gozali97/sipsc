@@ -41,6 +41,16 @@
         .bg{
             border-radius: 5%;
         }
+
+        @media (max-width: 768px) {
+            h5{
+                font-size: 16px;
+                text-align: center;
+            }
+            #image{
+                display: none!important;
+            }
+        }
     </style>
 </head>
 <body class="login-page">
@@ -61,7 +71,7 @@
 	<div class="login-wrap d-flex align-items-center flex-wrap justify-content-center">
 		<div class="container">
 			<div class="row align-items-center">
-				<div class="col-md-6 col-lg-7">
+				<div id="image" class="col-md-6 col-lg-7">
 					<img class="bg" src="{{ url('assets/img/perpustakaan.jpg') }}" alt="">
 				</div>
 				<div class="col-md-6 col-lg-5">

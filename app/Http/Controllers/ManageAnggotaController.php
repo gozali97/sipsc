@@ -27,6 +27,7 @@ class ManageAnggotaController extends Controller
                 'no_hp' => 'required|numeric',
                 'alamat' => 'required|max:255',
                 'gambar' => 'required|image',
+                'kelas' => 'required',
             ]);
 
             if ($validator->fails()) {
@@ -38,6 +39,7 @@ class ManageAnggotaController extends Controller
 
             User::create([
                 'nama' => $request->nama,
+                'kelas' => $request->kelas,
                 'email' => $request->email,
                 'no_hp' => $request->no_hp,
                 'alamat' => $request->alamat,
@@ -47,7 +49,7 @@ class ManageAnggotaController extends Controller
             ]);
 
             // Redirect ke halaman index kategori dengan pesan sukses
-            return redirect()->route('users.index')->with('success', 'Data Pengarang berhasil ditambahkan.');
+            return redirect()->route('users.index')->with('success', 'Data Anggota berhasil ditambahkan.');
         } catch (\Exception $e) {
             dd($e);
             return redirect()->back()->with('error', 'Terjadi kesalahan saat menyimpan data anggota.');
@@ -72,6 +74,7 @@ class ManageAnggotaController extends Controller
         }
 
         $data->nama = $request->nama;
+        $data->kelas = $request->kelas;
         $data->email = $request->email;
         $data->no_hp = $request->no_hp;
         $data->alamat = $request->alamat;

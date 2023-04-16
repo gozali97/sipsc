@@ -143,6 +143,12 @@
                                                     </div>
                                                 </div>
                                                 <div class="input-group custom">
+                                                    <input type="text" name="kelas" class="form-control form-control-lg" placeholder="Kelas" value="{{ $p->kelas }}">
+                                                    <div class="input-group-append custom">
+                                                        <span class="input-group-text"><i class="icon-copy dw dw-name"></i></span>
+                                                    </div>
+                                                </div>
+                                                <div class="input-group custom">
                                                     <input type="text" class="form-control form-control-lg" name="email"
                                                         value="{{ $p->email }}" placeholder="Email">
                                                     <div class="input-group-append custom">
@@ -282,6 +288,12 @@
                         <input type="text" name="nama" class="form-control form-control-lg" placeholder="Nama Anggota">
                         <div class="input-group-append custom">
                             <span class="input-group-text"><i class="icon-copy dw dw-user-1"></i></span>
+                        </div>
+                    </div>
+                    <div class="input-group custom">
+                        <input type="text" name="kelas" class="form-control form-control-lg" placeholder="Kelas">
+                        <div class="input-group-append custom">
+                            <span class="input-group-text"><i class="icon-copy dw dw-name"></i></span>
                         </div>
                     </div>
                     <div class="input-group custom">

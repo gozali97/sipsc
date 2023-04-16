@@ -106,25 +106,20 @@
                                 <td>
                                     <div class="btn-group mr-2" role="group" aria-label="First group">
                                         <button class="btn btn-outline-info" data-toggle="modal"
-                                            data-target="#bd-example-modal-lg{{ $p->no_pinjam }}"><i class="icon-copy fa fa-info-circle"
+                                            data-target="#bd-example-modal-lg{{ $p->no_kembali }}"><i class="icon-copy fa fa-info-circle"
                                                 aria-hidden="true"></i></button>
-                                        {{-- <button class="btn btn-outline-primary" data-toggle="modal"
-                                            data-target="#confirmModal{{ $p->no_pinjam }}">
-                                            <i class="icon-copy fa fa-edit" aria-hidden="true"
-                                                style="margin-right: 5px"></i>
-                                        </button> --}}
                                     </div>
                                 </td>
                             </tr>
                             <!-- Modal Info -->
-                                <div class="modal fade bs-example-modal-lg" id="bd-example-modal-lg{{ $p->no_pinjam }}" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel{{ $p->no_pinjam }}" aria-hidden="true" style="display: none;">
+                                <div class="modal fade bs-example-modal-lg" id="bd-example-modal-lg{{ $p->no_kembali }}" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel{{ $p->no_kembali }}" aria-hidden="true" style="display: none;">
                                     <div class="modal-dialog modal-lg modal-dialog-centered">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h4 class="modal-title" id="bd-example-modal-lg{{ $p->no_pinjam }}">Detail Pustaka</h4>
+                                                <h4 class="modal-title" id="bd-example-modal-lg{{ $p->no_kembali }}">Detail Pustaka</h4>
                                                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                                             </div>
-                                            <form id="bd-example-modal-lg{{ $p->no_pinjam }}" action="{{ route('pinjam.store') }}" method="POST">
+                                            <form id="bd-example-modal-lg{{ $p->no_kembali }}" action="{{ route('pinjam.store') }}" method="POST">
                                                 @csrf
                                             <div class="modal-body">
                                                 <div class="row">
@@ -228,57 +223,6 @@
     </div>
 </div>
 
-<!-- Modal insert -->
-<div class="modal fade bs-example-modal-lg" id="input-modal" tabindex="-1" role="dialog"
-    aria-labelledby="myLargeModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title" id="myLargeModalLabel">Tambah Pengarang</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-            </div>
-            <div class="modal-body">
-                <form method="POST" action="{{ route('users.store') }}" enctype="multipart/form-data">
-                    @csrf
-                    <div class="input-group custom">
-                        <input type="text" name="nama" class="form-control form-control-lg" placeholder="Nama Anggota">
-                        <div class="input-group-append custom">
-                            <span class="input-group-text"><i class="icon-copy dw dw-user-1"></i></span>
-                        </div>
-                    </div>
-                    <div class="input-group custom">
-                        <input type="text" name="email" class="form-control form-control-lg" placeholder="Email">
-                        <div class="input-group-append custom">
-                            <span class="input-group-text"><i class="icon-copy dw dw-email"></i></span>
-                        </div>
-                    </div>
-                    <div class="input-group custom">
-                        <input type="text" name="no_hp" class="form-control form-control-lg" placeholder="No Handphone">
-                        <div class="input-group-append custom">
-                            <span class="input-group-text"><i class="icon-copy dw dw-smartphone-1"></i></span>
-                        </div>
-                    </div>
-                    <div class="input-group custom">
-                        <input type="text" name="alamat" class="form-control form-control-lg" placeholder="Alamat">
-                        <div class="input-group-append custom">
-                            <span class="input-group-text"><i class="icon-copy dw dw-building-1"></i></span>
-                        </div>
-                    </div>
-                    <div class="input-group custom">
-                        <input type="file" name="gambar" class="form-control-file form-control height-auto">
-                        <div class="input-group-append custom">
-                            <span class="input-group-text"><i class="icon-copy dw dw-image"></i></span>
-                        </div>
-                    </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-                <button type="submit" class="btn btn-primary">Simpan</button>
-            </div>
-            </form>
-        </div>
-    </div>
-</div>
 
 <script>
     $(document).ready(function() {

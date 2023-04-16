@@ -128,6 +128,13 @@
                                 </div>
                             </div>
                             <div class="input-group custom">
+                                <input type="text" class="form-control form-control-lg" name="kelas"
+                                    value="{{ $data->kelas }}" placeholder="Kelas">
+                                <div class="input-group-append custom">
+                                    <span class="input-group-text"><i class="icon-copy dw dw-name"></i></span>
+                                </div>
+                            </div>
+                            <div class="input-group custom">
                                 <input type="text" class="form-control form-control-lg" name="email"
                                     value="{{ $data->email }}" placeholder="Email">
                                 <div class="input-group-append custom">

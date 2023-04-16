@@ -14,8 +14,8 @@ class CreatePengembaliansTable extends Migration
     public function up()
     {
         Schema::create('pengembalians', function (Blueprint $table) {
-            $table->increments('no_kembali');
-            $table->integer('no_pinjam');
+            $table->string('no_kembali')->primary();
+            $table->string('no_pinjam', 8);
             $table->integer('id_user');
             $table->dateTime('tgl_kembali');
             $table->integer('nominal_denda');

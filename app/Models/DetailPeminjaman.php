@@ -5,11 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Pengembalian extends Model
+class DetailPeminjaman extends Model
 {
     use HasFactory;
-    protected $table = 'pengembalians';
-    protected $guarded = [];
+    protected $table = 'detail_peminjaman';
+    protected $primaryKey = 'no_det_pinjaman';
     public $incrementing = false;
-    protected $primaryKey = 'no_kembali';
+    protected $guarded = [];
+
 }
