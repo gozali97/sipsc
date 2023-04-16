@@ -81,8 +81,14 @@
                             <tr>
                                 <th>#</th>
                                 <th>Nama</th>
+<<<<<<< HEAD
                                 <th>Kelas</th>
                                 <th>Jumlah</th>
+=======
+                                <th>Tgl Pinjam</th>
+                                <th>Judul</th>
+                                <th>Tahun terbit</th>
+>>>>>>> 1eebc6623a54b6edd8b3dc1aca2803eec88ba65d
                                 <th>Status</th>
                                 <th>Gambar</th>
                                 <th>Action</th>
@@ -96,8 +102,14 @@
                             <tr>
                                 <td class="table-plus">{{ $no++ }}</td>
                                 <td>{{ $p->nama }}</td>
+<<<<<<< HEAD
                                 <td>{{ $p->kelas }}</td>
                                 <td>{{ $p->jumlah }}</td>
+=======
+                                <td>{{ $p->tgl_pinjam }}</td>
+                                <td>{{ $p->judul }}</td>
+                                <td>{{ $p->tahun_terbit }}</td>
+>>>>>>> 1eebc6623a54b6edd8b3dc1aca2803eec88ba65d
                                 <td>@php
                                     if($p->status = 1){
                                     $status = "Dipinjam";
@@ -118,6 +130,117 @@
                                         </button>
                                 </td>
                             </tr>
+<<<<<<< HEAD
+=======
+                            <!-- Modal Info -->
+                            <div class="modal fade bs-example-modal-lg" id="bd-example-modal-lg{{ $p->no_pinjam }}"
+                                tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel{{ $p->no_pinjam }}"
+                                aria-hidden="true" style="display: none;">
+                                <div class="modal-dialog modal-lg modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h4 class="modal-title" id="bd-example-modal-lg{{ $p->no_pinjam }}">Detail
+                                                Pustaka</h4>
+                                            <button type="button" class="close" data-dismiss="modal"
+                                                aria-hidden="true">×</button>
+                                        </div>
+                                        <form id="bd-example-modal-lg{{ $p->no_pinjam }}"
+                                            action="{{ route('pinjam.store') }}" method="POST">
+                                            @csrf
+                                            <div class="modal-body">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <img src="{{ url('/assets/img/'.$p->gambar) }}"
+                                                            style="width: 362px;height: 400px;" alt="">
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <h5>{{ $p->judul }}</h5>
+                                                        <p>{{ $p->deskripsi }}</p>
+                                                        <p class="font-weight-bold">Tahun Terbit: </p>
+                                                        <p class="">{{ $p->tahun_terbit }}</p>
+                                                        <p class="font-weight-bold">ISBN</p>
+                                                        <p>{{ $p->isbn }}</p>
+                                                        <p class="font-weight-bold">Status</p>
+                                                        <p>@php
+                                                            if($p->status == 1){
+                                                            $status = "Dipinjam";
+                                                            }else{
+                                                            $status = "Dikembalikan";
+                                                            }
+                                                            @endphp
+                                                            {{ $status }}</p>
+                                                        <p class="font-weight-bold">Tanggal Pinjam</p>
+                                                        <p>{{ \Carbon\Carbon::parse($p->tgl_pinjam)->format('d-m-Y') }} Jam : {{ \Carbon\Carbon::parse($p->tgl_pinjam)->format('H:i') }} WIB</p>
+                                                        
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary"
+                                                    data-dismiss="modal">Batal</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Modal Konfirmasi -->
+                            <div class="modal fade bs-example-modal-lg" id="confirmModal{{ $p->no_pinjam }}"
+                                tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel{{ $p->no_pinjam }}"
+                                aria-hidden="true" style="display: none;">
+                                <div class="modal-dialog modal-lg modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h4 class="modal-title" id="confirmModal{{ $p->no_pinjam }}">Konfirmasi
+                                                Pengembalian</h4>
+                                            <button type="button" class="close" data-dismiss="modal"
+                                                aria-hidden="true">×</button>
+                                        </div>
+                                        <form id="confirmModal{{ $p->no_pinjam }}"
+                                            action="{{ route('listpinjam.store') }}" method="POST">
+                                            @csrf
+                                            <div class="modal-body">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <img src="{{ url('/assets/img/'.$p->gambar) }}"
+                                                            style="width: 362px;height: 400px;" alt="">
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <input type="hidden" name="no_pinjam"
+                                                            value="{{ $p->no_pinjam }}">
+                                                        <input type="hidden" name="id_user" value="{{ $p->id_user }}">
+                                                        <input type="hidden" name="id_pustaka"
+                                                            value="{{ $p->id_pustaka }}">
+                                                        <h5>{{ $p->judul }}</h5>
+                                                        <p>{{ $p->deskripsi }}</p>
+                                                        <p class="font-weight-bold">Tahun Terbit: </p>
+                                                        <p class="">{{ $p->tahun_terbit }}</p>
+                                                        <p class="font-weight-bold">ISBN</p>
+                                                        <p>{{ $p->isbn }}</p>
+                                                        <p class="font-weight-bold">Kondisi</p>
+                                                        <div class="input-group custom">
+                                                            <select name="kondisi" class="form-control form-control-lg"
+                                                                placeholder="Nama Anggota">
+                                                                <option value="">-- Kondisi --</option>
+                                                                @foreach ($kondisi as $k)
+                                                                <option value="{{ $k->kd_kondisi }}">{{
+                                                                    $k->jenis_kondisi }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary"
+                                                    data-dismiss="modal">Batal</button>
+                                                <button type="submit" class="btn btn-primary">Konfirmasi</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+>>>>>>> 1eebc6623a54b6edd8b3dc1aca2803eec88ba65d
 
                             @endforeach
                         </tbody>

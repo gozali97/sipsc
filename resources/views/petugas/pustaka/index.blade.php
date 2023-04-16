@@ -210,6 +210,15 @@
                                                     </select>
                                                 </div>
                                                 <div class="input-group custom">
+                                                    <input type="text" class="form-control form-control-lg" name="deskripsi"
+                                                        value="{{ $p->deskripsi }}" placeholder="Deskripsi">
+                                                    <div class="input-group-append custom">
+                                                        <span class="input-group-text"><i
+                                                                class="icon-copy dw dw-open-book-2"></i></span>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="input-group custom">
                                                     <div class="file-upload">
                                                         <div class="image-upload-wrap">
                                                             <input class="file-upload-input" type='file' name="gambar"
@@ -351,6 +360,21 @@
                         <div class="input-group-append custom">
                             <span class="input-group-text"><i class="icon-copy dw dw-open-book-2"></i></span>
                         </div>
+                    </div>
+                    <div class="input-group custom">
+                        <input type="text" name="deskripsi" class="form-control form-control-lg" placeholder="Deskripsi">
+                        <div class="input-group-append custom">
+                            <span class="input-group-text"><i class="icon-copy dw dw-open-book-2"></i></span>
+                        </div>
+                    </div>
+                    <div class="input-group custom">
+                        <select name="status" class="form-control form-control-lg"
+                            placeholder="Status">
+                                <option value="1" {{ $p->status == "1" ? 'selected' : ''
+                                    }}>Aktif</option>
+                                <option value="0" {{ $p->status == "0" ? 'selected' : ''
+                                    }}>Tidak Aktif</option>
+                        </select>
                     </div>
                     <div class="input-group custom">
                         <input type="file" id="gambar-input" name="gambar"
