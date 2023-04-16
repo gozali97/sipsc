@@ -26,13 +26,13 @@
                     </a>
                 </li>
                 <li>
-                    <a href="#" class="dropdown-toggle no-arrow">
-                        <span class="micon dw dw-shopping-cart"></span><span class="mtext">Transaksi</span>
+                    <a href="/listpetugas" class="dropdown-toggle no-arrow">
+                        <span class="micon dw dw-user-2"></span><span class="mtext">Kelola Petugas</span>
                     </a>
                 </li>
                 <li>
-                    <a href="/listpetugas" class="dropdown-toggle no-arrow">
-                        <span class="micon dw dw-user-2"></span><span class="mtext">Kelola Petugas</span>
+                    <a href="/admin/laporan" class="dropdown-toggle no-arrow">
+                        <span class="micon dw dw-notebook"></span></span><span class="mtext">Laporan</span>
                     </a>
                 </li>
                 @elseif (Auth::user()->role->name === 'petugas')

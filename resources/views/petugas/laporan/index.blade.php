@@ -59,12 +59,12 @@
             <div class="row">
                 <div class="col-md-6 col-sm-12">
                     <div class="title">
-                        <h4>Anggota</h4>
+                        <h4>Laporan</h4>
                     </div>
                     <nav aria-label="breadcrumb" role="navigation">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="/laporan">Home</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Anggota</li>
+                            <li class="breadcrumb-item active" aria-current="page">Laporan</li>
                         </ol>
                     </nav>
                 </div>
@@ -72,7 +72,7 @@
         </div>
         <div class="card-box mb-30">
             <div class="pd-20">
-                <a href="/print" type="button" class="btn btn-success"><i class="icon-copy fa fa-print" aria-hidden="true"
+                <a href="/print" type="button" class="btn btn-secondary"><i class="icon-copy fa fa-print" aria-hidden="true"
                         style="margin-right: 5px"></i></i>Print</a>
                 <div class="p-4">
                     <table id="datatable" class="table table-striped table-bordered" width="100%">

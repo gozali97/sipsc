@@ -9,6 +9,7 @@ use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\ManageAnggotaController;
 use App\Http\Controllers\ManageLaporanController;
 use App\Http\Controllers\ManagePengembalianController;
+use App\Http\Controllers\ManagePetugasController;
 use App\Http\Controllers\ManagePinjamController;
 use App\Http\Controllers\PeminjamanController;
 use App\Http\Controllers\PenerbitController;
@@ -45,6 +46,19 @@ Route::resource('roles', RoleController::class);
 
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin', [AdminController::class, 'index'])->name('admin');
+
+    Route::controller(ManageLaporanController::class)->group(function () {
+        Route::get('admin/laporan', 'index')->name('laporan.index');
+        Route::get('admin/print', 'print')->name('laporan.print');
+    });
+
+    Route::controller(ManagePetugasController::class)->group(function () {
+        Route::get('listpetugas', 'index')->name('petugas.index');
+        Route::post('listpetugas/store', 'store')->name('petugas.store');
+        Route::post('listpetugas/update/{id}', 'update')->name('petugas.update');
+        Route::post('listpetugas/destroy/{id}', 'destroy')->name('petugas.destroy');
+        Route::post('/listpetugas/reset-password/{id}', 'resetPassword')->name('petugas.resetPassword');
+    });
 
 });
 
