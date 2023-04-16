@@ -108,6 +108,11 @@ class ManagePinjamController extends Controller
             $pinjam->update([
                 'jumlah' => $pinjam->jumlah - 1,
             ]);
+            // if ($pinjam->jumlah > 0) {
+            //     $pinjam->update([
+            //         'jumlah' => max(0, $pinjam->jumlah - 1),
+            //     ]);
+            // }
 
             $pustaka = Pustaka::where('id_pustaka', $request->id_pustaka)->first();
             $pustaka->update([

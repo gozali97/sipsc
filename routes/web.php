@@ -7,6 +7,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\ManageAnggotaController;
+use App\Http\Controllers\ManageLaporanController;
 use App\Http\Controllers\ManagePengembalianController;
 use App\Http\Controllers\ManagePinjamController;
 use App\Http\Controllers\PeminjamanController;
@@ -99,6 +100,11 @@ Route::middleware(['auth', 'role:petugas'])->group(function () {
     Route::controller(ManagePengembalianController::class)->group(function () {
         Route::get('listkembali', 'index')->name('listkembali.index');
         Route::post('listkembali/view/{id}', 'view')->name('listkembali.view');
+    });
+
+    Route::controller(ManageLaporanController::class)->group(function () {
+        Route::get('laporan', 'index')->name('laporan.index');
+        Route::get('print', 'print')->name('laporan.print');
     });
 });
 

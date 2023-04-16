@@ -71,6 +71,11 @@
 
                 </li>
                 <li>
+                    <a href="/laporan" class="dropdown-toggle no-arrow">
+                        <span class="micon dw dw-notebook"></span></span><span class="mtext">Laporan</span>
+                    </a>
+                </li>
+                <li>
                     <a href="/users" class="dropdown-toggle no-arrow">
                         <span class="micon dw dw-user-2"></span><span class="mtext">Kelola Anggota</span>
                     </a>
