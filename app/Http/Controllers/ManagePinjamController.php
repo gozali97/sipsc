@@ -11,8 +11,10 @@ use App\Models\Pengembalian;
 use App\Models\Pustaka;
 use App\Models\User;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class ManagePinjamController extends Controller
@@ -71,7 +73,7 @@ class ManagePinjamController extends Controller
             $datetime1 = new \DateTime($tgl_pinjam);
             $datetime2 = $date;
             $interval = $datetime1->diff($datetime2);
-            $jumlah_hari_terlambat = $interval->days - 16; // kurangi 2 hari grace period
+            $jumlah_hari_terlambat = $interval->days - 16;
             if ($jumlah_hari_terlambat < 0) {
                 $jumlah_hari_terlambat = 0;
             }
@@ -129,14 +131,15 @@ class ManagePinjamController extends Controller
     public function insert(Request $request)
     {
         try {
-            // dd($request->all());
             $user_id = $request->id_user;
             $existingPeminjamanCount = DetailPeminjaman::where('id_user', $user_id)
                 ->where('status', 1)
                 ->count();
 
             if ($existingPeminjamanCount >= 2) {
-                return redirect()->back()->with('error', 'Tidak diperbolehkan meminjamkan lebih dari 2 buku.');
+                return redirect()->back()->with('error', 'Kamu tidak diperbolehkan meminjam lebih dari 2 buku.');
+            } elseif ($existingPeminjamanCount === 0 && count($request->pustaka) > 2) {
+                return redirect()->back()->with('error', 'Kamu hanya diperbolehkan meminjam 2 buku sekaligus.');
             }
 
             $existingPeminjaman = DetailPeminjaman::where('id_user', $user_id)
@@ -162,6 +165,8 @@ class ManagePinjamController extends Controller
             $pustaka = Pustaka::whereIn('id_pustaka', $request->pustaka)->get();
 
             if ($pustaka->count() === $jumlah) {
+                DB::beginTransaction();
+
                 $pinjam = new Peminjaman;
                 $pinjam->no_pinjam = $kode;
                 $pinjam->id_user = $request->id_user;
@@ -203,12 +208,13 @@ class ManagePinjamController extends Controller
                     $item->save();
                 });
 
+                DB::commit();
                 return redirect()->route('listpinjam.index')->with('success', 'Data peminjaman berhasil ditambahkan.');
             } else {
-                return redirect()->back()->with('error', 'Maaf, pustaka yang anda pilih tidak tersedia.');
+                throw new Exception('Ada pustaka yang tidak ditemukan.');
             }
         } catch (\Exception $e) {
-            dd($e);
+            DB::rollback();
             return redirect()->back()->with('error', 'Terjadi kesalahan saat menyimpan data pustaka.');
         }
     }

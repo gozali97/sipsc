@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\DetailPeminjaman;
 use App\Models\Peminjaman;
 use App\Models\Pustaka;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class PeminjamanController extends Controller
 {
@@ -15,13 +17,13 @@ class PeminjamanController extends Controller
         $id = Auth::user()->id;
 
         $data = Peminjaman::query()
-        ->join('detail_peminjaman', 'detail_peminjaman.no_pinjam', 'peminjaman.no_pinjam')
-        ->join('users', 'users.id', 'peminjaman.id_user')
-        ->join('pustakas', 'pustakas.id_pustaka', 'detail_peminjaman.id_pustaka')
-        ->select('peminjaman.no_pinjam','detail_peminjaman.status as sts', 'pustakas.judul','pustakas.deskripsi','pustakas.tahun_terbit', 'pustakas.gambar', 'pustakas.isbn', 'peminjaman.status')
-        ->where('peminjaman.id_user', $id)
-        ->where('peminjaman.status', 1)
-        ->get();
+            ->join('detail_peminjaman', 'detail_peminjaman.no_pinjam', 'peminjaman.no_pinjam')
+            ->join('users', 'users.id', 'peminjaman.id_user')
+            ->join('pustakas', 'pustakas.id_pustaka', 'detail_peminjaman.id_pustaka')
+            ->select('peminjaman.no_pinjam', 'detail_peminjaman.status as sts', 'pustakas.judul', 'pustakas.deskripsi', 'pustakas.tahun_terbit', 'pustakas.gambar', 'pustakas.isbn', 'peminjaman.status')
+            ->where('peminjaman.id_user', $id)
+            ->where('peminjaman.status', 1)
+            ->get();
         // dd($data);
 
         return view('anggota.pinjam.index', compact('data'));
@@ -35,12 +37,14 @@ class PeminjamanController extends Controller
                 ->where('status', 1)
                 ->count();
 
-            if ($existingPeminjamanCount >= 3) {
+            if ($existingPeminjamanCount >= 2) {
                 return redirect()->back()->with('error', 'Kamu tidak diperbolehkan meminjam lebih dari 2 buku.');
+            } elseif ($existingPeminjamanCount === 0 && count($request->pustaka) > 2) {
+                return redirect()->back()->with('error', 'Kamu hanya diperbolehkan meminjam 2 buku sekaligus.');
             }
 
             $existingPeminjaman = DetailPeminjaman::where('id_user', $user_id)
-                ->whereIn('id_pustaka', $request->pustaka) // Ubah menjadi whereIn untuk mencocokkan dengan array of IDs
+                ->whereIn('id_pustaka', $request->pustaka)
                 ->where('status', 1)
                 ->first();
 
@@ -62,12 +66,14 @@ class PeminjamanController extends Controller
             $pustaka = Pustaka::whereIn('id_pustaka', $request->pustaka)->get();
 
             if ($pustaka->count() === $jumlah) {
+                DB::beginTransaction();
+
                 $pinjam = new Peminjaman;
                 $pinjam->no_pinjam = $kode;
                 $pinjam->id_user = $request->id_user;
                 $pinjam->status = 1;
                 $pinjam->jumlah = $jumlah;
-                if($pinjam->save()){
+                if ($pinjam->save()) {
 
                     $pinjamDetail = [];
                     $nomor = 0;
@@ -80,7 +86,7 @@ class PeminjamanController extends Controller
                         $no_detail = 'PD001';
                     }
 
-                    foreach($request->pustaka as $key => $pinjamDetails){
+                    foreach ($request->pustaka as $key => $pinjamDetails) {
                         $nomor++;
                         $no_detail = 'PD' . str_pad($nomor, 3, '0', STR_PAD_LEFT);
                         $detail = [
@@ -93,7 +99,6 @@ class PeminjamanController extends Controller
                             'created_at' => date('Y-m-d H:i:s'),
                         ];
                         $pinjamDetail[] = $detail;
-
                     }
                     DetailPeminjaman::insert($pinjamDetail);
                 }
@@ -102,14 +107,14 @@ class PeminjamanController extends Controller
                     $item->jumlah -= 1;
                     $item->save();
                 });
-
-                return redirect()->route('list.index')->with('success', 'Pustaka berhasil ditambahkan.');
+                DB::commit();
+                return redirect()->back()->with('success', 'Peminjaman buku berhasil.');
             } else {
-                return redirect()->back()->with('error', 'Maaf, pustaka yang anda pilih tidak tersedia.');
+                throw new Exception('Ada pustaka yang tidak ditemukan.');
             }
-        } catch (\Exception $e) {
-            dd($e);
-            return redirect()->back()->with('error', 'Terjadi kesalahan saat menyimpan data pustaka.');
+        } catch (Exception $e) {
+            DB::rollback();
+            return redirect()->back()->with('error', 'Gagal melakukan peminjaman buku. ' . $e->getMessage());
         }
     }
 
