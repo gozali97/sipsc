@@ -219,27 +219,20 @@ class ManagePinjamController extends Controller
         }
     }
 
-    public function update(Request $request, $id)
-    {
-        $category = Peminjaman::where('id_penerbit', $id)->first();
-        // dd($category);
-        $category->nama_penerbit = $request->penerbit;
-        $category->alamat = $request->alamat;
-        $category->save();
-
-        return redirect()->route('penerbit.index')->with('success', 'Penerbit berhasil diupdate.');
-    }
-
     public function destroy($id)
     {
-        $category = Peminjaman::find($id);
+        $data = Peminjaman::where('no_pinjam', $id)->first();
 
-        if (!$category) {
-            return redirect()->back()->with('error', 'Penerbit tidak ditemukan.');
+        if (!$data) {
+            return redirect()->back()->with('error', 'Peminjaman tidak ditemukan.');
         }
 
-        $category->delete();
+        $detail = DetailPeminjaman::where('no_pinjam', $id)->get();
+        $detail->each->delete();
 
-        return redirect()->route('penerbit.index')->with('success', 'Penerbit berhasil dihapus.');
+        $data->delete();
+
+
+        return redirect()->route('listpinjam.index')->with('success', 'Peminjaman berhasil dihapus.');
     }
 }

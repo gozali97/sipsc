@@ -1,37 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-@if(session('success'))
-<div class="alert alert-success alert-dismissible fade show" role="alert">
-    {{ session('success') }}
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-    </button>
-</div>
-<script>
-    $(document).ready(function(){
-            setTimeout(function(){
-                $(".alert").alert('close');
-            }, 5000);
-        });
-</script>
-@endif
-
-@if(session('error'))
-<div class="alert alert-danger alert-dismissible fade show" role="alert">
-    {{ session('error') }}
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-    </button>
-</div>
-<script>
-    $(document).ready(function(){
-            setTimeout(function(){
-                $(".alert").alert('close');
-            }, 5000);
-        });
-</script>
-@endif
 
 <div class="pd-ltr-20 xs-pd-20-10">
     <div class="min-height-200px">

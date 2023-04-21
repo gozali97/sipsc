@@ -129,6 +129,25 @@
                                             @endforeach
                                         </select>
                                     </div>
+                                    @php
+                                        $date = \Carbon\Carbon::now();
+
+                                        $peminjaman = \App\Models\DetailPeminjaman::query()
+                                        ->where('no_det_pinjaman',$d->no_det_pinjaman)
+                                        ->first();
+
+                                        $tgl_pinjam = $peminjaman->tgl_pinjam;
+
+                                        $datetime1 = new \DateTime($tgl_pinjam);
+                                        $datetime2 = $date;
+                                        $interval = $datetime1->diff($datetime2);
+                                        $jumlah_hari_terlambat = $interval->days - 16;
+                                        if ($jumlah_hari_terlambat < 0) {
+                                            $jumlah_hari_terlambat = 0;
+                                        }
+                                        $nominal_denda = $jumlah_hari_terlambat * 2000;
+                                    @endphp
+                                    <p class="font-weight-bold">Denda Keterlambatan :<br> Rp. {{ number_format($nominal_denda, 0, ',', '.') }}</p>
                                 </div>
                             </div>
                         </div>

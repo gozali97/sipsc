@@ -108,7 +108,7 @@ Route::middleware(['auth', 'role:petugas'])->group(function () {
         Route::post('listpinjam/store', 'store')->name('listpinjam.store');
         Route::post('listpinjam/insert', 'insert')->name('listpinjam.insert');
         Route::post('listpinjam/update/{id}', 'update')->name('listpinjam.update');
-        Route::post('listpinjam/destroy/{id}', 'destroy')->name('pustlistpinjamaka.destroy');
+        Route::post('listpinjam/destroy/{id}', 'destroy')->name('listpinjam.destroy');
     });
 
     Route::controller(ManagePengembalianController::class)->group(function () {

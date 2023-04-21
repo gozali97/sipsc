@@ -105,19 +105,52 @@
                                     $status = "Dikembalikan";
                                     }
                                     @endphp
-                                   <span class="badge {{ $p->status == 1 ? 'badge-success' : 'badge-danger' }}">{{ $status }}</span>
+                                    <span class="badge {{ $p->status == 1 ? 'badge-success' : 'badge-danger' }}">{{
+                                        $status }}</span>
                                 </td>
                                 <td><img src="{{ url('assets/img/'.$p->gambar) }}" style="width:80px; height:80px;"
                                         alt=""></td>
                                 <td>
-                                        <a type="button" href="{{ route('listpinjam.view', $p->no_pinjam) }}" class="btn btn-outline-info"><i
-                                                class="icon-copy fa fa-info-circle mr-1" aria-hidden="true"></i>Detail</a>
-                                        <button class="btn btn-outline-primary">
-                                            <i class="icon-copy fa fa-edit" aria-hidden="true"
-                                                style="margin-right: 5px"></i>
-                                        </button>
+                                    <a type="button" href="{{ route('listpinjam.view', $p->no_pinjam) }}"
+                                        class="btn btn-outline-info"><i class="icon-copy fa fa-info-circle mr-1"
+                                            aria-hidden="true"></i>Detail</a>
+                                    <button class="btn btn-outline-danger" data-toggle="modal"
+                                    data-target="#deleteModal{{ $p->no_pinjam }}">
+                                        <i class="icon-copy dw dw-trash" aria-hidden="true"
+                                            style="margin-right: 5px"></i>
+                                        Hapus
+                                    </button>
                                 </td>
                             </tr>
+
+                            <!-- Modal Delete -->
+                            <div class="modal fade" id="deleteModal{{ $p->no_pinjam }}" tabindex="-1" role="dialog"
+                                aria-labelledby="deleteModal{{ $p->no_pinjam }}Label" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="deleteModal{{ $p->no_pinjam }}Label">Hapus
+                                                Kategori</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <form id="deleteForm{{ $p->no_pinjam }}" method="POST"
+                                            action="{{ route('listpinjam.destroy', $p->no_pinjam) }}">
+                                            @csrf
+                                            <div class="modal-body">
+                                                <p>Anda yakin ingin menghapus peminjaman <strong>{{ $p->nama
+                                                        }} -  {{ $p->kelas }}</strong>?</p>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary"
+                                                    data-dismiss="modal">Batal</button>
+                                                <button type="submit" class="btn btn-danger">Hapus</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
                             @endforeach
                         </tbody>
                     </table>
@@ -154,7 +187,8 @@
                     </div>
                     <div class="input-group custom">
                         <label for="pustaka">Daftar Buku</label>
-                        <select id="pustaka" name="pustaka[]" class="custom-select2 form-control" multiple="multiple" style="width: 100%;">
+                        <select id="pustaka" name="pustaka[]" class="custom-select2 form-control" multiple="multiple"
+                            style="width: 100%;">
                             @foreach ($pustaka as $p)
                             <option value="{{ $p->id_pustaka }}">{{ $p->judul }} - {{ $p->tahun_terbit }}</option>
                             @endforeach
