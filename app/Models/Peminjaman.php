@@ -12,4 +12,9 @@ class Peminjaman extends Model
     protected $guarded = [];
     public $incrementing = false;
     protected $primaryKey = 'no_pinjam';
+
+    public function detailPeminjaman()
+    {
+        return $this->hasMany(DetailPeminjaman::class, 'no_pinjam');
+    }
 }

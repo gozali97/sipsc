@@ -95,7 +95,7 @@ class PeminjamanController extends Controller
                             'id_pustaka' => $pinjamDetails,
                             'id_user' => $request->id_user,
                             'tgl_pinjam' => date('Y-m-d H:i:s'),
-                            'status' => 1,
+                            'status' => "Proses",
                             'created_at' => date('Y-m-d H:i:s'),
                         ];
                         $pinjamDetail[] = $detail;

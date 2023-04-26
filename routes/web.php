@@ -104,7 +104,9 @@ Route::middleware(['auth', 'role:petugas'])->group(function () {
 
     Route::controller(ManagePinjamController::class)->group(function () {
         Route::get('listpinjam', 'index')->name('listpinjam.index');
+        Route::get('listpinjam/sync', 'sync')->name('listpinjam.sync');
         Route::get('listpinjam/detail/{id}', 'view')->name('listpinjam.view');
+        Route::get('listpinjam/accpinjam/{id}', 'accPinjam')->name('listpinjam.accPinjam');
         Route::post('listpinjam/store', 'store')->name('listpinjam.store');
         Route::post('listpinjam/insert', 'insert')->name('listpinjam.insert');
         Route::post('listpinjam/update/{id}', 'update')->name('listpinjam.update');

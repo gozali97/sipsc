@@ -96,14 +96,8 @@
                                 <td class="table-plus">{{ $no++ }}</td>
                                 <td>{{ $p->judul }}</td>
                                 <td>{{ $p->tahun_terbit }}</td>
-                                <td>@php
-                                    if($p->sts == 1){
-                                        $status = "Dipinjam";
-                                    }else{
-                                        $status = "Dikembalikan";
-                                    }
-                                @endphp
-                                    <span class="badge {{ $p->sts == 1 ? 'badge-success' : 'badge-danger' }}">{{ $status }}</span>
+                                <td>
+                                    <span class="badge {{$p->sts == "Proses" ? 'badge-warning' : ($p->sts == "Dipinjam" ? 'badge-success' : 'badge-danger') }}">{{ $p->sts }}</span>
                                 </td>
                                 <td><img src="{{ url('assets/img/'.$p->gambar) }}"
                                         style="width:80px; height:80px;" alt=""></td>
@@ -135,14 +129,8 @@
                                                         <p class="font-weight-bold">ISBN</p>
                                                         <p>{{ $p->isbn }}</p>
                                                         <p class="font-weight-bold">Status</p>
-                                                        <p>@php
-                                                            if($p->sts == 1){
-                                                                $status = "Dipinjam";
-                                                            }else{
-                                                                $status = "Dikembalikan";
-                                                            }
-                                                        @endphp
-                                                            {{ $status }}</p>
+                                                        <p>
+                                                            {{ $p->sts }}</p>
                                                     </div>
                                                 </div>
                                             </div>

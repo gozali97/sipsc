@@ -19,7 +19,7 @@ class CreateDetailPeminjamanTable extends Migration
             $table->integer('id_pustaka');
             $table->dateTime('tgl_pinjam');
             $table->integer('id_user');
-            $table->integer('status');
+            $table->enum('status',['Proses', 'Dipinjam', 'Dikembalikan']);
             $table->timestamps();
         });
     }

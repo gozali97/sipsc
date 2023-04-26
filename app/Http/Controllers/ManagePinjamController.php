@@ -25,29 +25,72 @@ class ManagePinjamController extends Controller
         $pustaka = Pustaka::all();
 
         $data = Peminjaman::query()
-        ->join('users', 'users.id', 'peminjaman.id_user')
-        ->where('peminjaman.jumlah', '<>', 0)
-        ->get();
+            ->join('users', 'users.id', 'peminjaman.id_user')
+            ->where('peminjaman.jumlah', '<>', 0)
+            ->get();
 
         $kondisi = Kondisi::all();
 
         return view('petugas.peminjaman.index', compact('data', 'anggota', 'pustaka'));
     }
 
-    public function view($id){
+    public function view($id)
+    {
 
         $data = Peminjaman::query()
-        ->join('detail_peminjaman', 'detail_peminjaman.no_pinjam', 'peminjaman.no_pinjam')
-        ->join('pustakas', 'pustakas.id_pustaka', 'detail_peminjaman.id_pustaka')
-        ->join('users', 'users.id', 'peminjaman.id_user')
-        ->select('peminjaman.*', 'detail_peminjaman.*', 'users.nama','users.kelas', 'pustakas.*')
-        ->where('peminjaman.no_pinjam',$id)
-        ->where('detail_peminjaman.status', 1)
-        ->get();
+            ->join('detail_peminjaman', 'detail_peminjaman.no_pinjam', 'peminjaman.no_pinjam')
+            ->join('pustakas', 'pustakas.id_pustaka', 'detail_peminjaman.id_pustaka')
+            ->join('users', 'users.id', 'peminjaman.id_user')
+            ->select('peminjaman.*', 'detail_peminjaman.status as statusPinjam', 'detail_peminjaman.no_det_pinjaman', 'detail_peminjaman.tgl_pinjam', 'users.nama', 'users.kelas', 'pustakas.*')
+            ->where('peminjaman.no_pinjam', $id)
+            ->where('detail_peminjaman.status', '<>', "Dikembalikan")
+            ->get();
 
         $kondisi = Kondisi::all();
 
         return view('petugas.peminjaman.view', compact('data', 'kondisi'));
+    }
+
+    public function accPinjam($id)
+    {
+        try {
+            $data = DetailPeminjaman::where('no_det_pinjaman', $id)->first();
+
+            $data->status = "Dipinjam";
+            $data->save();
+
+            return response()->json(['status' => 'success', 'message' => 'Buku sudah dibawa oleh siswa.']);
+        } catch (\Exception $e) {
+            return response()->json(['status' => 'error', 'message' => 'Terjadi kesalahan saat konfirmasi Pustaka.']);
+        }
+    }
+
+    public function sync()
+    {
+        try {
+            $detailPeminjaman = DetailPeminjaman::query()
+                ->where('status', '=', 'Proses')
+                ->whereDate('tgl_pinjam', '<=', Carbon::now()->subDays(1))
+                ->get();
+            // dd($detailPeminjaman);
+
+            foreach ($detailPeminjaman as $detail) {
+                // Mengembalikan jumlah pustaka
+                $pustaka = Pustaka::where('id_pustaka', $detail->id_pustaka)->first();
+                $pustaka->jumlah += 1;
+                $pustaka->save();
+
+                // Menghapus data peminjaman dan detail peminjaman
+                $peminjaman = Peminjaman::where('no_pinjam', $detail->no_pinjam)->first();
+                $peminjaman->detailPeminjaman()->delete();
+                $peminjaman->delete();
+            }
+
+            return response()->json(['status' => 'success', 'message' => 'Data Peminjaman berhasil di sinkronisasi.']);
+        } catch (\Exception $e) {
+            dd($e);
+            return response()->json(['status' => 'error', 'message' => 'Terjadi kesalahan saat sinkronisasi.', 'error' => $e->getMessage()]);
+        }
     }
 
     public function store(Request $request)
@@ -65,8 +108,8 @@ class ManagePinjamController extends Controller
             $date = \Carbon\Carbon::now();
 
             $peminjaman = DetailPeminjaman::query()
-            ->where('no_det_pinjaman',$request->pinjam)
-            ->first();
+                ->where('no_det_pinjaman', $request->pinjam)
+                ->first();
 
             $tgl_pinjam = $peminjaman->tgl_pinjam;
 
@@ -100,9 +143,9 @@ class ManagePinjamController extends Controller
                 'kd_kondisi' => $request->kondisi,
             ]);
 
-             // Update status peminjaman menjadi 0
+            // Update status peminjaman menjadi 0
             $peminjaman->update([
-                'status' => 0,
+                'status' => "Dikembalikan",
                 'updated_at' => date('Y-m-d H:i:s'),
             ]);
 
@@ -110,11 +153,16 @@ class ManagePinjamController extends Controller
             $pinjam->update([
                 'jumlah' => $pinjam->jumlah - 1,
             ]);
-            // if ($pinjam->jumlah > 0) {
-            //     $pinjam->update([
-            //         'jumlah' => max(0, $pinjam->jumlah - 1),
-            //     ]);
-            // }
+
+            if ($pinjam->jumlah == 0) {
+                $deleteDetail = DetailPeminjaman::query()
+                    ->where('no_pinjam', $pinjam->no_pinjam)
+                    ->delete();
+
+                $pinjam->delete();
+            } else {
+                $pinjam->save();
+            }
 
             $pustaka = Pustaka::where('id_pustaka', $request->id_pustaka)->first();
             $pustaka->update([
@@ -151,6 +199,7 @@ class ManagePinjamController extends Controller
                 return redirect()->back()->with('error', 'Maaf, kamu hanya diperbolehkan meminjam 1 buku yang sama.');
             }
 
+
             $jumlahData = Peminjaman::count();
 
             if ($jumlahData > 0) {
@@ -164,6 +213,15 @@ class ManagePinjamController extends Controller
 
             $pustaka = Pustaka::whereIn('id_pustaka', $request->pustaka)->get();
 
+            $notAvailable = $pustaka->filter(function ($item) {
+                return $item->jumlah <= 0;
+            });
+
+            if ($notAvailable->isNotEmpty()) {
+                $notAvailableTitles = $notAvailable->implode('judul', ', ');
+                return redirect()->back()->with('error', 'Maaf, stok buku ' . $notAvailableTitles . ' tidak tersedia.');
+            }
+
             if ($pustaka->count() === $jumlah) {
                 DB::beginTransaction();
 
@@ -172,7 +230,7 @@ class ManagePinjamController extends Controller
                 $pinjam->id_user = $request->id_user;
                 $pinjam->status = 1;
                 $pinjam->jumlah = $jumlah;
-                if($pinjam->save()){
+                if ($pinjam->save()) {
 
                     $pinjamDetail = [];
                     $nomor = 0;
@@ -185,7 +243,7 @@ class ManagePinjamController extends Controller
                         $no_detail = 'PD001';
                     }
 
-                    foreach($request->pustaka as $key => $pinjamDetails){
+                    foreach ($request->pustaka as $key => $pinjamDetails) {
                         $nomor++;
                         $no_detail = 'PD' . str_pad($nomor, 3, '0', STR_PAD_LEFT);
                         $detail = [
@@ -194,11 +252,10 @@ class ManagePinjamController extends Controller
                             'id_pustaka' => $pinjamDetails,
                             'id_user' => $request->id_user,
                             'tgl_pinjam' => date('Y-m-d H:i:s'),
-                            'status' => 1,
+                            'status' => "Proses",
                             'created_at' => date('Y-m-d H:i:s'),
                         ];
                         $pinjamDetail[] = $detail;
-
                     }
                     DetailPeminjaman::insert($pinjamDetail);
                 }

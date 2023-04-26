@@ -75,6 +75,7 @@
                 <button type="button" class="btn btn-success" data-toggle="modal" data-target="#input-modal"><i
                         class="icon-copy fa fa-plus" aria-hidden="true"
                         style="margin-right: 5px"></i></i>Tambah</button>
+                        <button class="btn btn-info sync-data" data-url="{{ route('listpinjam.sync') }}"><i class="icon-copy dw dw-rotate"></i> Sync Data</button>
                 <div class="p-4">
                     <table id="datatable" class="table table-striped table-bordered" width="100%">
                         <thead>
@@ -100,12 +101,12 @@
                                 <td>{{ $p->jumlah }}</td>
                                 <td>@php
                                     if($p->status = 1){
-                                    $status = "Dipinjam";
+                                    $status = "Aktif";
                                     }else{
-                                    $status = "Dikembalikan";
+                                    $status = "Tidak Aktif";
                                     }
                                     @endphp
-                                    <span class="badge {{ $p->status == 1 ? 'badge-success' : 'badge-danger' }}">{{
+                                    <span class="badge {{$p->status == 1 ? 'badge-success' : 'badge-danger' }}">{{
                                         $status }}</span>
                                 </td>
                                 <td><img src="{{ url('assets/img/'.$p->gambar) }}" style="width:80px; height:80px;"
@@ -115,7 +116,7 @@
                                         class="btn btn-outline-info"><i class="icon-copy fa fa-info-circle mr-1"
                                             aria-hidden="true"></i>Detail</a>
                                     <button class="btn btn-outline-danger" data-toggle="modal"
-                                    data-target="#deleteModal{{ $p->no_pinjam }}">
+                                        data-target="#deleteModal{{ $p->no_pinjam }}">
                                         <i class="icon-copy dw dw-trash" aria-hidden="true"
                                             style="margin-right: 5px"></i>
                                         Hapus
@@ -140,7 +141,7 @@
                                             @csrf
                                             <div class="modal-body">
                                                 <p>Anda yakin ingin menghapus peminjaman <strong>{{ $p->nama
-                                                        }} -  {{ $p->kelas }}</strong>?</p>
+                                                        }} - {{ $p->kelas }}</strong>?</p>
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary"
@@ -216,6 +217,35 @@
             } else {
                 $('#buku-image').empty();
             }
+    });
+
+    $(document).ready(function() {
+        $('.sync-data').click(function(e) {
+            e.preventDefault();
+            var url = $(this).data('url');
+
+            $.ajax({
+                url: url,
+                type: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success',
+                        text: data.message
+                    }).then(function() {
+                        location.reload();
+                    });
+                },
+                error: function(data) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: data.message
+                    });
+                }
+            });
+        });
     });
 </script>
 @endsection

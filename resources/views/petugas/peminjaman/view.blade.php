@@ -91,8 +91,16 @@
                             </div>
                         </div>
                         <p class="font-weight-bold">Nama Peminjam : {{ $d->nama }} <br> Kelas : {{ $d->kelas }}</p>
+                        @if($d->statusPinjam == "Proses")
+                        <button type="button" data-toggle="modal" data-target="#accModal{{ $d->no_det_pinjaman }}"
+                            class="btn btn-success acc-button"
+                            data-id="{{ $d->no_det_pinjaman }}">Konfirmasi</button>
+                        @elseif($d->statusPinjam = "Dikembalikan")
                         <button type="button" data-toggle="modal" data-target="#confirmModal{{ $d->no_det_pinjaman }}"
                             class="btn btn-primary">Kembalikan</button>
+                        @else
+                        <div></div>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -165,5 +173,41 @@
         <a href="/listpinjam" class="btn btn-danger mb-30">Kembali</a>
     </div>
 </div>
-
+<script>
+ $(document).on('click', '.acc-button', function () {
+    var id = $(this).data('id');
+    Swal.fire({
+        title: 'Apakah Anda yakin?',
+        text: "Buku akan dibawa oleh siswa.",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Ya, konfirmasi!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: "/listpinjam/accpinjam/" + id,
+                type: "GET",
+                success: function() {
+                    Swal.fire({
+                        title: "Sukses!",
+                        text: "Buku sudah dibawa oleh siswa.",
+                        type: "success",
+                        icon: "success",
+                        confirmButtonText: "OK"
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.reload();
+                        }
+                    });
+                },
+                error: function() {
+                    swal("Oops!", "Terjadi kesalahan saat konfirmasi Pustaka.", "error");
+                }
+            });
+        }
+    });
+});
+</script>
 @endsection
