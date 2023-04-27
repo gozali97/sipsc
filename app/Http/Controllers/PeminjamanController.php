@@ -65,6 +65,15 @@ class PeminjamanController extends Controller
 
             $pustaka = Pustaka::whereIn('id_pustaka', $request->pustaka)->get();
 
+            $notAvailable = $pustaka->filter(function ($item) {
+                return $item->jumlah <= 0;
+            });
+
+            if ($notAvailable->isNotEmpty()) {
+                $notAvailableTitles = $notAvailable->implode('judul', ', ');
+                return redirect()->back()->with('error', 'Maaf, stok buku ' . $notAvailableTitles . ' tidak tersedia.');
+            }
+
             if ($pustaka->count() === $jumlah) {
                 DB::beginTransaction();
 
