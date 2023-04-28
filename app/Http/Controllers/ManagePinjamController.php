@@ -135,8 +135,9 @@ class ManagePinjamController extends Controller
 
             $pengembalian = Pengembalian::create([
                 'no_kembali' => $kode,
-                'no_pinjam' => $request->pinjam,
+                'id_pustaka' => $peminjaman->id_pustaka,
                 'id_user' => $peminjaman->id_user,
+                'tgl_pinjam' => $peminjaman->tgl_pinjam,
                 'tgl_kembali' => $tgl_kembali,
                 'nominal_denda' => $nominal_denda,
                 'jml_terlambat' => $jumlah_hari_terlambat,

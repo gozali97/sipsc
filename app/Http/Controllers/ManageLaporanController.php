@@ -26,9 +26,8 @@ class ManageLaporanController extends Controller
         $data = Pengembalian::query()
         ->join('users', 'users.id', 'pengembalians.id_user')
         ->join('kondisis', 'kondisis.kd_kondisi', 'pengembalians.kd_kondisi')
-        ->join('detail_peminjaman','detail_peminjaman.no_det_pinjaman', 'pengembalians.no_pinjam')
-        ->join('pustakas', 'pustakas.id_pustaka', 'detail_peminjaman.id_pustaka')
-        ->select('users.id', 'users.nama', 'users.kelas', 'pustakas.judul', 'pustakas.isbn', 'detail_peminjaman.tgl_pinjam', 'pengembalians.tgl_kembali', 'kondisis.jenis_kondisi', 'pengembalians.nominal_denda')
+        ->join('pustakas', 'pustakas.id_pustaka', 'pengembalians.id_pustaka')
+        ->select('users.id', 'users.nama', 'users.kelas', 'pustakas.judul', 'pustakas.isbn', 'pengembalians.tgl_pinjam', 'pengembalians.tgl_kembali', 'kondisis.jenis_kondisi', 'pengembalians.nominal_denda')
         ->get();
 
         $pdf = Pdf::loadView('petugas.laporan.pdf', compact('data'));
