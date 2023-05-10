@@ -14,7 +14,7 @@ class CreatePeminjamanTable extends Migration
     public function up()
     {
         Schema::create('peminjaman', function (Blueprint $table) {
-            $table->string('no_pinjam', 8)->primary();
+            $table->increments('no_pinjam');
             $table->integer('id_user');
             $table->char('status',2);
             $table->integer('jumlah');

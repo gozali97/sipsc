@@ -10,6 +10,5 @@ class Pengembalian extends Model
     use HasFactory;
     protected $table = 'pengembalians';
     protected $guarded = [];
-    public $incrementing = false;
     protected $primaryKey = 'no_kembali';
 }

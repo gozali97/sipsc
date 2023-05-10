@@ -10,7 +10,6 @@ class Peminjaman extends Model
     use HasFactory;
     protected $table = 'peminjaman';
     protected $guarded = [];
-    public $incrementing = false;
     protected $primaryKey = 'no_pinjam';
 
     public function detailPeminjaman()
