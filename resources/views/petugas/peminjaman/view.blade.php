@@ -57,16 +57,88 @@
     <div class="min-height-200px">
         <div class="page-header">
             <div class="row">
-                <div class="col-md-6 col-sm-12">
+                <div class="col-md-6 col-lg-12">
                     <div class="title">
                         <h4>Peminjaman</h4>
                     </div>
-                    <nav aria-label="breadcrumb" role="navigation">
-                        <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="/listpinjam">Home</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Detail Peminjaman</li>
-                        </ol>
+                    <nav aria-label="breadcrumb" role="navigation" class="row">
+                        <div class="col-md-10">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="/listpinjam">Home</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Detail Peminjaman</li>
+                            </ol>
+                        </div>
+                        <div class="col-md-2"> <button type="button" data-toggle="modal" data-target="#confirmAllModal"
+                                class="btn btn-primary float-right">Kembalikan</button></div>
                     </nav>
+                    <div class="modal fade bs-example-modal-lg" id="confirmAllModal" tabindex="-1" role="dialog"
+                        aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
+                        <div class="modal-dialog modal-lg modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title" id="confirmAllModal">Konfirmasi
+                                        Pengembalian Semua Buku</h4>
+                                    <button type="button" class="close" data-dismiss="modal"
+                                        aria-hidden="true">×</button>
+                                </div>
+                                <form id="confirmAllModal" action="{{ route('listpinjam.storeAll') }}" method="POST">
+                                    @csrf
+                                    <div class="modal-body">
+                                        <div class="row">
+                                            @foreach ($data as $all)
+                                            <div class="col-md-6">
+                                                <center>
+                                                    <img src="{{ url('/assets/img/'.$all->gambar) }}"
+                                                        style="height: 200px;" alt="">
+                                                </center>
+                                                <input type="hidden" name="no_pinjam"
+                                                    value="{{ $all->no_pinjam }}">
+                                                <input type="hidden" name="pinjam[]"
+                                                    value="{{ $all->no_det_pinjaman }}">
+                                                <input type="hidden" name="id_pustaka[]" value="{{ $all->id_pustaka }}">
+
+                                                <div class="input-group custom mt-4">
+                                                    <select name="kondisi[]" class="form-control form-control-lg"
+                                                        placeholder="Nama Anggota">
+                                                        <option value="">-- Kondisi --</option>
+                                                        @foreach ($kondisi as $k)
+                                                        <option value="{{ $k->kd_kondisi }}">{{
+                                                            $k->jenis_kondisi }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                                @php
+                                                $date = \Carbon\Carbon::now();
+
+                                                $peminjaman = \App\Models\DetailPeminjaman::query()
+                                                ->where('no_det_pinjaman',$all->no_det_pinjaman)
+                                                ->first();
+
+                                                $tgl_pinjam = $peminjaman->tgl_pinjam;
+
+                                                $datetime1 = new \DateTime($tgl_pinjam);
+                                                $datetime2 = $date;
+                                                $interval = $datetime1->diff($datetime2);
+                                                $jumlah_hari_terlambat = $interval->days - 16;
+                                                if ($jumlah_hari_terlambat < 0) { $jumlah_hari_terlambat=0; }
+                                                    $nominal_denda=$jumlah_hari_terlambat * 2000;
+                                                @endphp
+
+                                                <p class="font-weight-bold">Denda Keterlambatan : Rp. {{
+                                                    number_format($nominal_denda, 0, ',', '.') }}</p>
+                                            </div>
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-dismiss="modal">Batal</button>
+                                        <button type="submit" class="btn btn-primary">Konfirmasi</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -93,8 +165,7 @@
                         <p class="font-weight-bold">Nama Peminjam : {{ $d->nama }} <br> Kelas : {{ $d->kelas }}</p>
                         @if($d->statusPinjam == "Proses")
                         <button type="button" data-toggle="modal" data-target="#accModal{{ $d->no_det_pinjaman }}"
-                            class="btn btn-success acc-button"
-                            data-id="{{ $d->no_det_pinjaman }}">Konfirmasi</button>
+                            class="btn btn-success acc-button" data-id="{{ $d->no_det_pinjaman }}">Konfirmasi</button>
                         @elseif($d->statusPinjam = "Dikembalikan")
                         <button type="button" data-toggle="modal" data-target="#confirmModal{{ $d->no_det_pinjaman }}"
                             class="btn btn-primary">Kembalikan</button>
@@ -107,8 +178,9 @@
         </div>
 
         <!-- Modal Konfirmasi -->
-        <div class="modal fade bs-example-modal-lg" id="confirmModal{{ $d->no_det_pinjaman }}" tabindex="-1" role="dialog"
-            aria-labelledby="myLargeModalLabel{{ $d->no_pinjam }}" aria-hidden="true" style="display: none;">
+        <div class="modal fade bs-example-modal-lg" id="confirmModal{{ $d->no_det_pinjaman }}" tabindex="-1"
+            role="dialog" aria-labelledby="myLargeModalLabel{{ $d->no_pinjam }}" aria-hidden="true"
+            style="display: none;">
             <div class="modal-dialog modal-lg modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -116,7 +188,8 @@
                             Pengembalian</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                     </div>
-                    <form id="confirmModal{{ $d->no_det_pinjaman }}" action="{{ route('listpinjam.store') }}" method="POST">
+                    <form id="confirmModal{{ $d->no_det_pinjaman }}" action="{{ route('listpinjam.store') }}"
+                        method="POST">
                         @csrf
                         <div class="modal-body">
                             <div class="row">
@@ -138,24 +211,22 @@
                                         </select>
                                     </div>
                                     @php
-                                        $date = \Carbon\Carbon::now();
+                                    $date = \Carbon\Carbon::now();
 
-                                        $peminjaman = \App\Models\DetailPeminjaman::query()
-                                        ->where('no_det_pinjaman',$d->no_det_pinjaman)
-                                        ->first();
+                                    $peminjaman = \App\Models\DetailPeminjaman::query()
+                                    ->where('no_det_pinjaman',$d->no_det_pinjaman)
+                                    ->first();
 
-                                        $tgl_pinjam = $peminjaman->tgl_pinjam;
+                                    $tgl_pinjam = $peminjaman->tgl_pinjam;
 
-                                        $datetime1 = new \DateTime($tgl_pinjam);
-                                        $datetime2 = $date;
-                                        $interval = $datetime1->diff($datetime2);
-                                        $jumlah_hari_terlambat = $interval->days - 16;
-                                        if ($jumlah_hari_terlambat < 0) {
-                                            $jumlah_hari_terlambat = 0;
-                                        }
-                                        $nominal_denda = $jumlah_hari_terlambat * 2000;
-                                    @endphp
-                                    <p class="font-weight-bold">Denda Keterlambatan :<br> Rp. {{ number_format($nominal_denda, 0, ',', '.') }}</p>
+                                    $datetime1 = new \DateTime($tgl_pinjam);
+                                    $datetime2 = $date;
+                                    $interval = $datetime1->diff($datetime2);
+                                    $jumlah_hari_terlambat = $interval->days - 16;
+                                    if ($jumlah_hari_terlambat < 0) { $jumlah_hari_terlambat=0; }
+                                        $nominal_denda=$jumlah_hari_terlambat * 2000; @endphp <p
+                                        class="font-weight-bold">Denda Keterlambatan :<br> Rp. {{
+                                        number_format($nominal_denda, 0, ',', '.') }}</p>
                                 </div>
                             </div>
                         </div>
@@ -174,7 +245,7 @@
     </div>
 </div>
 <script>
- $(document).on('click', '.acc-button', function () {
+    $(document).on('click', '.acc-button', function () {
     var id = $(this).data('id');
     Swal.fire({
         title: 'Apakah Anda yakin?',

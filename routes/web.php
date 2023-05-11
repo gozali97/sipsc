@@ -59,7 +59,6 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
         Route::post('listpetugas/destroy/{id}', 'destroy')->name('petugas.destroy');
         Route::post('/listpetugas/reset-password/{id}', 'resetPassword')->name('petugas.resetPassword');
     });
-
 });
 
 
@@ -108,6 +107,7 @@ Route::middleware(['auth', 'role:petugas'])->group(function () {
         Route::get('listpinjam/detail/{id}', 'view')->name('listpinjam.view');
         Route::get('listpinjam/accpinjam/{id}', 'accPinjam')->name('listpinjam.accPinjam');
         Route::post('listpinjam/store', 'store')->name('listpinjam.store');
+        Route::post('listpinjam/storeAll', 'storeAll')->name('listpinjam.storeAll');
         Route::post('listpinjam/insert', 'insert')->name('listpinjam.insert');
         Route::post('listpinjam/update/{id}', 'update')->name('listpinjam.update');
         Route::post('listpinjam/destroy/{id}', 'destroy')->name('listpinjam.destroy');
@@ -116,6 +116,7 @@ Route::middleware(['auth', 'role:petugas'])->group(function () {
     Route::controller(ManagePengembalianController::class)->group(function () {
         Route::get('listkembali', 'index')->name('listkembali.index');
         Route::post('listkembali/view/{id}', 'view')->name('listkembali.view');
+        Route::get('listkembali/detail/{no_kembali}', 'detail')->name('listkembali.detail');
     });
 
     Route::controller(ManageLaporanController::class)->group(function () {
@@ -145,4 +146,3 @@ Route::middleware(['auth', 'role:anggota'])->group(function () {
         Route::post('/list/store/{id}', 'store')->name('store.update');
     });
 });
-

@@ -11,11 +11,25 @@ class ManagePengembalianController extends Controller
     {
 
         $data = Pengembalian::query()
-        ->join('kondisis', 'kondisis.kd_kondisi', 'pengembalians.kd_kondisi')
-        ->join('users', 'users.id', 'pengembalians.id_user')
-        ->join('pustakas', 'pustakas.id_pustaka', 'pengembalians.id_pustaka')
-        ->get();
+            ->join('users', 'users.id', 'pengembalian.id_user')
+            ->get();
 
         return view('petugas.pengembalian.index', compact('data'));
+    }
+
+    public function detail($id)
+    {
+
+        $data = Pengembalian::query()
+            ->join('detail_pengembalian', 'detail_pengembalian.no_kembali', 'pengembalian.no_kembali')
+            ->join('detail_peminjaman', 'detail_peminjaman.no_det_pinjaman', 'detail_pengembalian.no_det_pinjam')
+            ->join('kondisis', 'kondisis.kd_kondisi', 'detail_pengembalian.kd_kondisi')
+            ->join('users', 'users.id', 'pengembalian.id_user')
+            ->join('pustakas', 'pustakas.id_pustaka', 'detail_peminjaman.id_pustaka')
+            ->where('pengembalian.no_kembali', $id)
+            ->get();
+
+
+        return view('petugas.pengembalian.view', compact('data'));
     }
 }

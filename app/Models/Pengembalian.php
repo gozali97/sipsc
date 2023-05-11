@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Pengembalian extends Model
 {
     use HasFactory;
-    protected $table = 'pengembalians';
+    protected $table = 'pengembalian';
     protected $guarded = [];
     protected $primaryKey = 'no_kembali';
 }

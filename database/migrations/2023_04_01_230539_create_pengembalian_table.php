@@ -16,8 +16,9 @@ class CreatePengembalianTable extends Migration
         Schema::create('pengembalian', function (Blueprint $table) {
             $table->increments('no_kembali');
             $table->integer('id_user');
-            $table->dateTime('tgl_pinjam');
             $table->dateTime('tgl_kembali');
+            $table->integer('jumlah');
+            $table->enum('status', ['Selesai', 'None']);
             $table->timestamps();
         });
     }

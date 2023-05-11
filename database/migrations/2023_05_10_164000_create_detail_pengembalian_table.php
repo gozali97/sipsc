@@ -16,6 +16,9 @@ class CreateDetailPengembalianTable extends Migration
         Schema::create('detail_pengembalian', function (Blueprint $table) {
             $table->increments('no_det_kembali');
             $table->integer('no_kembali');
+            $table->integer('no_det_pinjam');
+            $table->dateTime('tgl_pinjam');
+            $table->dateTime('tgl_kembali');
             $table->integer('nominal_denda');
             $table->integer('jml_terlambat');
             $table->integer('kd_kondisi');

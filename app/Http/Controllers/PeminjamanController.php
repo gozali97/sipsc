@@ -24,7 +24,6 @@ class PeminjamanController extends Controller
             ->where('peminjaman.id_user', $id)
             ->where('peminjaman.status', 1)
             ->get();
-        // dd($data);
 
         return view('anggota.pinjam.index', compact('data'));
     }
@@ -52,15 +51,6 @@ class PeminjamanController extends Controller
                 return redirect()->back()->with('error', 'Maaf, kamu hanya diperbolehkan meminjam 1 buku yang sama.');
             }
 
-            $jumlahData = Peminjaman::count();
-
-            if ($jumlahData > 0) {
-                $nomorUrutan = $jumlahData + 1;
-                $kode = 'P00' . $nomorUrutan;
-            } else {
-                $kode = 'P001';
-            }
-
             $jumlah = count($request->pustaka);
 
             $pustaka = Pustaka::whereIn('id_pustaka', $request->pustaka)->get();
@@ -78,28 +68,16 @@ class PeminjamanController extends Controller
                 DB::beginTransaction();
 
                 $pinjam = new Peminjaman;
-                $pinjam->no_pinjam = $kode;
                 $pinjam->id_user = $request->id_user;
                 $pinjam->status = 1;
                 $pinjam->jumlah = $jumlah;
                 if ($pinjam->save()) {
 
                     $pinjamDetail = [];
-                    $nomor = 0;
-
-                    $lastDetail = DetailPeminjaman::max('no_det_pinjaman');
-
-                    if ($lastDetail) {
-                        $nomor = intval(substr($lastDetail, 4));
-                    } else {
-                        $no_detail = 'PD001';
-                    }
 
                     foreach ($request->pustaka as $key => $pinjamDetails) {
-                        $nomor++;
-                        $no_detail = 'PD' . str_pad($nomor, 3, '0', STR_PAD_LEFT);
+
                         $detail = [
-                            'no_det_pinjaman' => $no_detail,
                             'no_pinjam' => $pinjam->no_pinjam,
                             'id_pustaka' => $pinjamDetails,
                             'id_user' => $request->id_user,
@@ -127,27 +105,5 @@ class PeminjamanController extends Controller
         }
     }
 
-    // public function update(Request $request, $id)
-    // {
-    //     $category = Peminjaman::where('id_penerbit', $id)->first();
-    //     // dd($category);
-    //     $category->nama_penerbit = $request->penerbit;
-    //     $category->alamat = $request->alamat;
-    //     $category->save();
 
-    //     return redirect()->route('penerbit.index')->with('success', 'Penerbit berhasil diupdate.');
-    // }
-
-    // public function destroy($id)
-    // {
-    //     $category = Peminjaman::find($id);
-
-    //     if (!$category) {
-    //         return redirect()->back()->with('error', 'Penerbit tidak ditemukan.');
-    //     }
-
-    //     $category->delete();
-
-    //     return redirect()->route('penerbit.index')->with('success', 'Penerbit berhasil dihapus.');
-    // }
 }

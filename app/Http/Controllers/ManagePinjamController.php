@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\DetailPeminjaman;
+use App\Models\DetailPengembalian;
 use DateTime;
 
 use App\Models\Kondisi;
@@ -75,7 +76,7 @@ class ManagePinjamController extends Controller
             // dd($detailPeminjaman);
 
             foreach ($detailPeminjaman as $detail) {
-                // Mengembalikan jumlah pustaka
+
                 $pustaka = Pustaka::where('id_pustaka', $detail->id_pustaka)->first();
                 $pustaka->jumlah += 1;
                 $pustaka->save();
@@ -96,7 +97,7 @@ class ManagePinjamController extends Controller
     public function store(Request $request)
     {
         try {
-            // dd($request->all());
+            DB::beginTransaction();
             $validator = Validator::make($request->all(), [
                 'kondisi' => 'required',
             ]);
@@ -124,27 +125,26 @@ class ManagePinjamController extends Controller
 
             $tgl_kembali = $date->format('Y-m-d H:i:s');
 
-            $jumlahData = Pengembalian::count();
 
-            if ($jumlahData > 0) {
-                $nomorUrutan = $jumlahData + 1;
-                $kode = 'PK00' . $nomorUrutan;
-            } else {
-                $kode = 'PK001';
+            $pengembalian = new Pengembalian;
+            $pengembalian->id_user = $peminjaman->id_user;
+            $pengembalian->tgl_kembali = $tgl_kembali;
+            $pengembalian->jumlah = 1;
+
+            if ($pengembalian->save()) {
+
+                $detailPengembalian = new DetailPengembalian;
+                $detailPengembalian->no_kembali = $pengembalian->no_kembali;
+                $detailPengembalian->no_det_pinjam = $request->pinjam;
+                $detailPengembalian->nominal_denda = $nominal_denda;
+                $detailPengembalian->jml_terlambat = $jumlah_hari_terlambat;
+                $detailPengembalian->kd_kondisi = $request->kondisi;
+                $detailPengembalian->tgl_pinjam = $peminjaman->tgl_pinjam;
+                $detailPengembalian->tgl_kembali = $tgl_kembali;
+                $detailPengembalian->save();
             }
 
-            $pengembalian = Pengembalian::create([
-                'no_kembali' => $kode,
-                'id_pustaka' => $peminjaman->id_pustaka,
-                'id_user' => $peminjaman->id_user,
-                'tgl_pinjam' => $peminjaman->tgl_pinjam,
-                'tgl_kembali' => $tgl_kembali,
-                'nominal_denda' => $nominal_denda,
-                'jml_terlambat' => $jumlah_hari_terlambat,
-                'kd_kondisi' => $request->kondisi,
-            ]);
 
-            // Update status peminjaman menjadi 0
             $peminjaman->update([
                 'status' => "Dikembalikan",
                 'updated_at' => date('Y-m-d H:i:s'),
@@ -156,11 +156,7 @@ class ManagePinjamController extends Controller
             ]);
 
             if ($pinjam->jumlah == 0) {
-                $deleteDetail = DetailPeminjaman::query()
-                    ->where('no_pinjam', $pinjam->no_pinjam)
-                    ->delete();
-
-                $pinjam->delete();
+                $pinjam->status = 0;
             } else {
                 $pinjam->save();
             }
@@ -169,11 +165,103 @@ class ManagePinjamController extends Controller
             $pustaka->update([
                 'jumlah' => $pustaka->jumlah + 1,
             ]);
+            DB::commit();
+            return redirect()->route('listpinjam.index')->with('success', 'Data Peminjaman berhasil di kembalikan.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat konfirmasi Pustaka.' . $e->getMessage());
+        }
+    }
+
+    public function storeAll(Request $request)
+    {
+        try {
+
+            DB::beginTransaction();
+            $validator = Validator::make($request->all(), [
+                'kondisi' => 'required',
+            ]);
+
+            if ($validator->fails()) {
+                return redirect()->back()->withErrors($validator);
+            }
+
+            $date = \Carbon\Carbon::now();
+
+            $detailPeminjaman = Peminjaman::query()
+                ->join('detail_peminjaman', 'detail_peminjaman.no_pinjam', 'peminjaman.no_pinjam')
+                ->where('peminjaman.no_pinjam', $request->no_pinjam)
+                ->get();
+
+            $datetime2 = $date;
+
+            $detailArray = [];
+
+            foreach ($detailPeminjaman as $pinjam) {
+                $tgl_pinjam = $pinjam->tgl_pinjam;
+
+                $datetime1 = new \DateTime($tgl_pinjam);
+                $interval = $datetime1->diff($datetime2);
+                $jumlah_hari_terlambat = $interval->days - 16;
+                $jumlah_hari_terlambat = $jumlah_hari_terlambat < 0 ? 0 : $jumlah_hari_terlambat;
+                $nominal_denda = $jumlah_hari_terlambat * 2000;
+
+                $detailArray[] = [
+                    'jumlah_hari_terlambat' => $jumlah_hari_terlambat,
+                    'nominal_denda' => $nominal_denda
+                ];
+            }
+
+            $tgl_kembali = $date->format('Y-m-d H:i:s');
+
+            $pengembalian = new Pengembalian;
+            $pengembalian->id_user = $detailPeminjaman[0]->id_user;
+            $pengembalian->tgl_kembali = $tgl_kembali;
+            $pengembalian->jumlah = 2;
+
+            if ($pengembalian->save()) {
+                $pinjams = $request->input('pinjam');
+                $id_pustakas = $request->input('id_pustaka');
+                $kondisis = $request->input('kondisi');
+
+                foreach ($pinjams as $index => $pinjam) {
+                    $detailPengembalian = new DetailPengembalian;
+                    $detailPengembalian->no_kembali = $pengembalian->no_kembali;
+                    $detailPengembalian->no_det_pinjam = $pinjam;
+                    $detailPengembalian->nominal_denda = $detailArray[$index]['nominal_denda'];
+                    $detailPengembalian->jml_terlambat = $detailArray[$index]['jumlah_hari_terlambat'];
+                    $detailPengembalian->kd_kondisi = $kondisis[$index];
+                    $detailPengembalian->tgl_pinjam = $tgl_pinjam;
+                    $detailPengembalian->tgl_kembali = $tgl_kembali;
+                    $detailPengembalian->save();
+
+                    $pustaka = Pustaka::where('id_pustaka', $id_pustakas[$index])->first();
+                    $pustaka->update([
+                        'jumlah' => $pustaka->jumlah + 1,
+                    ]);
+                }
+            }
+
+            foreach ($detailPeminjaman as $peminjaman) {
+                $detail = DetailPeminjaman::query()->where('no_det_pinjaman', $peminjaman->no_det_pinjaman)->first();
+                $detail->update([
+                    'status' => "Dikembalikan",
+                    'updated_at' => date('Y-m-d H:i:s'),
+                ]);
+            }
+
+            $pinjam = Peminjaman::query()->where('no_pinjam', $detailPeminjaman[0]->no_pinjam)->first();
+            $pinjam->update([
+                'jumlah' => $pinjam->jumlah - 2,
+                'status' => 0,
+            ]);
+
+            DB::commit();
 
             return redirect()->route('listpinjam.index')->with('success', 'Data Peminjaman berhasil di kembalikan.');
         } catch (\Exception $e) {
-            dd($e);
-            return redirect()->back()->with('error', 'Terjadi kesalahan saat konfirmasi Pustaka.');
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat konfirmasi Pustaka.' . $e->getMessage());
         }
     }
 
@@ -181,8 +269,9 @@ class ManagePinjamController extends Controller
     {
         try {
             $user_id = $request->id_user;
+
             $existingPeminjamanCount = DetailPeminjaman::where('id_user', $user_id)
-                ->where('status', 1)
+                ->where('status', '<>', 'Dikembalikan')
                 ->count();
 
             if ($existingPeminjamanCount >= 2) {
@@ -193,22 +282,13 @@ class ManagePinjamController extends Controller
 
             $existingPeminjaman = DetailPeminjaman::where('id_user', $user_id)
                 ->whereIn('id_pustaka', $request->pustaka)
-                ->where('status', 1)
+                ->where('status', '<>', 'Dikembalikan')
                 ->first();
 
             if ($existingPeminjaman) {
                 return redirect()->back()->with('error', 'Maaf, kamu hanya diperbolehkan meminjam 1 buku yang sama.');
             }
 
-
-            $jumlahData = Peminjaman::count();
-
-            if ($jumlahData > 0) {
-                $nomorUrutan = $jumlahData + 1;
-                $kode = 'P00' . $nomorUrutan;
-            } else {
-                $kode = 'P001';
-            }
 
             $jumlah = count($request->pustaka);
 
@@ -227,28 +307,16 @@ class ManagePinjamController extends Controller
                 DB::beginTransaction();
 
                 $pinjam = new Peminjaman;
-                $pinjam->no_pinjam = $kode;
                 $pinjam->id_user = $request->id_user;
                 $pinjam->status = 1;
                 $pinjam->jumlah = $jumlah;
                 if ($pinjam->save()) {
 
                     $pinjamDetail = [];
-                    $nomor = 0;
-
-                    $lastDetail = DetailPeminjaman::max('no_det_pinjaman');
-
-                    if ($lastDetail) {
-                        $nomor = intval(substr($lastDetail, 4));
-                    } else {
-                        $no_detail = 'PD001';
-                    }
 
                     foreach ($request->pustaka as $key => $pinjamDetails) {
-                        $nomor++;
-                        $no_detail = 'PD' . str_pad($nomor, 3, '0', STR_PAD_LEFT);
+
                         $detail = [
-                            'no_det_pinjaman' => $no_detail,
                             'no_pinjam' => $pinjam->no_pinjam,
                             'id_pustaka' => $pinjamDetails,
                             'id_user' => $request->id_user,
@@ -273,7 +341,7 @@ class ManagePinjamController extends Controller
             }
         } catch (\Exception $e) {
             DB::rollback();
-            return redirect()->back()->with('error', 'Terjadi kesalahan saat menyimpan data pustaka.');
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat menyimpan data pustaka.' . $e->getMessage());
         }
     }
 
