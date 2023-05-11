@@ -6,7 +6,7 @@
 </head>
 
 <body>
-    <h1 style="text-align: center;">Laporan seluruh peminjaman dan pengembalian tiap bulan</h1>
+    <h1 style="text-align: center;">Laporan peminjaman yang belum dikembalikan namun sudah terlambat</h1>
 
     <table style="width:100%; border-collapse: collapse; border: 1px solid black;">
         <thead>
@@ -15,11 +15,10 @@
                 <th style="border: 1px solid black; padding: 5px;">Nama Anggota</th>
                 <th style="border: 1px solid black; padding: 5px;">Kelas</th>
                 <th style="border: 1px solid black; padding: 5px;">Judul</th>
-                <th style="border: 1px solid black; padding: 5px;">ISBN</th>
                 <th style="border: 1px solid black; padding: 5px;">Tanggal Pinjam</th>
-                <th style="border: 1px solid black; padding: 5px;">Tanggal Kembali</th>
-                <th style="border: 1px solid black; padding: 5px;">Kondisi</th>
+                <th style="border: 1px solid black; padding: 5px;">Jumlah Terlambat</th>
                 <th style="border: 1px solid black; padding: 5px;">Denda</th>
+                <th style="border: 1px solid black; padding: 5px;">Status</th>
             </tr>
         </thead>
         <tbody>
@@ -32,14 +31,13 @@
                     <td style="border: 1px solid black; padding: 5px;">{{ $d->nama }}</td>
                     <td style="border: 1px solid black; padding: 5px;">{{ $d->kelas }}</td>
                     <td style="border: 1px solid black; padding: 5px;">{{ $d->judul }}</td>
-                    <td style="border: 1px solid black; padding: 5px;">{{ $d->isbn }}</td>
                     <td style="border: 1px solid black; padding: 5px;">
                         {{ \Carbon\Carbon::parse($d->tgl_pinjam)->format('d-m-Y') }}</td>
-                    <td style="border: 1px solid black; padding: 5px;">
-                        {{ \Carbon\Carbon::parse($d->tgl_kembali)->format('d-m-Y') }}</td>
-                    <td style="border: 1px solid black; padding: 5px;">{{ $d->jenis_kondisi }}</td>
+                    <td style="border: 1px solid black; padding: 5px;">{{ $d->jumlah_hari_terlambat }}</td>
                     <td style="border: 1px solid black; padding: 5px;">Rp.
                         {{ number_format($d->nominal_denda, 0, ',', '.') }}</td>
+
+                    <td style="border: 1px solid black; padding: 5px;">{{ $d->status }}</td>
                 </tr>
             @endforeach
         </tbody>

@@ -122,6 +122,10 @@ Route::middleware(['auth', 'role:petugas'])->group(function () {
     Route::controller(ManageLaporanController::class)->group(function () {
         Route::get('laporan', 'index')->name('laporan.index');
         Route::get('print', 'print')->name('laporan.print');
+        Route::get('laporanPinjam', 'indexPinjam')->name('laporan.indexPinjam');
+        Route::get('printPinjam', 'printPinjam')->name('laporan.printPinjam');
+        Route::get('laporanDenda', 'indexDenda')->name('laporan.indexDenda');
+        Route::get('printDenda', 'printDenda')->name('laporan.printDenda');
     });
 });
 
