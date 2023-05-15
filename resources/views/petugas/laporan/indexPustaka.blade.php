@@ -85,6 +85,7 @@
                                     <th>Penerbit</th>
                                     <th>Tahun</th>
                                     <th>Gambar</th>
+                                    <th>Stok</th>
                                     <th>Status</th>
                                 </tr>
                             </thead>
@@ -100,6 +101,7 @@
                                         <td>{{ $d->nama_pengarang }}</td>
                                         <td>{{ $d->nama_penerbit }}</td>
                                         <td>{{ $d->tahun_terbit }}</td>
+                                        <td>{{ $d->jumlah }}</td>
                                         <td><img src="{{ url('assets/img/' . $d->gambar) }}"
                                                 style="width:80px; height:80px;border-radius: 5%;" alt=""></td>
                                         <td>Aktif</td>

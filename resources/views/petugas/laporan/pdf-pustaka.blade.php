@@ -17,6 +17,7 @@
                 <th style="border: 1px solid black; padding: 5px;">Pengarang</th>
                 <th style="border: 1px solid black; padding: 5px;">Penerbit</th>
                 <th style="border: 1px solid black; padding: 5px;">Tahun Terbit</th>
+                <th style="border: 1px solid black; padding: 5px;">Stock</th>
                 <th style="border: 1px solid black; padding: 5px;">Status</th>
             </tr>
         </thead>
@@ -32,6 +33,7 @@
                     <td style="border: 1px solid black; padding: 5px;">{{ $d->nama_pengarang }}</td>
                     <td style="border: 1px solid black; padding: 5px;">{{ $d->nama_penerbit }}</td>
                     <td style="border: 1px solid black; padding: 5px;">{{ $d->tahun_terbit }}</td>
+                    <td style="border: 1px solid black; padding: 5px;">{{ $d->jumlah }}</td>
                     <td style="border: 1px solid black; padding: 5px;">Aktif</td>
                 </tr>
             @endforeach
