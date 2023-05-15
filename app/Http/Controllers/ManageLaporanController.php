@@ -32,7 +32,7 @@ class ManageLaporanController extends Controller
             ->join('kondisis', 'kondisis.kd_kondisi', 'detail_pengembalian.kd_kondisi')
             ->join('users', 'users.id', 'pengembalian.id_user')
             ->join('pustakas', 'pustakas.id_pustaka', 'detail_peminjaman.id_pustaka')
-            ->select('users.id', 'users.nama', 'users.kelas', 'pustakas.judul', 'pustakas.isbn', 'pengembalians.tgl_pinjam', 'pengembalians.tgl_kembali', 'kondisis.jenis_kondisi', 'pengembalians.nominal_denda')
+            ->select('users.id', 'users.nama', 'users.kelas', 'pustakas.judul', 'pustakas.isbn', 'detail_pengembalian.tgl_pinjam', 'pengembalian.tgl_kembali', 'kondisis.jenis_kondisi', 'detail_pengembalian.nominal_denda')
             ->get();
 
         $pdf = Pdf::loadView('petugas.laporan.pdf', compact('data'));
@@ -102,7 +102,7 @@ class ManageLaporanController extends Controller
                 $jumlah_hari_terlambat = 0;
             }
 
-            $nominal_denda = $jumlah_hari_terlambat * 2000;
+            $nominal_denda = $jumlah_hari_terlambat * 500;
             $item->jumlah_hari_terlambat = $jumlah_hari_terlambat;
             $item->nominal_denda = $nominal_denda;
         });
@@ -138,7 +138,7 @@ class ManageLaporanController extends Controller
                 $jumlah_hari_terlambat = 0;
             }
 
-            $nominal_denda = $jumlah_hari_terlambat * 2000;
+            $nominal_denda = $jumlah_hari_terlambat * 500;
             $item->jumlah_hari_terlambat = $jumlah_hari_terlambat;
             $item->nominal_denda = $nominal_denda;
         });

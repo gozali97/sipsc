@@ -121,7 +121,7 @@ class ManagePinjamController extends Controller
             if ($jumlah_hari_terlambat < 0) {
                 $jumlah_hari_terlambat = 0;
             }
-            $nominal_denda = $jumlah_hari_terlambat * 2000;
+            $nominal_denda = $jumlah_hari_terlambat * 500;
 
             $tgl_kembali = $date->format('Y-m-d H:i:s');
 
@@ -204,7 +204,7 @@ class ManagePinjamController extends Controller
                 $interval = $datetime1->diff($datetime2);
                 $jumlah_hari_terlambat = $interval->days - 16;
                 $jumlah_hari_terlambat = $jumlah_hari_terlambat < 0 ? 0 : $jumlah_hari_terlambat;
-                $nominal_denda = $jumlah_hari_terlambat * 2000;
+                $nominal_denda = $jumlah_hari_terlambat * 500;
 
                 $detailArray[] = [
                     'jumlah_hari_terlambat' => $jumlah_hari_terlambat,
