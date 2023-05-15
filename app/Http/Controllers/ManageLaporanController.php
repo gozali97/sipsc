@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Peminjaman;
 use App\Models\Pengembalian;
+use App\Models\Pustaka;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
 
@@ -24,8 +25,9 @@ class ManageLaporanController extends Controller
         return view('petugas.laporan.index', compact('data'));
     }
 
-    public function print()
+    public function printByMonth(Request $request)
     {
+        $bulan = $request->input('bulan');
         $data = Pengembalian::query()
             ->join('detail_pengembalian', 'detail_pengembalian.no_kembali', 'pengembalian.no_kembali')
             ->join('detail_peminjaman', 'detail_peminjaman.no_det_pinjaman', 'detail_pengembalian.no_det_pinjam')
@@ -33,14 +35,43 @@ class ManageLaporanController extends Controller
             ->join('users', 'users.id', 'pengembalian.id_user')
             ->join('pustakas', 'pustakas.id_pustaka', 'detail_peminjaman.id_pustaka')
             ->select('users.id', 'users.nama', 'users.kelas', 'pustakas.judul', 'pustakas.isbn', 'detail_pengembalian.tgl_pinjam', 'pengembalian.tgl_kembali', 'kondisis.jenis_kondisi', 'detail_pengembalian.nominal_denda')
+            ->whereMonth('pengembalian.created_at', $bulan)
             ->get();
 
         $pdf = Pdf::loadView('petugas.laporan.pdf', compact('data'));
 
         $pdf->setPaper('A4', 'portrait');
 
+        return $pdf->download('laporan-transaksi.pdf');
+    }
 
-        return $pdf->download('laporan.pdf');
+    public function indexPustaka()
+    {
+        $data = Pustaka::query()
+            ->join('kategoris', 'kategoris.id_kategori', 'pustakas.id_kategori')
+            ->join('pengarangs', 'pengarangs.id_pengarang', 'pustakas.id_pengarang')
+            ->join('penerbits', 'penerbits.id_penerbit', 'pustakas.id_penerbit')
+            ->select('pustakas.*', 'kategoris.kategori', 'pengarangs.nama_pengarang', 'penerbits.nama_penerbit')
+            ->get();
+
+        return view('petugas.laporan.indexPustaka', compact('data'));
+    }
+
+    public function printPustaka()
+    {
+        $data = Pustaka::query()
+            ->join('kategoris', 'kategoris.id_kategori', 'pustakas.id_kategori')
+            ->join('pengarangs', 'pengarangs.id_pengarang', 'pustakas.id_pengarang')
+            ->join('penerbits', 'penerbits.id_penerbit', 'pustakas.id_penerbit')
+            ->select('pustakas.*', 'kategoris.kategori', 'pengarangs.nama_pengarang', 'penerbits.nama_penerbit')
+            ->get();
+
+        $pdf = Pdf::loadView('petugas.laporan.pdf-pustaka', compact('data'));
+
+        $pdf->setPaper('A4', 'portrait');
+
+
+        return $pdf->download('laporan-Pustaka.pdf');
     }
 
     public function indexPinjam()

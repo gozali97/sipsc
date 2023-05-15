@@ -3,47 +3,90 @@
 
 <head>
     <title>Laporan Transaksi Perpustakaan</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            border: 1px solid black;
+            padding: 8px;
+        }
+
+        thead th {
+            background-color: #f2f2f2;
+        }
+
+        tfoot td {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+
+        .footer {
+            margin-top: 20px;
+            text-align: right;
+        }
+    </style>
 </head>
 
 <body>
-    <h1 style="text-align: center;">Laporan seluruh peminjaman dan pengembalian tiap bulan</h1>
-
-    <table style="width:100%; border-collapse: collapse; border: 1px solid black;">
+    <h2>Laporan seluruh peminjaman dan pengembalian tiap bulan</h2>
+    <table>
         <thead>
-            <tr style="border: 1px solid black;">
-                <th style="border: 1px solid black; padding: 5px;">No</th>
-                <th style="border: 1px solid black; padding: 5px;">Nama Anggota</th>
-                <th style="border: 1px solid black; padding: 5px;">Kelas</th>
-                <th style="border: 1px solid black; padding: 5px;">Judul</th>
-                <th style="border: 1px solid black; padding: 5px;">ISBN</th>
-                <th style="border: 1px solid black; padding: 5px;">Tanggal Pinjam</th>
-                <th style="border: 1px solid black; padding: 5px;">Tanggal Kembali</th>
-                <th style="border: 1px solid black; padding: 5px;">Kondisi</th>
-                <th style="border: 1px solid black; padding: 5px;">Denda</th>
+            <tr>
+                <th>No</th>
+                <th>Nama Anggota</th>
+                <th>Kelas</th>
+                <th>Judul</th>
+                <th>ISBN</th>
+                <th>Tanggal Pinjam</th>
+                <th>Tanggal Kembali</th>
+                <th>Kondisi</th>
+                <th>Denda</th>
             </tr>
         </thead>
         <tbody>
             @php
                 $no = 1;
             @endphp
-            @foreach ($data as $d)
-                <tr style="border: 1px solid black;">
-                    <td style="border: 1px solid black; padding: 5px;">{{ $no++ }}</td>
-                    <td style="border: 1px solid black; padding: 5px;">{{ $d->nama }}</td>
-                    <td style="border: 1px solid black; padding: 5px;">{{ $d->kelas }}</td>
-                    <td style="border: 1px solid black; padding: 5px;">{{ $d->judul }}</td>
-                    <td style="border: 1px solid black; padding: 5px;">{{ $d->isbn }}</td>
-                    <td style="border: 1px solid black; padding: 5px;">
-                        {{ \Carbon\Carbon::parse($d->tgl_pinjam)->format('d-m-Y') }}</td>
-                    <td style="border: 1px solid black; padding: 5px;">
-                        {{ \Carbon\Carbon::parse($d->tgl_kembali)->format('d-m-Y') }}</td>
-                    <td style="border: 1px solid black; padding: 5px;">{{ $d->jenis_kondisi }}</td>
-                    <td style="border: 1px solid black; padding: 5px;">Rp.
-                        {{ number_format($d->nominal_denda, 0, ',', '.') }}</td>
+            @if ($data->isEmpty())
+                <tr>
+                    <td colspan="9" style="font-weight: bold; text-align: center;">Tidak ada data</td>
                 </tr>
-            @endforeach
+            @else
+                @foreach ($data as $d)
+                    <tr>
+                        <td>{{ $no++ }}</td>
+                        <td>{{ $d->nama }}</td>
+                        <td>{{ $d->kelas }}</td>
+                        <td>{{ $d->judul }}</td>
+                        <td>{{ $d->isbn }}</td>
+                        <td>{{ \Carbon\Carbon::parse($d->tgl_pinjam)->format('d-m-Y') }}</td>
+                        <td>{{ \Carbon\Carbon::parse($d->tgl_kembali)->format('d-m-Y') }}</td>
+                        <td>{{ $d->jenis_kondisi }}</td>
+                        <td>Rp. {{ number_format($d->nominal_denda, 0, ',', '.') }}</td>
+                    </tr>
+                @endforeach
+            @endif
         </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="9" class="footer">Yogyakarta, {{ \Carbon\Carbon::now()->format('d F Y') }}</td>
+            </tr>
+        </tfoot>
     </table>
+
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.7.0/jspdf.umd.min.js"></script>
     <script>

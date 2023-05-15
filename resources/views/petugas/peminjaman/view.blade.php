@@ -283,7 +283,7 @@
                         },
                         error: function() {
                             swal("Oops!", "Terjadi kesalahan saat konfirmasi Pustaka.",
-                            "error");
+                                "error");
                         }
                     });
                 }

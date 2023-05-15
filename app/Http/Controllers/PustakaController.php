@@ -15,12 +15,12 @@ class PustakaController extends Controller
     {
 
         $pustaka = Pustaka::query()
-                   ->select('pustakas.id_pustaka', 'pustakas.judul', 'pustakas.jumlah', 'pustakas.isbn','pustakas.id_kategori', 'pustakas.id_pengarang','pustakas.id_penerbit','pustakas.tahun_terbit', 'pustakas.gambar', 'kategoris.kategori', 'pengarangs.nama_pengarang as pengarang', 'penerbits.nama_penerbit as penerbit')
-                   ->join('kategoris', 'kategoris.id_kategori', 'pustakas.id_kategori')
-                   ->join('pengarangs', 'pengarangs.id_pengarang', 'pustakas.id_pengarang')
-                   ->join('penerbits', 'penerbits.id_penerbit', 'pustakas.id_penerbit')
-                   ->where('status', 1)
-                   ->get();
+            ->select('pustakas.id_pustaka', 'pustakas.judul', 'pustakas.jumlah', 'pustakas.isbn', 'pustakas.id_kategori', 'pustakas.id_pengarang', 'pustakas.id_penerbit', 'pustakas.tahun_terbit', 'pustakas.gambar', 'kategoris.kategori', 'pengarangs.nama_pengarang as pengarang', 'penerbits.nama_penerbit as penerbit')
+            ->join('kategoris', 'kategoris.id_kategori', 'pustakas.id_kategori')
+            ->join('pengarangs', 'pengarangs.id_pengarang', 'pustakas.id_pengarang')
+            ->join('penerbits', 'penerbits.id_penerbit', 'pustakas.id_penerbit')
+            ->where('status', 1)
+            ->get();
 
         $kategori = Kategori::all();
         $pengarang = Pengarang::all();
@@ -64,11 +64,11 @@ class PustakaController extends Controller
                 'status' => 1,
             ]);
 
-            // Redirect ke halaman index kategori dengan pesan sukses
+            //
             return redirect()->route('pustaka.index')->with('success', 'Data Pustaka berhasil ditambahkan.');
         } catch (\Exception $e) {
-            dd($e);
-            return redirect()->back()->with('error', 'Terjadi kesalahan saat menyimpan data pustaka: '.$e->getMessage());
+
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat menyimpan data pustaka: ' . $e->getMessage());
         }
     }
 
@@ -108,23 +108,23 @@ class PustakaController extends Controller
         }
     }
 
-        public function destroy($id)
-        {
-            $pustaka = Pustaka::find($id);
-            // dd($pustaka);
+    public function destroy($id)
+    {
+        $pustaka = Pustaka::find($id);
+        // dd($pustaka);
 
-            if (!$pustaka) {
-                return redirect()->back()->with('error', 'Data Pustaka tidak ditemukan.');
-            }
-
-            // Hapus gambar dari server
-            $gambarPath = public_path('assets/img/' . $pustaka->gambar);
-            if (file_exists($gambarPath)) {
-                unlink($gambarPath);
-            }
-
-            $pustaka->delete();
-
-            return redirect()->route('pustaka.index')->with('success', 'Pustaka berhasil dihapus.');
+        if (!$pustaka) {
+            return redirect()->back()->with('error', 'Data Pustaka tidak ditemukan.');
         }
+
+        // Hapus gambar dari server
+        $gambarPath = public_path('assets/img/' . $pustaka->gambar);
+        if (file_exists($gambarPath)) {
+            unlink($gambarPath);
+        }
+
+        $pustaka->delete();
+
+        return redirect()->route('pustaka.index')->with('success', 'Pustaka berhasil dihapus.');
+    }
 }

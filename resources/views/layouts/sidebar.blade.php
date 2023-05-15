@@ -75,6 +75,9 @@
                                 <span class="micon dw dw-notebook"></span></span><span class="mtext">Laporan</span>
                             </a>
                             <ul class="submenu">
+                                <li><a href="/laporanPustaka">Laporan Pustaka</a></li>
+                            </ul>
+                            <ul class="submenu">
                                 <li><a href="/laporanDenda">Laporan Denda</a></li>
                             </ul>
                             <ul class="submenu">

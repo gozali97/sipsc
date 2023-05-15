@@ -64,7 +64,7 @@
                         <nav aria-label="breadcrumb" role="navigation">
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item"><a href="/laporanDenda">Home</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">Laporan</li>
+                                <li class="breadcrumb-item active" aria-current="page">Laporan Peminjaman Terlambat</li>
                             </ol>
                         </nav>
                     </div>

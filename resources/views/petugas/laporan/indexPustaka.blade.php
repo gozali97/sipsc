@@ -64,7 +64,7 @@
                         <nav aria-label="breadcrumb" role="navigation">
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item"><a href="/laporan">Home</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">Laporan Transaksi</li>
+                                <li class="breadcrumb-item active" aria-current="page">Laporan Pustaka</li>
                             </ol>
                         </nav>
                     </div>
@@ -72,53 +72,20 @@
             </div>
             <div class="card-box mb-30">
                 <div class="pd-20">
-                    {{-- <a href="/print" type="button" class="btn btn-secondary"><i class="icon-copy fa fa-print"
-                            aria-hidden="true" style="margin-right: 5px"></i></i>Print</a> --}}
-                    <form action="{{ route('laporan.print') }}" method="post">
-                        @csrf
-                        <div class="form-group">
-                            <label for="bulan">Pilih Bulan</label>
-                            <div class="row">
-                                <div class="col-md-3">
-                                    <select name="bulan" id="bulan" class="form-control">
-                                        <option value="1">Januari</option>
-                                        <option value="2">Februari</option>
-                                        <option value="3">Maret</option>
-                                        <option value="4">April</option>
-                                        <option value="5">Mei</option>
-                                        <option value="6">Juni</option>
-                                        <option value="7">Juli</option>
-                                        <option value="8">Agustus</option>
-                                        <option value="9">September</option>
-                                        <option value="10">Oktober</option>
-                                        <option value="11">November</option>
-                                        <option value="12">Desember</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-3">
-                                    <button type="submit" class="btn btn-secondary">
-                                        <i class="icon-copy fa fa-print" aria-hidden="true"
-                                            style="margin-right: 5px"></i>Print
-                                    </button>
-                                </div>
-                            </div>
-
-                        </div>
-
-                    </form>
+                    <a href="/printPustaka" type="button" class="btn btn-secondary"><i class="icon-copy fa fa-print"
+                            aria-hidden="true" style="margin-right: 5px"></i></i>Print</a>
                     <div class="p-4">
                         <table id="datatable" class="table table-striped table-bordered" width="100%">
                             <thead>
                                 <tr>
                                     <th>No</th>
-                                    <th>Nama Anggota</th>
-                                    <th>Kelas</th>
                                     <th>Judul</th>
-                                    <th>ISBN</th>
-                                    <th>Tanggal Pinjam</th>
-                                    <th>Tanggal Kembali</th>
-                                    <th>Kondisi</th>
-                                    <th>Denda</th>
+                                    <th>Kategori</th>
+                                    <th>Pengarang</th>
+                                    <th>Penerbit</th>
+                                    <th>Tahun</th>
+                                    <th>Gambar</th>
+                                    <th>Status</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -128,14 +95,14 @@
                                 @foreach ($data as $d)
                                     <tr>
                                         <td>{{ $no++ }}</td>
-                                        <td>{{ $d->nama }}</td>
-                                        <td>{{ $d->kelas }}</td>
                                         <td>{{ $d->judul }}</td>
-                                        <td>{{ $d->isbn }}</td>
-                                        <td>{{ \Carbon\Carbon::parse($d->tgl_pinjam)->format('d-m-Y') }}</td>
-                                        <td>{{ \Carbon\Carbon::parse($d->tgl_kembali)->format('d-m-Y') }}</td>
-                                        <td>{{ $d->jenis_kondisi }}</td>
-                                        <td>Rp. {{ number_format($d->nominal_denda, 0, ',', '.') }}</td>
+                                        <td>{{ $d->kategori }}</td>
+                                        <td>{{ $d->nama_pengarang }}</td>
+                                        <td>{{ $d->nama_penerbit }}</td>
+                                        <td>{{ $d->tahun_terbit }}</td>
+                                        <td><img src="{{ url('assets/img/' . $d->gambar) }}"
+                                                style="width:80px; height:80px;border-radius: 5%;" alt=""></td>
+                                        <td>Aktif</td>
                                     </tr>
                                 @endforeach
                             </tbody>
