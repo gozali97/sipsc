@@ -41,7 +41,9 @@
 </head>
 
 <body>
-    <h2>Laporan seluruh peminjaman dan pengembalian tiap bulan</h2>
+    <h2>Laporan seluruh peminjaman dan <br> pengembalian tiap bulan</h2>
+    <p>Tanggal: {{ \Carbon\Carbon::parse($start)->format('d-m-Y') }} -
+        {{ \Carbon\Carbon::parse($end)->format('d-m-Y') }}</p>
     <table>
         <thead>
             <tr>

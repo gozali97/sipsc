@@ -125,9 +125,9 @@ Route::middleware(['auth', 'role:petugas'])->group(function () {
         Route::get('printPustaka', 'printPustaka')->name('laporan.printPustaka');
         Route::post('print', 'printByMonth')->name('laporan.print');
         Route::get('laporanPinjam', 'indexPinjam')->name('laporan.indexPinjam');
-        Route::get('printPinjam', 'printPinjam')->name('laporan.printPinjam');
+        Route::post('printPinjam', 'printPinjam')->name('laporan.printPinjam');
         Route::get('laporanDenda', 'indexDenda')->name('laporan.indexDenda');
-        Route::get('printDenda', 'printDenda')->name('laporan.printDenda');
+        Route::post('printDenda', 'printDenda')->name('laporan.printDenda');
     });
 });
 

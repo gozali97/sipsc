@@ -72,8 +72,30 @@
             </div>
             <div class="card-box mb-30">
                 <div class="pd-20">
-                    <a href="/printDenda" type="button" class="btn btn-secondary"><i class="icon-copy fa fa-print"
-                            aria-hidden="true" style="margin-right: 5px"></i></i>Print</a>
+                    <form action="{{ route('laporan.printDenda') }}" method="post">
+                        @csrf
+                        <div class="form-group">
+                            <label for="bulan">Pilih Periode</label>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <input class="form-control date-picker" name="stat_date" placeholder="Select start date"
+                                        type="text">
+                                </div>
+                                <div class="col-md-3">
+                                    <input class="form-control date-picker" name="end_date" placeholder="Select end date"
+                                        type="text">
+                                </div>
+                                <div class="col-md-3">
+                                    <button type="submit" class="btn btn-secondary">
+                                        <i class="icon-copy fa fa-print" aria-hidden="true"
+                                            style="margin-right: 5px"></i>Print
+                                    </button>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </form>
                     <div class="p-4">
                         <table id="datatable" class="table table-striped table-bordered" width="100%">
                             <thead>

@@ -77,23 +77,15 @@
                     <form action="{{ route('laporan.print') }}" method="post">
                         @csrf
                         <div class="form-group">
-                            <label for="bulan">Pilih Bulan</label>
+                            <label for="bulan">Pilih Periode</label>
                             <div class="row">
                                 <div class="col-md-3">
-                                    <select name="bulan" id="bulan" class="form-control">
-                                        <option value="1">Januari</option>
-                                        <option value="2">Februari</option>
-                                        <option value="3">Maret</option>
-                                        <option value="4">April</option>
-                                        <option value="5">Mei</option>
-                                        <option value="6">Juni</option>
-                                        <option value="7">Juli</option>
-                                        <option value="8">Agustus</option>
-                                        <option value="9">September</option>
-                                        <option value="10">Oktober</option>
-                                        <option value="11">November</option>
-                                        <option value="12">Desember</option>
-                                    </select>
+                                    <input class="form-control date-picker" name="stat_date" placeholder="Select start date"
+                                        type="text">
+                                </div>
+                                <div class="col-md-3">
+                                    <input class="form-control date-picker" name="end_date" placeholder="Select end date"
+                                        type="text">
                                 </div>
                                 <div class="col-md-3">
                                     <button type="submit" class="btn btn-secondary">
@@ -104,7 +96,6 @@
                             </div>
 
                         </div>
-
                     </form>
                     <div class="p-4">
                         <table id="datatable" class="table table-striped table-bordered" width="100%">
