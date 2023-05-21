@@ -84,8 +84,8 @@
                                     <th>Pengarang</th>
                                     <th>Penerbit</th>
                                     <th>Tahun</th>
-                                    <th>Gambar</th>
                                     <th>Stok</th>
+                                    <th>Gambar</th>
                                     <th>Status</th>
                                 </tr>
                             </thead>

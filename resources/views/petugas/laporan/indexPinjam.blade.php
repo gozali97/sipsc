@@ -59,12 +59,12 @@
                 <div class="row">
                     <div class="col-md-6 col-sm-12">
                         <div class="title">
-                            <h4>Laporan</h4>
+                            <h4>Laporan Peminjaman</h4>
                         </div>
                         <nav aria-label="breadcrumb" role="navigation">
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item"><a href="/laporan">Home</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">Laporan</li>
+                                <li class="breadcrumb-item active" aria-current="page">Laporan Peminjaman</li>
                             </ol>
                         </nav>
                     </div>
@@ -78,11 +78,11 @@
                             <label for="bulan">Pilih Periode</label>
                             <div class="row">
                                 <div class="col-md-3">
-                                    <input class="form-control date-picker" name="stat_date" placeholder="Select start date"
+                                    <input class="form-control date-picker" name="stat_date" placeholder="Mulai"
                                         type="text">
                                 </div>
                                 <div class="col-md-3">
-                                    <input class="form-control date-picker" name="end_date" placeholder="Select end date"
+                                    <input class="form-control date-picker" name="end_date" placeholder="Akhir"
                                         type="text">
                                 </div>
                                 <div class="col-md-3">

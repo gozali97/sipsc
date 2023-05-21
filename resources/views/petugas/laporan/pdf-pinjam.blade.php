@@ -46,9 +46,9 @@
 
 <body>
     <div class="header">
-        <h3 style="text-align: center">Laporan peminjaman yang belum <br> dikembalikan</h3>
-        <p>Tanggal: {{ \Carbon\Carbon::parse($start)->format('d-m-Y') }} -
-            {{ \Carbon\Carbon::parse($end)->format('d-m-Y') }}</p>
+    <h2>Laporan Peminjaman Pustaka <br> Perpustakaan SMK N 1 Cangkringan</h2>
+    <p>Periode Transaksi, Mulai : {{ \Carbon\Carbon::parse($start)->format('d-m-Y') }} Akhir :
+        {{ \Carbon\Carbon::parse($end)->format('d-m-Y') }}</p>
     </div>
 
     <table style="width:100%; border-collapse: collapse; border: 1px solid black;">
@@ -84,6 +84,15 @@
                 @endforeach
             @endif
         </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="9" class="footer">Yogyakarta, {{ \Carbon\Carbon::now()->format('d F Y') }}
+                    
+                <h4></h4><h4>Petugas</h4>
+                </td>
+                
+            </tr>
+        </tfoot>
     </table>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.7.0/jspdf.umd.min.js"></script>

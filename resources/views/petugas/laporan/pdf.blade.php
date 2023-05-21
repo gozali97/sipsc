@@ -41,8 +41,8 @@
 </head>
 
 <body>
-    <h2>Laporan seluruh peminjaman dan <br> pengembalian tiap bulan</h2>
-    <p>Tanggal: {{ \Carbon\Carbon::parse($start)->format('d-m-Y') }} -
+    <h2>Laporan Pengembalian Pustaka <br> Perpustakaan SMK N 1 Cangkringan</h2>
+    <p>Periode Transaksi, Mulai : {{ \Carbon\Carbon::parse($start)->format('d-m-Y') }} Akhir :
         {{ \Carbon\Carbon::parse($end)->format('d-m-Y') }}</p>
     <table>
         <thead>
@@ -84,7 +84,11 @@
         </tbody>
         <tfoot>
             <tr>
-                <td colspan="9" class="footer">Yogyakarta, {{ \Carbon\Carbon::now()->format('d F Y') }}</td>
+                <td colspan="9" class="footer">Yogyakarta, {{ \Carbon\Carbon::now()->format('d F Y') }}
+                    
+                <h4></h4><h4>Petugas</h4>
+                </td>
+                
             </tr>
         </tfoot>
     </table>

@@ -156,13 +156,17 @@
                                 <h5 class="card-title">{{ $d->judul }}</h5>
                                 <p class="card-text">{{ $d->deskripsi }}</p>
                                 <div class="row">
-                                    <div class="col-sm-6">
+                                    <div class="col-sm-4">
                                         <p class="font-weight-bold">Tahun Terbit: </p>
                                         <p class="">{{ $d->tahun_terbit }}</p>
                                     </div>
-                                    <div class="col-sm-6">
+                                    <div class="col-sm-4">
                                         <p class="font-weight-bold">ISBN</p>
                                         <p>{{ $d->isbn }}</p>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <p class="font-weight-bold">Tanggal Pinjam</p>
+                                        <p>{{ $d->tgl_pinjam }}</p>
                                     </div>
                                 </div>
                                 <p class="font-weight-bold">Nama Peminjam : {{ $d->nama }} <br> Kelas :

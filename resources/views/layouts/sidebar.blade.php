@@ -78,13 +78,13 @@
                                 <li><a href="/laporanPustaka">Laporan Pustaka</a></li>
                             </ul>
                             <ul class="submenu">
-                                <li><a href="/laporanDenda">Laporan Denda</a></li>
+                                <li><a href="/laporanDenda">Laporan Keterlambatan</a></li>
                             </ul>
                             <ul class="submenu">
-                                <li><a href="/laporanPinjam">Laporan Dipinjam</a></li>
+                                <li><a href="/laporanPinjam">Laporan Peminjaman</a></li>
                             </ul>
                             <ul class="submenu">
-                                <li><a href="/laporan">Laporan Transaksi</a></li>
+                                <li><a href="/laporan">Laporan Pengembalian</a></li>
                             </ul>
                         </li>
                         <li>

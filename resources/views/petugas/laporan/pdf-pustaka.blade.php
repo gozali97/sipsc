@@ -38,6 +38,15 @@
                 </tr>
             @endforeach
         </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="9" class="footer">Yogyakarta, {{ \Carbon\Carbon::now()->format('d F Y') }}
+                    
+                <h4></h4><h4>Petugas</h4>
+                </td>
+                
+            </tr>
+        </tfoot>
     </table>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.7.0/jspdf.umd.min.js"></script>
