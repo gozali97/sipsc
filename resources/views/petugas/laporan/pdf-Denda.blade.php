@@ -41,7 +41,7 @@
 </head>
 
 <body>
-    <h2>Laporan Keterlambatan Pengembalian <br> Perpustakaan SMK N 1 Cangkringan</h2>
+    <h2>Laporan Keterlambatan yang Masih Dipinjam <br> Perpustakaan SMK N 1 Cangkringan</h2>
     <p>Periode Transaksi, Mulai : {{ \Carbon\Carbon::parse($start)->format('d-m-Y') }} Akhir :
         {{ \Carbon\Carbon::parse($end)->format('d-m-Y') }}</p>
 

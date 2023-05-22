@@ -9,10 +9,11 @@
             </div>
             <div class="col-md-8">
                 <h4 class="font-20 weight-500 mb-10 text-capitalize">
-                    Welcome back <div class="weight-600 font-30 text-blue">{{ Auth::user()->nama }}</div>
+                    Hallo, <div class="weight-600 font-30 text-blue">{{ Auth::user()->nama }}</div>
                 </h4>
-                <p class="font-18 max-width-600">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Unde hic non repellendus debitis iure, doloremque assumenda. Autem modi, corrupti, nobis ea iure fugiat, veniam non quaerat mollitia animi error corporis.</p>
-            </div>
+                <p class="font-18 max-width-600"></p>
+                <p class="font-18 max-width-600">Ada informasi menarik nih, kini kamu bisa langsung memesan buku bacaan melalui website SIPSC loh. Caranya cukup mudah, tinggal pilih buku mana yang mau dipinjam melalui web, kemudian tinggal ambil bukunnya ke perpustakaan 😊</p>
+            </div>  
         </div>
     </div>
     <div class="footer-wrap pd-20 mb-20 card-box">
