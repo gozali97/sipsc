@@ -49,6 +49,13 @@
     <h2>Laporan Peminjaman Pustaka <br> Perpustakaan SMK N 1 Cangkringan</h2>
     <p>Periode Transaksi, Mulai : {{ \Carbon\Carbon::parse($start)->format('d-m-Y') }} Akhir :
         {{ \Carbon\Carbon::parse($end)->format('d-m-Y') }}</p>
+       @php
+        $jmlTransaksi = \App\Models\DetailPeminjaman::query()
+                        ->where('detail_peminjaman.status', 'Dipinjam')
+                        ->whereBetween('detail_peminjaman.created_at', [$start, $end])
+                        ->count(); 
+                        @endphp
+        <p>Jumlah Transaksi : {{ $jmlTransaksi }}</p>
     </div>
 
     <table style="width:100%; border-collapse: collapse; border: 1px solid black;">
@@ -87,8 +94,8 @@
         <tfoot>
             <tr>
                 <td colspan="9" class="footer">Yogyakarta, {{ \Carbon\Carbon::now()->format('d F Y') }}
-                    
-                <h4></h4><h4>Petugas</h4>
+                <p></p>
+                <p>Azka Petugas</p>
                 </td>
                 
             </tr>

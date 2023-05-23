@@ -87,8 +87,8 @@
         <tfoot>
             <tr>
                 <td colspan="9" class="footer">Yogyakarta, {{ \Carbon\Carbon::now()->format('d F Y') }}
-                    
-                <h4></h4><h4>Petugas</h4>
+                <p></p>
+                <p>Azka Petugas</p>
                 </td>
                 
             </tr>

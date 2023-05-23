@@ -30,6 +30,9 @@ class ManageLaporanController extends Controller
     {
         $start = Carbon::parse($request->stat_date)->format('Y-m-d');
         $end = Carbon::parse($request->end_date)->format('Y-m-d');
+        
+
+
         $data = Pengembalian::query()
             ->join('detail_pengembalian', 'detail_pengembalian.no_kembali', 'pengembalian.no_kembali')
             ->join('detail_peminjaman', 'detail_peminjaman.no_det_pinjaman', 'detail_pengembalian.no_det_pinjam')
@@ -39,6 +42,8 @@ class ManageLaporanController extends Controller
             ->select('users.id', 'users.nama', 'users.kelas', 'pustakas.judul', 'pustakas.isbn', 'detail_pengembalian.tgl_pinjam', 'pengembalian.tgl_kembali', 'kondisis.jenis_kondisi', 'detail_pengembalian.nominal_denda')
             ->whereBetween('pengembalian.created_at', [$start, $end])
             ->get();
+
+        
 
         $pdf = Pdf::loadView('petugas.laporan.pdf', compact('data', 'start', 'end'));
 
@@ -106,7 +111,7 @@ class ManageLaporanController extends Controller
             ->where('detail_peminjaman.status', 'Dipinjam')
             ->whereBetween('peminjaman.created_at', [$start, $end])
             ->get();
-
+        
         $pdf = Pdf::loadView('petugas.laporan.pdf-pinjam', compact('data', 'start', 'end'));
 
         $pdf->setPaper('A4', 'portrait');
@@ -115,6 +120,7 @@ class ManageLaporanController extends Controller
             'Content-Type' => 'application/pdf',
             'Content-Disposition' => 'inline; filename="laporan-Peminjaman.pdf"'
         ]);
+    
     }
 
     public function indexDenda()

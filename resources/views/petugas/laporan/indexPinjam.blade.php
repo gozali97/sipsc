@@ -137,8 +137,44 @@
 
 
     <script>
-        $(document).ready(function() {
-            $('#datatable').DataTable();
+        $(document).on('click', '.acc-button', function() {
+            var id = $(this).data('id');
+            Swal.fire({
+                title: 'Apakah Anda yakin?',
+                text: "Buku akan dibawa oleh anggota.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, konfirmasi!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: "/listpinjam/accpinjam/" + id,
+                        type: "GET",
+                        success: function() {
+                            Swal.fire({
+                                title: "Sukses!",
+                                text: "Buku sudah dibawa oleh anggota.",
+                                type: "success",
+                                icon: "success",
+                                confirmButtonText: "OK"
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location.reload();
+                                }
+                            });
+                        },
+                        error: function() {
+                            swal("Oops!", "Terjadi kesalahan saat konfirmasi Pustaka.",
+                                "error");
+                        }
+                    });
+                }
+            });
         });
     </script>
+
+
+    
 @endsection

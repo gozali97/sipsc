@@ -44,6 +44,31 @@
     <h2>Laporan Pengembalian Pustaka <br> Perpustakaan SMK N 1 Cangkringan</h2>
     <p>Periode Transaksi, Mulai : {{ \Carbon\Carbon::parse($start)->format('d-m-Y') }} Akhir :
         {{ \Carbon\Carbon::parse($end)->format('d-m-Y') }}</p>
+        
+    @php
+       $jmlKembali = \App\Models\DetailPengembalian::query()
+                        ->whereBetween('detail_pengembalian.created_at', [$start, $end])
+                        ->count(); 
+        $kembaliRusak = \App\Models\DetailPengembalian::query()
+                        ->where('detail_pengembalian.kd_kondisi', '2')
+                        ->whereBetween('detail_pengembalian.created_at', [$start, $end])
+                        ->count(); 
+        $kembaliBaik = \App\Models\DetailPengembalian::query()
+                        ->where('detail_pengembalian.kd_kondisi', '1')
+                        ->whereBetween('detail_pengembalian.created_at', [$start, $end])
+                        ->count();        
+        $totalDenda = \App\Models\DetailPengembalian::query()
+                        ->where('detail_pengembalian.nominal_denda', '>', '0')
+                        ->whereBetween('detail_pengembalian.created_at', [$start, $end])
+                        ->sum('nominal_denda');                      
+
+                        @endphp
+    <p>Jumlah Transaksi : {{ $jmlKembali }}</p>
+    <p>Kondisi Rusak : {{ $kembaliRusak }}</p>
+    <p>Kondisi Baik   : {{ $kembaliBaik }}</p>
+    <p>Total Denda   : Rp.{{ number_format($totalDenda, 0, ',', '.') }}</p>
+    
+        
     <table>
         <thead>
             <tr>
@@ -85,8 +110,8 @@
         <tfoot>
             <tr>
                 <td colspan="9" class="footer">Yogyakarta, {{ \Carbon\Carbon::now()->format('d F Y') }}
-                    
-                <h4></h4><h4>Petugas</h4>
+                <p></p>
+                <p>Azka Petugas</p>
                 </td>
                 
             </tr>
