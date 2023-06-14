@@ -52,7 +52,11 @@
        @php
         $jmlTransaksi = \App\Models\DetailPeminjaman::query()
                         ->where('detail_peminjaman.status', 'Dipinjam')
+<<<<<<< HEAD
                         ->whereBetween('detail_peminjaman.tgl_pinjam', [$start, $end])
+=======
+                        ->whereBetween('detail_peminjaman.created_at', [$start, $end])
+>>>>>>> e80cd290ccfc698b1548b133fe56cd69a7cbba38
                         ->count(); 
                         @endphp
         <p>Jumlah Transaksi : {{ $jmlTransaksi }}</p>

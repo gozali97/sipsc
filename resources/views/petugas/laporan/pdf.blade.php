@@ -47,6 +47,7 @@
         
     @php
        $jmlKembali = \App\Models\DetailPengembalian::query()
+<<<<<<< HEAD
                         ->whereBetween('detail_pengembalian.tgl_kembali', [$start, $end])
                         ->count(); 
         $kembaliRusak = \App\Models\DetailPengembalian::query()
@@ -60,6 +61,21 @@
         $totalDenda = \App\Models\DetailPengembalian::query()
                         ->where('detail_pengembalian.nominal_denda', '>', '0')
                         ->whereBetween('detail_pengembalian.tgl_kembali', [$start, $end])
+=======
+                        ->whereBetween('detail_pengembalian.created_at', [$start, $end])
+                        ->count(); 
+        $kembaliRusak = \App\Models\DetailPengembalian::query()
+                        ->where('detail_pengembalian.kd_kondisi', '2')
+                        ->whereBetween('detail_pengembalian.created_at', [$start, $end])
+                        ->count(); 
+        $kembaliBaik = \App\Models\DetailPengembalian::query()
+                        ->where('detail_pengembalian.kd_kondisi', '1')
+                        ->whereBetween('detail_pengembalian.created_at', [$start, $end])
+                        ->count();        
+        $totalDenda = \App\Models\DetailPengembalian::query()
+                        ->where('detail_pengembalian.nominal_denda', '>', '0')
+                        ->whereBetween('detail_pengembalian.created_at', [$start, $end])
+>>>>>>> e80cd290ccfc698b1548b133fe56cd69a7cbba38
                         ->sum('nominal_denda');                      
 
                         @endphp

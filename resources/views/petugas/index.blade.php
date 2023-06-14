@@ -53,7 +53,11 @@
 
                         $total = $jmlDipinjam + $jmlPustaka;
                         @endphp
+<<<<<<< HEAD
                         <div class="h4 mb-0">{{ $total }}</div>
+=======
+                        <div class="h4 mb-0">{{ $bukuCount }}</div>
+>>>>>>> e80cd290ccfc698b1548b133fe56cd69a7cbba38
                         <div class="weight-600 font-14">Pustaka</div>
                     </div>
                 </div>

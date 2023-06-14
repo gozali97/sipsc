@@ -184,6 +184,7 @@
         </div>
     </div>
 
+<<<<<<< HEAD
     <!-- Modal insert -->
     <div class="modal fade bs-example-modal-lg" id="input-modal" tabindex="-1" role="dialog"
         aria-labelledby="myLargeModalLabel" aria-hidden="true">
@@ -236,6 +237,16 @@
                     <button type="submit" class="btn btn-primary">Simpan</button>
                 </div>
                 </form>
+=======
+<!-- Modal insert -->
+<div class="modal fade bs-example-modal-lg" id="input-modal" tabindex="-1" role="dialog"
+    aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myLargeModalLabel">Tambah Anggota</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+>>>>>>> e80cd290ccfc698b1548b133fe56cd69a7cbba38
             </div>
         </div>
     </div>

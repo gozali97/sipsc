@@ -109,7 +109,10 @@
                 <td colspan="9" class="footer">Yogyakarta, {{ \Carbon\Carbon::now()->format('d F Y') }}   
                 <p></p>
                 <p>Azka Petugas</p>
+<<<<<<< HEAD
                 
+=======
+>>>>>>> e80cd290ccfc698b1548b133fe56cd69a7cbba38
                 </td>
                 
             </tr>
