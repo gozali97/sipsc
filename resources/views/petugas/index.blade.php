@@ -1,6 +1,19 @@
 @extends('layouts.app')
 
 @section('content')
+
+<div class="pre-loader">
+		<div class="pre-loader-box">
+			<div class="loader-logo"><img src="{{ url('assets/img/logosmk.png') }}" alt=""></div>
+			<div class='loader-progress' id="progress_div">
+				<div class='bar' id='bar1'></div>
+			</div>
+			<div class='percent' id='percent1'>50%</div>
+			<div class="loading-text">
+				Loading...
+			</div>
+		</div>
+	</div> 
 <div class="pd-ltr-20">
     <div class="card-box pd-20 height-100-p mb-30">
         <div class="row align-items-center">
@@ -26,11 +39,22 @@
                         <img src="{{ url('/assets/img/buku.png') }}" alt="">
                     </div>
                     <div class="widget-data">
-                        @php
+                     <!--   @php
                         $bukuCount = \App\Models\Pustaka::count();
+                        @endphp -->
+                        @php
+                        $total = 0;
+                        $jmlDipinjam = \App\Models\Peminjaman::query()
+                        ->where('peminjaman.jumlah', '>', '0')
+                        ->sum('jumlah'); 
+                        $jmlPustaka = \App\Models\Pustaka::query()
+                        ->where('pustakas.jumlah', '>', '0')
+                        ->sum('jumlah');                   
+
+                        $total = $jmlDipinjam + $jmlPustaka;
                         @endphp
-                        <div class="h4 mb-0">{{ $bukuCount }}</div>
-                        <div class="weight-600 font-14">Buku</div>
+                        <div class="h4 mb-0">{{ $total }}</div>
+                        <div class="weight-600 font-14">Pustaka</div>
                     </div>
                 </div>
             </div>
@@ -42,11 +66,13 @@
                         <img src="{{ url('/assets/img/book-out.png') }}"  alt="">
                     </div>
                     <div class="widget-data">
-                        @php
-                        $pinjamCount = \App\Models\Peminjaman::count();
-                        @endphp
-                        <div class="h4 mb-0">{{ $pinjamCount }}</div>
-                        <div class="weight-600 font-14">Pinjaman</div>
+                    @php
+                        $jmlTransaksi = \App\Models\DetailPeminjaman::query()
+                        ->where('detail_peminjaman.status', 'Dipinjam')
+                        ->count(); 
+                    @endphp
+                        <div class="h4 mb-0">{{ $jmlTransaksi }}</div>
+                        <div class="weight-600 font-14">Peminjaman</div>
                     </div>
                 </div>
             </div>

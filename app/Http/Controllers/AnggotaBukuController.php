@@ -14,7 +14,9 @@ class AnggotaBukuController extends Controller
     public function index(Request $request)
     {
         $search = $request->kategori;
-        $pustaka = Pustaka::query()->join('kategoris', 'kategoris.id_kategori', 'pustakas.id_kategori');
+        $pustaka = Pustaka::query()
+        ->join('kategoris', 'kategoris.id_kategori', 'pustakas.id_kategori')
+        ->where('pustakas.status', 1);;
 
         $kategori = Kategori::all();
 
@@ -22,9 +24,17 @@ class AnggotaBukuController extends Controller
             $pustaka = $pustaka->where('pustakas.id_kategori', $search);
         }
 
-        $pustaka = $pustaka->paginate(12);
+        $pustaka = $pustaka->paginate(70);
 
         return view('anggota.buku.index', compact('pustaka', 'kategori'));
+    }
+
+    public function getPustaka(){
+         $pustaka = Pustaka::query()
+            ->join('kategoris', 'kategoris.id_kategori', 'pustakas.id_kategori')
+            ->where('pustakas.status', 1);
+
+        return response()->json(['data' => $pustaka]);
     }
 
     public function store(Request $request)

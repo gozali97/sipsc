@@ -68,8 +68,8 @@
                                     <li class="breadcrumb-item active" aria-current="page">Detail Peminjaman</li>
                                 </ol>
                             </div>
-                            <div class="col-md-2"> <button type="button" data-toggle="modal" data-target="#confirmAllModal"
-                                    class="btn btn-primary float-right">Kembalikan</button></div>
+                        <!--    <div class="col-md-2"> <button type="button" data-toggle="modal" data-target="#confirmAllModal"
+                                    class="btn btn-primary float-right">Kembalikan</button></div> -->
                         </nav>
                         <div class="modal fade bs-example-modal-lg" id="confirmAllModal" tabindex="-1" role="dialog"
                             aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
@@ -126,7 +126,8 @@
                                                             }
                                                             $nominal_denda = $jumlah_hari_terlambat * 500;
                                                         @endphp
-
+                    <p class="font-weight-bold">Jumlah Hari Keterlambatan :<br>
+                                                {{ $jumlah_hari_terlambat }} hari</p>
                                                         <p class="font-weight-bold">Denda Keterlambatan : Rp.
                                                             {{ number_format($nominal_denda, 0, ',', '.') }}</p>
                                                     </div>
@@ -156,13 +157,17 @@
                                 <h5 class="card-title">{{ $d->judul }}</h5>
                                 <p class="card-text">{{ $d->deskripsi }}</p>
                                 <div class="row">
-                                    <div class="col-sm-6">
+                                    <div class="col-sm-4">
                                         <p class="font-weight-bold">Tahun Terbit: </p>
                                         <p class="">{{ $d->tahun_terbit }}</p>
                                     </div>
-                                    <div class="col-sm-6">
+                                    <div class="col-sm-4">
                                         <p class="font-weight-bold">ISBN</p>
                                         <p>{{ $d->isbn }}</p>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <p class="font-weight-bold">Tanggal Pinjam</p>
+                                        <p>{{ $d->tgl_pinjam }}</p>
                                     </div>
                                 </div>
                                 <p class="font-weight-bold">Nama Peminjam : {{ $d->nama }} <br> Kelas :
@@ -179,9 +184,49 @@
                                 @else
                                     <div></div>
                                 @endif
+                                
+                                <p></p>
+                                <div>
+                                <!-- delete per detail -->
+                                        <button class="btn btn-outline-danger" data-toggle="modal"
+                                        data-target="#deleteModaldetail{{ $d->no_det_pinjaman }}">
+                                        <i class="icon-copy dw dw-trash" aria-hidden="true"
+                                            style="margin-right: 5px"></i>
+                                        Hapus
+                                        </button>
+                                </div>
                             </div>
                         </div>
                     </div>
+                </div>
+
+                <!-- modal delet detail -->
+                <div class="modal fade" id="deleteModaldetail{{ $d->no_det_pinjaman }}" tabindex="-1" role="dialog"
+                                aria-labelledby="deleteModaldetail{{ $d->no_det_pinjaman }}Label" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="deleteModal{{ $d->no_det_pinjaman }}Label">Hapus
+                                                Peminjaman</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <form id="deleteForm{{ $d->no_det_pinjaman }}" method="POST"
+                                            action="{{ route('listpinjam.destroyy', $d->no_det_pinjaman) }}">
+                                            @csrf
+                                            <div class="modal-body">
+                                                <p>Anda yakin ingin menghapus peminjaman <strong>{{ $d->nama
+                                                        }} - ({{ $d->kelas }}) - {{ $d->judul }}</strong>?</p>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary"
+                                                    data-dismiss="modal">Batal</button>
+                                                <button type="submit" class="btn btn-danger">Hapus</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                            </div>
                 </div>
 
                 <!-- Modal Konfirmasi -->
@@ -234,7 +279,10 @@
                                                 if ($jumlah_hari_terlambat < 0) {
                                                     $jumlah_hari_terlambat = 0;
                                                 }
-                                            $nominal_denda = $jumlah_hari_terlambat * 500; @endphp <p class="font-weight-bold">Denda Keterlambatan :<br> Rp.
+                                            $nominal_denda = $jumlah_hari_terlambat * 500; @endphp 
+                                            <p class="font-weight-bold">Jumlah Hari Keterlambatan :<br>
+                                                {{ $jumlah_hari_terlambat }} hari</p>
+                                                <p class="font-weight-bold">Denda Keterlambatan :<br> Rp.
                                                 {{ number_format($nominal_denda, 0, ',', '.') }}</p>
                                         </div>
                                     </div>
@@ -248,7 +296,18 @@
                     </div>
                 </div>
             @endforeach
-
+            <!--  -->
+                <div>
+                    @if ($d->statusPinjam == 'Proses')
+                        <p></p>
+                    @elseif($d->statusPinjam = 'Dikembalikan')
+                        <button type="button" data-toggle="modal" data-target="#confirmAllModal"
+                        class="btn btn-primary float-right">Kembalikan Semua</button>
+                    @else
+                        <div></div>
+                    @endif
+                        <p></p>
+                </div>
             <a href="/listpinjam" class="btn btn-danger mb-30">Kembali</a>
         </div>
     </div>
@@ -257,7 +316,7 @@
             var id = $(this).data('id');
             Swal.fire({
                 title: 'Apakah Anda yakin?',
-                text: "Buku akan dibawa oleh siswa.",
+                text: "Buku akan dibawa oleh anggota.",
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
@@ -271,7 +330,7 @@
                         success: function() {
                             Swal.fire({
                                 title: "Sukses!",
-                                text: "Buku sudah dibawa oleh siswa.",
+                                text: "Buku sudah dibawa oleh anggota.",
                                 type: "success",
                                 icon: "success",
                                 confirmButtonText: "OK"

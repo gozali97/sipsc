@@ -8,7 +8,7 @@
             font-family: Arial, sans-serif;
         }
 
-        h1 {
+        h2 {
             text-align: center;
             margin-bottom: 20px;
         }
@@ -46,9 +46,16 @@
 
 <body>
     <div class="header">
-        <h3 style="text-align: center">Laporan peminjaman yang belum <br> dikembalikan</h3>
-        <p>Tanggal: {{ \Carbon\Carbon::parse($start)->format('d-m-Y') }} -
-            {{ \Carbon\Carbon::parse($end)->format('d-m-Y') }}</p>
+    <h2>Laporan Peminjaman Pustaka <br> Perpustakaan SMK N 1 Cangkringan</h2>
+    <p>Periode Transaksi, Mulai : {{ \Carbon\Carbon::parse($start)->format('d-m-Y') }} Akhir :
+        {{ \Carbon\Carbon::parse($end)->format('d-m-Y') }}</p>
+       @php
+        $jmlTransaksi = \App\Models\DetailPeminjaman::query()
+                        ->where('detail_peminjaman.status', 'Dipinjam')
+                        ->whereBetween('detail_peminjaman.tgl_pinjam', [$start, $end])
+                        ->count(); 
+                        @endphp
+        <p>Jumlah Transaksi : {{ $jmlTransaksi }}</p>
     </div>
 
     <table style="width:100%; border-collapse: collapse; border: 1px solid black;">
@@ -84,6 +91,15 @@
                 @endforeach
             @endif
         </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="9" class="footer">Yogyakarta, {{ \Carbon\Carbon::now()->format('d F Y') }}
+                <p></p>
+                <p>Azka Petugas</p>
+                </td>
+                
+            </tr>
+        </tfoot>
     </table>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.7.0/jspdf.umd.min.js"></script>

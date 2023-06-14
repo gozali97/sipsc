@@ -25,6 +25,19 @@ class PeminjamanController extends Controller
             ->where('peminjaman.status', 1)
             ->get();
 
+        $detail = DetailPeminjaman::query()
+        ->join('detail_pengembalian', 'detail_pengembalian.no_det_pinjam', 'detail_peminjaman.no_det_pinjaman')
+        ->join('kondisis', 'kondisis.kd_kondisi', 'detail_pengembalian.kd_kondisi')
+        ->whereIn('detail_peminjaman.no_pinjam', $data->pluck('no_pinjam'))
+        ->get();
+
+        $data = $data->map(function ($item) use ($detail) {
+            $item->detail = collect($detail)->filter(function ($detailItem) use ($item) {
+                return $detailItem['no_pinjam'] == $item->no_pinjam;
+            })->values();
+            return $item;
+        });
+        
         return view('anggota.pinjam.index', compact('data'));
     }
 
@@ -32,24 +45,49 @@ class PeminjamanController extends Controller
     {
         try {
             $user_id = Auth::user()->id;
+            
             $existingPeminjamanCount = DetailPeminjaman::where('id_user', $user_id)
-                ->where('status', 1)
+                ->where('status','<>', 'Dikembalikan')
                 ->count();
+                // dd($existingPeminjamanCount, $user_id);
 
             if ($existingPeminjamanCount >= 2) {
                 return redirect()->back()->with('error', 'Kamu tidak diperbolehkan meminjam lebih dari 2 buku.');
             } elseif ($existingPeminjamanCount === 0 && count($request->pustaka) > 2) {
                 return redirect()->back()->with('error', 'Kamu hanya diperbolehkan meminjam 2 buku sekaligus.');
+            }elseif ($existingPeminjamanCount === 1 && count($request->pustaka) === 2) {
+                return redirect()->back()->with('error', 'Kamu hanya diperbolehkan meminjam 1 buku jika sudah ada peminjaman aktif.');
             }
 
             $existingPeminjaman = DetailPeminjaman::where('id_user', $user_id)
                 ->whereIn('id_pustaka', $request->pustaka)
-                ->where('status', 1)
+                ->where('status', '<>', 'Dikembalikan')
                 ->first();
 
             if ($existingPeminjaman) {
                 return redirect()->back()->with('error', 'Maaf, kamu hanya diperbolehkan meminjam 1 buku yang sama.');
             }
+            
+            // $ready = Peminjaman::where('id_user', $user_id)->get();
+            // $bukuBelumKembali = 0;
+
+            // foreach ($ready as $r) {
+            //      if ($r->jumlah == 1) {
+            //         $bukuBelumKembali++;
+            //     }
+               
+            // }
+            
+            // foreach ($ready as $p) {
+            // if ($bukuBelumKembali >= 2) {
+            //     return redirect()->back()->with('error', 'Kamu hanya diperbolehkan meminjam 2 buku.');
+            // }
+            
+            
+            //  if ($p->jumlah !== 0) {
+            //         return redirect()->back()->with('error', 'Maaf, kamu masih belum mengembalikan buku.');
+            //     }
+            // }
 
             $jumlah = count($request->pustaka);
 

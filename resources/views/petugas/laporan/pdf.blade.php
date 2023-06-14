@@ -41,9 +41,34 @@
 </head>
 
 <body>
-    <h2>Laporan seluruh peminjaman dan <br> pengembalian tiap bulan</h2>
-    <p>Tanggal: {{ \Carbon\Carbon::parse($start)->format('d-m-Y') }} -
+    <h2>Laporan Pengembalian Pustaka <br> Perpustakaan SMK N 1 Cangkringan</h2>
+    <p>Periode Transaksi, Mulai : {{ \Carbon\Carbon::parse($start)->format('d-m-Y') }} Akhir :
         {{ \Carbon\Carbon::parse($end)->format('d-m-Y') }}</p>
+        
+    @php
+       $jmlKembali = \App\Models\DetailPengembalian::query()
+                        ->whereBetween('detail_pengembalian.tgl_kembali', [$start, $end])
+                        ->count(); 
+        $kembaliRusak = \App\Models\DetailPengembalian::query()
+                        ->where('detail_pengembalian.kd_kondisi', '2')
+                        ->whereBetween('detail_pengembalian.tgl_kembali', [$start, $end])
+                        ->count(); 
+        $kembaliBaik = \App\Models\DetailPengembalian::query()
+                        ->where('detail_pengembalian.kd_kondisi', '1')
+                        ->whereBetween('detail_pengembalian.tgl_kembali', [$start, $end])
+                        ->count();        
+        $totalDenda = \App\Models\DetailPengembalian::query()
+                        ->where('detail_pengembalian.nominal_denda', '>', '0')
+                        ->whereBetween('detail_pengembalian.tgl_kembali', [$start, $end])
+                        ->sum('nominal_denda');                      
+
+                        @endphp
+    <p>Jumlah Transaksi : {{ $jmlKembali }}</p>
+    <p>Kondisi Rusak : {{ $kembaliRusak }}</p>
+    <p>Kondisi Baik   : {{ $kembaliBaik }}</p>
+    <p>Total Denda   : Rp.{{ number_format($totalDenda, 0, ',', '.') }}</p>
+    
+        
     <table>
         <thead>
             <tr>
@@ -84,7 +109,11 @@
         </tbody>
         <tfoot>
             <tr>
-                <td colspan="9" class="footer">Yogyakarta, {{ \Carbon\Carbon::now()->format('d F Y') }}</td>
+                <td colspan="9" class="footer">Yogyakarta, {{ \Carbon\Carbon::now()->format('d F Y') }}
+                <p></p>
+                <p>Azka Petugas</p>
+                </td>
+                
             </tr>
         </tfoot>
     </table>

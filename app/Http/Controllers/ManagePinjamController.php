@@ -23,12 +23,23 @@ class ManagePinjamController extends Controller
     public function index()
     {
         $anggota = User::where('role_id', 3)->get();
-        $pustaka = Pustaka::all();
+       // $pustaka = Pustaka::all();
+        $pustaka = Pustaka::query()->where('status', 1)->get();
+       // $id = Auth::user()->id;
+       // $date = \Carbon\Carbon::now();
 
         $data = Peminjaman::query()
             ->join('users', 'users.id', 'peminjaman.id_user')
+            ->select('users.nama', 'users.kelas', 'users.gambar', 'peminjaman.*')
             ->where('peminjaman.jumlah', '<>', 0)
             ->get();
+
+            //$data = Peminjaman::query()
+            //->join('detail_peminjaman', 'detail_peminjaman.no_pinjam', 'peminjaman.no_pinjam')
+            //->join('users', 'users.id', 'peminjaman.id_user')
+            //->where('detail_peminjaman.status', '<>', "Dikembalikan")
+            //->where('peminjaman.jumlah', '<>', 0)
+            //->get();
 
         $kondisi = Kondisi::all();
 
@@ -268,16 +279,27 @@ class ManagePinjamController extends Controller
     public function insert(Request $request)
     {
         try {
-            $user_id = $request->id_user;
+            $user_id = intval($request->id_user);
+            
+            //$existingPustakaAktif = Pustaka::where('id_pustaka', $id_pustaka)
+            //->where('status', 0)
+            //->first();
+
+            //if ($existingPustakaAktif) {
+            //    return redirect()->back()->with('error', 'Maaf, pustaka sedang tidak aktif');
+           // }
 
             $existingPeminjamanCount = DetailPeminjaman::where('id_user', $user_id)
-                ->where('status', '<>', 'Dikembalikan')
+                ->where('status','<>', 'Dikembalikan')
                 ->count();
+            // dd($existingPeminjamanCount, count($request->pustaka));
 
             if ($existingPeminjamanCount >= 2) {
                 return redirect()->back()->with('error', 'Kamu tidak diperbolehkan meminjam lebih dari 2 buku.');
             } elseif ($existingPeminjamanCount === 0 && count($request->pustaka) > 2) {
                 return redirect()->back()->with('error', 'Kamu hanya diperbolehkan meminjam 2 buku sekaligus.');
+            }elseif ($existingPeminjamanCount === 1 && count($request->pustaka) === 2) {
+                return redirect()->back()->with('error', 'Kamu hanya diperbolehkan meminjam 1 buku jika sudah ada peminjaman aktif.');
             }
 
             $existingPeminjaman = DetailPeminjaman::where('id_user', $user_id)
@@ -288,6 +310,13 @@ class ManagePinjamController extends Controller
             if ($existingPeminjaman) {
                 return redirect()->back()->with('error', 'Maaf, kamu hanya diperbolehkan meminjam 1 buku yang sama.');
             }
+            
+            // $ready = Peminjaman::where('id_user', $user_id)->get();
+            // foreach($ready as $r){
+            //     if($r->jumlah !== 0){
+            //          return redirect()->back()->with('error', 'Maaf, kamu masih belum mengembalikan buku.');
+            //     }
+            // }
 
 
             $jumlah = count($request->pustaka);
@@ -347,18 +376,80 @@ class ManagePinjamController extends Controller
 
     public function destroy($id)
     {
-        $data = Peminjaman::where('no_pinjam', $id)->first();
+        try {
+            $data = Peminjaman::query()
+                ->join('detail_peminjaman', 'detail_peminjaman.no_pinjam', 'peminjaman.no_pinjam')
+            ->join('pustakas', 'pustakas.id_pustaka', 'detail_peminjaman.id_pustaka')
+            ->join('users', 'users.id', 'peminjaman.id_user')
+            ->select('peminjaman.*', 'detail_peminjaman.status as statusPinjam', 'detail_peminjaman.no_det_pinjaman', 'detail_peminjaman.tgl_pinjam', 'users.nama', 'users.kelas', 'pustakas.*')
+            ->where('peminjaman.no_pinjam', $id)
+            ->first();
+            
+            
+            $detail = DetailPeminjaman::where('no_pinjam', $id, $data->no_pinjam)->get();
+            
+            $detail->each->delete();
+            $data->delete();
 
-        if (!$data) {
-            return redirect()->back()->with('error', 'Peminjaman tidak ditemukan.');
+       
+                $pustaka = Pustaka::where('id_pustaka', $data->id_pustaka)->first();
+                $pustaka->jumlah += 1;
+                $pustaka->save();
+            
+
+            return redirect()->route('listpinjam.index')->with('success', 'Peminjaman berhasil dihapus.');
+        } catch (\Exception $e) {
+            dd($e);
+            return response()->json(['status' => 'error', 'message' => 'Terjadi kesalahan saat menghapus peminjaman.', 'error' => $e->getMessage()]);
         }
+    }
+    //{
+     //   $data = Peminjaman::where('no_pinjam', $id)->first();
 
-        $detail = DetailPeminjaman::where('no_pinjam', $id)->get();
-        $detail->each->delete();
+       // if (!$data) {
+         //   return redirect()->back()->with('error', 'Peminjaman tidak ditemukan.');
+        //}
 
-        $data->delete();
+        //$detail = DetailPeminjaman::where('no_pinjam', $id)->get();
+        //$detail->each->delete();
+
+        //$data->delete();
 
 
-        return redirect()->route('listpinjam.index')->with('success', 'Peminjaman berhasil dihapus.');
+        //return redirect()->route('listpinjam.index')->with('success', //'Peminjaman berhasil dihapus.');
+    //}
+    
+    public function destroyy($id)
+    {
+        try {
+            $data = DetailPeminjaman::query()
+            ->join('peminjaman', 'peminjaman.no_pinjam', 'detail_peminjaman.no_pinjam')
+            ->join('pustakas', 'pustakas.id_pustaka', 'detail_peminjaman.id_pustaka')
+            ->join('users', 'users.id', 'peminjaman.id_user')
+            ->select('peminjaman.*', 'detail_peminjaman.status', 'detail_peminjaman.no_det_pinjaman', 'detail_peminjaman.tgl_pinjam', 'users.nama', 'users.kelas', 'pustakas.*')
+            ->where('detail_peminjaman.no_det_pinjaman', $id)
+            ->first();
+            
+            
+            $detail = DetailPeminjaman::where('no_det_pinjaman', $id, $data->no_det_pinjaman)->get();
+            $detail->each->delete();
+            $data->delete();
+
+       
+                $pustaka = Pustaka::where('id_pustaka', $data->id_pustaka)->first();
+                $pustaka->jumlah += 1;
+                $pustaka->save();
+
+                $pinjam = Peminjaman::query()->where('no_pinjam', $data->no_pinjam)->first();
+            $pinjam->update([
+                'jumlah' => $pinjam->jumlah - 1,
+            ]);
+            
+
+            return redirect()->route('listpinjam.index')->with('success', 'Peminjaman berhasil dihapus.');
+        } catch (\Exception $e) {
+            dd($e);
+            return response()->json(['status' => 'error', 'message' => 'Terjadi kesalahan saat menghapus peminjaman.', 'error' => $e->getMessage()]);
+        }
     }
 }

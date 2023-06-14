@@ -84,7 +84,7 @@
                                 <th>Kategori</th>
                                 <th>Pengarang</th>
                                 <th>Penerbit</th>
-                                <th>Tahun</th>
+                                <th>Status</th>
                                 <th>Gambar</th>
                                 <th>Action</th>
                             </tr>
@@ -100,7 +100,21 @@
                                 <td>{{ $p->kategori }}</td>
                                 <td>{{ $p->pengarang }}</td>
                                 <td>{{ $p->penerbit }}</td>
-                                <td>{{ $p->tahun_terbit }}</td>
+                                <td>
+                                    @php
+                                    if($p->status == "1"){
+                                        $status = "Aktif";
+                                    }
+                                    elseif($p->status == "0"){
+                                        $status = "Tidak Aktif";
+                                    }
+                                    else{
+                                        $status = "Tidak Aktif";
+                                    }
+                                @endphp    
+                                <span class="badge {{$p->status == 1 ? 'badge-success' : 'badge-danger' }}">{{
+                                        $status }}</span>
+                                </td>
                                 <td><img src="{{ url('assets/img/'.$p->gambar) }}"
                                         style="width:80px; height:80px;border-radius: 5%;" alt=""></td>
                                 <td>

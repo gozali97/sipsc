@@ -20,7 +20,7 @@ class ManageLaporanController extends Controller
             ->join('kondisis', 'kondisis.kd_kondisi', 'detail_pengembalian.kd_kondisi')
             ->join('users', 'users.id', 'pengembalian.id_user')
             ->join('pustakas', 'pustakas.id_pustaka', 'detail_peminjaman.id_pustaka')
-            ->select('users.id', 'users.nama', 'users.kelas', 'pustakas.judul', 'pustakas.isbn', 'detail_peminjaman.tgl_pinjam', 'detail_pengembalian.tgl_kembali', 'kondisis.jenis_kondisi', 'detail_pengembalian.nominal_denda')
+            ->select('users.id', 'users.nama', 'users.kelas', 'pustakas.judul', 'pustakas.isbn', 'detail_peminjaman.tgl_pinjam', 'detail_pengembalian.tgl_pinjam', 'detail_pengembalian.tgl_kembali', 'kondisis.jenis_kondisi', 'detail_pengembalian.nominal_denda')
             ->get();
 
         return view('petugas.laporan.index', compact('data'));
@@ -30,15 +30,20 @@ class ManageLaporanController extends Controller
     {
         $start = Carbon::parse($request->stat_date)->format('Y-m-d');
         $end = Carbon::parse($request->end_date)->format('Y-m-d');
+        
+
+
         $data = Pengembalian::query()
             ->join('detail_pengembalian', 'detail_pengembalian.no_kembali', 'pengembalian.no_kembali')
             ->join('detail_peminjaman', 'detail_peminjaman.no_det_pinjaman', 'detail_pengembalian.no_det_pinjam')
             ->join('kondisis', 'kondisis.kd_kondisi', 'detail_pengembalian.kd_kondisi')
             ->join('users', 'users.id', 'pengembalian.id_user')
             ->join('pustakas', 'pustakas.id_pustaka', 'detail_peminjaman.id_pustaka')
-            ->select('users.id', 'users.nama', 'users.kelas', 'pustakas.judul', 'pustakas.isbn', 'detail_pengembalian.tgl_pinjam', 'pengembalian.tgl_kembali', 'kondisis.jenis_kondisi', 'detail_pengembalian.nominal_denda')
-            ->whereBetween('pengembalian.created_at', [$start, $end])
+            ->select('users.id', 'users.nama', 'users.kelas', 'pustakas.judul', 'pustakas.isbn', 'detail_pengembalian.tgl_pinjam', 'detail_pengembalian.tgl_kembali', 'kondisis.jenis_kondisi', 'detail_pengembalian.nominal_denda')
+            ->whereBetween('detail_pengembalian.tgl_kembali', [$start, $end])
             ->get();
+
+        
 
         $pdf = Pdf::loadView('petugas.laporan.pdf', compact('data', 'start', 'end'));
 
@@ -77,7 +82,10 @@ class ManageLaporanController extends Controller
         $pdf->setPaper('A4', 'portrait');
 
 
-        return $pdf->download('laporan-Pustaka.pdf');
+        return Response::make($pdf->output(), 200, [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'inline; filename="laporan-Pustaka.pdf"'
+        ]);
     }
 
     public function indexPinjam()
@@ -104,9 +112,9 @@ class ManageLaporanController extends Controller
             ->join('pustakas', 'pustakas.id_pustaka', 'detail_peminjaman.id_pustaka')
             ->select('users.id', 'users.nama', 'users.kelas', 'pustakas.judul', 'peminjaman.created_at as tgl_pinjam', 'detail_peminjaman.status')
             ->where('detail_peminjaman.status', 'Dipinjam')
-            ->whereBetween('peminjaman.created_at', [$start, $end])
+            ->whereBetween('detail_peminjaman.tgl_pinjam', [$start, $end])
             ->get();
-
+        
         $pdf = Pdf::loadView('petugas.laporan.pdf-pinjam', compact('data', 'start', 'end'));
 
         $pdf->setPaper('A4', 'portrait');
@@ -115,6 +123,7 @@ class ManageLaporanController extends Controller
             'Content-Type' => 'application/pdf',
             'Content-Disposition' => 'inline; filename="laporan-Peminjaman.pdf"'
         ]);
+    
     }
 
     public function indexDenda()
@@ -168,7 +177,7 @@ class ManageLaporanController extends Controller
             ->select('users.id', 'users.nama', 'users.kelas', 'pustakas.judul', 'detail_peminjaman.tgl_pinjam', 'detail_peminjaman.status')
             ->where('detail_peminjaman.status', 'Dipinjam')
             ->whereDate('detail_peminjaman.tgl_pinjam', '<=', $batasTelat)
-            ->whereBetween('peminjaman.created_at', [$start, $end])
+            ->whereBetween('detail_peminjaman.tgl_pinjam', [$start, $end])
             ->get();
 
 
@@ -190,7 +199,7 @@ class ManageLaporanController extends Controller
             $item->nominal_denda = $nominal_denda;
         });
 
-        $pdf = Pdf::loadView('petugas.laporan.pdf-denda', compact('data', 'start', 'end'));
+        $pdf = Pdf::loadView('petugas.laporan.pdf-Denda', compact('data', 'start', 'end'));
 
         $pdf->setPaper('A4', 'portrait');
 

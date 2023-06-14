@@ -26,11 +26,22 @@
                         <img src="{{ url('/assets/img/buku.png') }}" alt="">
                     </div>
                     <div class="widget-data">
-                        @php
+                     <!--   @php
                         $bukuCount = \App\Models\Pustaka::count();
+                        @endphp -->
+                        @php
+                        $total = 0;
+                        $jmlDipinjam = \App\Models\Peminjaman::query()
+                        ->where('peminjaman.jumlah', '>', '0')
+                        ->sum('jumlah'); 
+                        $jmlPustaka = \App\Models\Pustaka::query()
+                        ->where('pustakas.jumlah', '>', '0')
+                        ->sum('jumlah');                   
+
+                        $total = $jmlDipinjam + $jmlPustaka;
                         @endphp
-                        <div class="h4 mb-0">{{ $bukuCount }}</div>
-                        <div class="weight-600 font-14">Buku</div>
+                        <div class="h4 mb-0">{{ $total }}</div>
+                        <div class="weight-600 font-14">Pustaka</div>
                     </div>
                 </div>
             </div>
@@ -42,11 +53,13 @@
                         <img src="{{ url('/assets/img/book-out.png') }}"  alt="">
                     </div>
                     <div class="widget-data">
-                        @php
-                        $pinjamCount = \App\Models\Peminjaman::count();
-                        @endphp
-                        <div class="h4 mb-0">{{ $pinjamCount }}</div>
-                        <div class="weight-600 font-14">Pinjaman</div>
+                    @php
+                        $jmlTransaksi = \App\Models\DetailPeminjaman::query()
+                        ->where('detail_peminjaman.status', 'Dipinjam')
+                        ->count(); 
+                    @endphp
+                        <div class="h4 mb-0">{{ $jmlTransaksi }}</div>
+                        <div class="weight-600 font-14">Peminjaman</div>
                     </div>
                 </div>
             </div>

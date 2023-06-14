@@ -15,11 +15,11 @@ class PustakaController extends Controller
     {
 
         $pustaka = Pustaka::query()
-            ->select('pustakas.id_pustaka', 'pustakas.judul', 'pustakas.jumlah', 'pustakas.isbn', 'pustakas.id_kategori', 'pustakas.id_pengarang', 'pustakas.id_penerbit', 'pustakas.tahun_terbit', 'pustakas.gambar', 'kategoris.kategori', 'pengarangs.nama_pengarang as pengarang', 'penerbits.nama_penerbit as penerbit')
+            ->select('pustakas.id_pustaka', 'pustakas.judul', 'pustakas.jumlah', 'pustakas.isbn', 'pustakas.id_kategori', 'pustakas.id_pengarang', 'pustakas.id_penerbit', 'pustakas.tahun_terbit', 'pustakas.status', 'pustakas.gambar', 'kategoris.kategori', 'pengarangs.nama_pengarang as pengarang', 'penerbits.nama_penerbit as penerbit')
             ->join('kategoris', 'kategoris.id_kategori', 'pustakas.id_kategori')
             ->join('pengarangs', 'pengarangs.id_pengarang', 'pustakas.id_pengarang')
             ->join('penerbits', 'penerbits.id_penerbit', 'pustakas.id_penerbit')
-            ->where('status', 1)
+            //->where('status', 1)
             ->get();
 
         $kategori = Kategori::all();
@@ -28,6 +28,8 @@ class PustakaController extends Controller
 
         return view('petugas.pustaka.index', compact('pustaka', 'kategori', 'pengarang', 'penerbit'));
     }
+
+    
 
     public function store(Request $request)
     {
@@ -39,6 +41,7 @@ class PustakaController extends Controller
                 'terbit' => 'required',
                 'deskripsi' => 'required',
                 'isbn' => 'required',
+                'status' => 'required',
                 'gambar' => 'required|image',
             ]);
 
@@ -61,7 +64,7 @@ class PustakaController extends Controller
                 'isbn' => $request->isbn,
                 'deskripsi' => $request->deskripsi,
                 'gambar' => $gambar,
-                'status' => 1,
+                'status' => $request->status,
             ]);
 
             //

@@ -111,6 +111,7 @@ Route::middleware(['auth', 'role:petugas'])->group(function () {
         Route::post('listpinjam/insert', 'insert')->name('listpinjam.insert');
         Route::post('listpinjam/update/{id}', 'update')->name('listpinjam.update');
         Route::post('listpinjam/destroy/{id}', 'destroy')->name('listpinjam.destroy');
+        Route::post('listpinjam/destroyy/{id}', 'destroyy')->name('listpinjam.destroyy');
     });
 
     Route::controller(ManagePengembalianController::class)->group(function () {
@@ -144,6 +145,7 @@ Route::middleware(['auth', 'role:anggota'])->group(function () {
         Route::get('/list', 'index')->name('list.index');
         Route::get('/list/detail/{id}', 'detail')->name('detail.profil');
         Route::post('/list/store/{id}', 'store')->name('store.update');
+        Route::get('/get-pustaka', 'getPustaka')->name('list.pustaka');
     });
 
     Route::controller(PeminjamanController::class)->group(function () {

@@ -60,7 +60,7 @@
                         <thead>
                             <tr>
                                 <th>#</th>
-                                <th>Nama Kategori</th>
+                                <th>Nama Pengarang</th>
                                 <th>Action</th>
                             </tr>
                         </thead>

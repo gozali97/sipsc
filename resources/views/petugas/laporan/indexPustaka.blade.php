@@ -84,8 +84,8 @@
                                     <th>Pengarang</th>
                                     <th>Penerbit</th>
                                     <th>Tahun</th>
-                                    <th>Gambar</th>
                                     <th>Stok</th>
+                                    <th>Gambar</th>
                                     <th>Status</th>
                                 </tr>
                             </thead>
@@ -104,7 +104,21 @@
                                         <td>{{ $d->jumlah }}</td>
                                         <td><img src="{{ url('assets/img/' . $d->gambar) }}"
                                                 style="width:80px; height:80px;border-radius: 5%;" alt=""></td>
-                                        <td>Aktif</td>
+                                        <td>
+                                            @php
+                                    if($d->status == "1"){
+                                        $status = "Aktif";
+                                    }
+                                    elseif($d->status == "0"){
+                                        $status = "Tidak Aktif";
+                                    }
+                                    else{
+                                        $status = "Tidak Aktif";
+                                    }
+                                @endphp    
+                                <span class="badge {{$d->status == 1 ? 'badge-success' : 'badge-danger' }}">{{
+                                        $status }}</span>
+                                        </td>
                                     </tr>
                                 @endforeach
                             </tbody>

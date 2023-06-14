@@ -87,15 +87,6 @@
                                 <p class="">{{ $p->tahun_terbit }}</p>
                                 <p class="font-weight-bold">ISBN</p>
                                 <p>{{ $p->isbn }}</p>
-                                <p class="font-weight-bold">Status</p>
-                                <p>@php
-                                    if ($p->status == 1) {
-                                        $status = 'Dipinjam';
-                                    } else {
-                                        $status = 'Dikembalikan';
-                                    }
-                                @endphp
-                                    {{ $status }}</p>
                                 <p class="font-weight-bold">Tanggal Pinjam</p>
                                 <p>{{ \Carbon\Carbon::parse($p->tgl_pinjam)->format('d-m-Y') }}
                                     Jam :

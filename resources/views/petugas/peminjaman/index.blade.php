@@ -84,7 +84,7 @@
                                 <th>Nama</th>
                                 <th>Kelas</th>
                                 <th>Jumlah</th>
-                                <th>Status</th>
+                                <th>Tanggal Pinjam</th>
                                 <th>Gambar</th>
                                 <th>Action</th>
                             </tr>
@@ -99,7 +99,7 @@
                                 <td>{{ $p->nama }}</td>
                                 <td>{{ $p->kelas }}</td>
                                 <td>{{ $p->jumlah }}</td>
-                                <td>@php
+                            <!--    <td>@php
                                     if($p->status = 1){
                                     $status = "Aktif";
                                     }else{
@@ -107,8 +107,9 @@
                                     }
                                     @endphp
                                     <span class="badge {{$p->status == 1 ? 'badge-success' : 'badge-danger' }}">{{
-                                        $status }}</span>
-                                </td>
+                                        $status }}</span> 
+                                </td> -->
+                                <td> {{ $p->created_at }}</td>
                                 <td><img src="{{ url('assets/img/'.$p->gambar) }}" style="width:80px; height:80px;"
                                         alt=""></td>
                                 <td>
@@ -131,7 +132,7 @@
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <h5 class="modal-title" id="deleteModal{{ $p->no_pinjam }}Label">Hapus
-                                                Kategori</h5>
+                                                Peminjaman</h5>
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
